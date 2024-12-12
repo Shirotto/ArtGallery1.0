@@ -12,7 +12,7 @@ public class LoginApplication extends Application {
         // Carica il file FXML
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login/login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);  // Imposta la scena
-        stage.setTitle("Button with Stars Effect");
+        stage.setTitle("");
         stage.setScene(scene);
         stage.show();
     }

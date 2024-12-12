@@ -4,16 +4,24 @@
     <meta charset="UTF-8">
     <title>LoginButton</title>
     <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         .btn {
             display: flex;
             justify-content: center;
             align-items: center;
             width: 13rem;
-            overflow: hidden;
             height: 3rem;
             background-size: 300% 300%;
             cursor: pointer;
-            backdrop-filter: blur(1rem);
+            position: relative; /* Per il ritaglio */
+            backdrop-filter: blur(1rem); /* Applica il blur */
             border-radius: 5rem;
             transition: 0.5s;
             animation: gradient_301 5s ease infinite;
@@ -28,6 +36,9 @@
             );
             background-origin: border-box;
             background-clip: content-box, border-box;
+
+            /* Impostiamo il clipping per limitare il blur */
+            overflow: hidden; /* Nasconde l'area esterna al border-radius */
         }
 
         #container-stars {
@@ -184,7 +195,7 @@
     </style>
 </head>
 <body>
-<button type="button" class="btn">
+<button type="button" class="btn" onclick="window.javaConnector.handleButtonClick()">
     <strong>Login</strong>
     <div id="container-stars">
         <div id="stars"></div>
