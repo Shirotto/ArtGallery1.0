@@ -2,15 +2,22 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.web.WebView?>
+
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.gallery.gui.LoginController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
-    <Label fx:id="welcomeText"/>
+    <!-- Label di benvenuto -->
+    <Label fx:id="welcomeText" text="Welcome to the Starry Button Effect"/>
+
+    <!-- Bottone con l'azione -->
     <Button text="Hello!" onAction="#onHelloButtonClick"/>
+
+    <!-- WebView per caricare il contenuto HTML -->
+    <WebView fx:id="webView" prefHeight="100.0" prefWidth="100.0"/>
 </VBox>
