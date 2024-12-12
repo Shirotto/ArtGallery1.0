@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flip Card Login/Sign Up</title>
+    <style>
+        :root {
+            --input-focus: #2d8cf0;
+            --font-color: #323232;
+            --font-color-sub: #666;
+            --bg-color: #fff;
+            --bg-color-alt: #666;
+            --main-color: #323232;
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+        }
+
+        /* Wrapper */
+        .wrapper {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            perspective: 1000px; /* Crea l'effetto 3D */
+        }
+
+        /* Interno della card */
+        .flip-card__inner {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s ease-in-out, opacity 0.4s ease-in-out;
+            transform-style: preserve-3d; /* Mantiene la prospettiva 3D */
+            transform: rotateY(0); /* Mostra il lato Log in all’avvio */
+            position: relative;
+            backface-visibility: hidden; /* Nasconde il lato posteriore durante la transizione */
+        }
+
+        .flip-card__inner.toggle-active {
+            transform: rotateY(180deg); /* Mostra l'altro lato */
+        }
+
+        /* Lati della card */
+        .flip-card__front,
+        .flip-card__back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* Nasconde il lato opposto */
+            border-radius: 10px;
+            background-color: var(--bg-color);
+            border: 2px solid var(--main-color);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 4px 4px var(--main-color);
+            opacity: 1; /* Imposta l'opacità di default */
+            transition: opacity 0.4s ease-in-out; /* Transizione per l'opacità */
+        }
+
+        /* Rotazione del lato posteriore */
+        .flip-card__back {
+            transform: rotateY(180deg);
+            opacity: 0; /* Nasconde il lato posteriore di default */
+        }
+
+
+        .flip-card__inner.toggle-active .flip-card__back {
+            opacity: 1; /* Mostra il lato posteriore */
+        }
+
+        .flip-card__inner.toggle-active .flip-card__front {
+            opacity: 0; /* Nasconde il lato frontale */
+        }
+
+        /* Titolo */
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--main-color);
+        }
+
+        /* Form */
+        .flip-card__form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .flip-card__input {
+            width: calc(100% - 40px);
+            height: 40px;
+            border-radius: 5px;
+            background-color: var(--bg-color);
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--font-color);
+            border: 2px solid var(--main-color);
+            padding: 5px 10px;
+            outline: none;
+        }
+
+        .flip-card__input:focus {
+            border-color: var(--input-focus);
+        }
+
+        .flip-card__btn {
+            width: 120px;
+            height: 40px;
+            border-radius: 5px;
+            background-color: var(--bg-color-alt);
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--bg-color);
+            border: none;
+            cursor: pointer;
+        }
+
+        .flip-card__btn:hover {
+            background-color: var(--main-color);
+            color: var(--bg-color);
+        }
+
+        /* Toggle container */
+        .toggle-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .toggle-container label {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--font-color);
+            cursor: pointer;
+        }
+
+        .toggle {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <!-- Toggle -->
+    <div class="toggle-container">
+        <label for="toggle-checkbox">Passa a Sign Up</label>
+        <input type="checkbox" id="toggle-checkbox" class="toggle">
+    </div>
+
+    <!-- Card interna -->
+    <div class="flip-card__inner" id="flip-card">
+
+        <!-- Lato frontale (Log in) -->
+        <div class="flip-card__front">
+            <div class="title">Log in</div>
+            <form class="flip-card__form" action="#" method="POST">
+                <input class="flip-card__input" name="email" placeholder="Email" type="email" required>
+                <input class="flip-card__input" name="password" placeholder="Password" type="password" required>
+                <button type="submit" class="flip-card__btn">Log in</button>
+            </form>
+        </div>
+
+        <!-- Lato posteriore (Sign up) -->
+        <div class="flip-card__back">
+            <div class="title">Sign up</div>
+            <form class="flip-card__form" action="#" method="POST">
+                <input class="flip-card__input" name="name" placeholder="Name" type="text" required>
+                <input class="flip-card__input" name="email" placeholder="Email" type="email" required>
+                <input class="flip-card__input" name="password" placeholder="Password" type="password" required>
+                <button type="submit" class="flip-card__btn">Sign up</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const toggleCheckbox = document.getElementById('toggle-checkbox');
+    const flipCardInner = document.getElementById('flip-card');
+
+    // Aggiungi evento per alternare tra Log in e Sign up
+    toggleCheckbox.addEventListener('change', () => {
+        if (toggleCheckbox.checked) {
+            flipCardInner.classList.add('toggle-active'); // Ruota verso la modalità "Sign Up"
+        } else {
+            flipCardInner.classList.remove('toggle-active'); // Torna alla modalità "Log In"
+        }
+    });
+</script>
+
+</body>
+</html>

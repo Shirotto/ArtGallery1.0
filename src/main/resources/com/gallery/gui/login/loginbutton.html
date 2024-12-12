@@ -10,8 +10,18 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative; /* Necessario per gestire la posizione degli altri elementi */
         }
 
+        .wrapper {
+            position: absolute;  /* Posiziona il contenuto sopra il pulsante */
+            top: 30%;  /* Aggiusta il margine in alto per evitare sovrapposizioni */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;  /* Assicura che il contenuto della card non copra il pulsante */
+        }
+
+        /* Mantieni il resto del tuo stile esistente per il pulsante */
         .btn {
             display: flex;
             justify-content: center;
@@ -20,8 +30,8 @@
             height: 3rem;
             background-size: 300% 300%;
             cursor: pointer;
-            position: relative; /* Per il ritaglio */
-            backdrop-filter: blur(1rem); /* Applica il blur */
+            position: relative;
+            backdrop-filter: blur(1rem);
             border-radius: 5rem;
             transition: 0.5s;
             animation: gradient_301 5s ease infinite;
@@ -36,10 +46,9 @@
             );
             background-origin: border-box;
             background-clip: content-box, border-box;
-
-            /* Impostiamo il clipping per limitare il blur */
-            overflow: hidden; /* Nasconde l'area esterna al border-radius */
+            overflow: hidden;
         }
+
 
         #container-stars {
             position: absolute;
