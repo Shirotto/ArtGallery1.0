@@ -5,15 +5,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 public class LoginApplication extends Application {
+
     @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LoginApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+    public void start(Stage stage) throws Exception {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login/login-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        scene.setFill(javafx.scene.paint.Color.WHITE);
+        stage.setTitle("Login Screen");
         stage.setScene(scene);
+        stage.setWidth(570);
+        stage.setHeight(580);
+
         stage.show();
     }
 
