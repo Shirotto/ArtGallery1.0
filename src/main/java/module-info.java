@@ -8,6 +8,7 @@ module com.gallery.gui {
     requires org.kordamp.ikonli.javafx;
     requires eu.hansolo.tilesfx;
     requires jakarta.persistence;
+    requires org.hibernate.orm.core;
 
     opens com.gallery.gui to javafx.fxml;
     exports com.gallery.gui;
