@@ -22,11 +22,11 @@ public class LoginController {
     public void initialize() {
         // Carica il contenuto HTML nel WebView
         WebEngine webEngine = webView.getEngine();
-        webEngine.setJavaScriptEnabled(true); // Abilita JavaScript nel WebView
+        webEngine.setJavaScriptEnabled(true);
         String htmlFilePath = getClass().getResource("login/login.html").toExternalForm();
         webEngine.load(htmlFilePath);
 
-        // Aggiungi un listener per verificare se la pagina è stata caricata correttamente
+        // listener per verificare se la pagina è stata caricata correttamente
         webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
                 System.out.println("Pagina caricata con successo");
@@ -51,18 +51,21 @@ public class LoginController {
         System.out.println("Password: " + password);
         // Se la validazione ha successo, chiudi la finestra di login e apri il menu principale
         closeCurrentWindow();
+        showAlert("", "Login avvenuto con successo!");
         menuPrincipaleApplication.openMainMenu();
     }
 
     // Metodo per gestire la registrazione
-    public void handleSignUpButtonClick(String email, String password) {
+    public void handleSignUpButtonClick(String name, String email, String password) {
         System.out.println("Hai cliccato il pulsante di registrazione");
+        System.out.println("Nome: " + name);
         System.out.println("Email: " + email);
         System.out.println("Password: " + password);
-        // Qui puoi aggiungere la logica per la registrazione, come la creazione di un nuovo utente
+        showAlert("", "Registrazione avvenuto con successo!");
+        // logica registrazione
     }
 
-    public boolean ControllaEmail(String email){
+    public boolean ControllaEmail(String email) {
         if (email.isEmpty() || !email.contains("@") || !email.contains("ciao")) {
             showAlert("Errore", "Inserisci un'email valida.");
             return false;
@@ -83,6 +86,7 @@ public class LoginController {
         Stage currentStage = (Stage) stackPane.getScene().getWindow();
         currentStage.close();
     }
+
     // Metodo per mostrare alert
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

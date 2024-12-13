@@ -6,12 +6,14 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class MenuPrincipaleController {
+    private ProfiloApplication profilo = new ProfiloApplication();
     @FXML
     private Text welcomeText;
     @FXML
     private void goToProfile() {
-        // Logica per andare al profilo
-        showAlert("Navigazione", "Navigando al profilo...");
+       profilo.openProfile();
+        Stage stage = (Stage) welcomeText.getScene().getWindow();
+        stage.close();
     }
 
     @FXML

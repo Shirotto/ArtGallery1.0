@@ -14,12 +14,12 @@ public class LoginApplication extends Application {
         scene.setFill(javafx.scene.paint.Color.WHITE);
         stage.setTitle("Login Screen");
         stage.setScene(scene);
-
         stage.setWidth(570);
         stage.setHeight(580);
 
         stage.show();
     }
+
     public static void main(String[] args) {
         launch();
     }
