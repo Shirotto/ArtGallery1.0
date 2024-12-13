@@ -7,6 +7,7 @@ module com.gallery.gui {
     requires com.dlsc.formsfx;
     requires org.kordamp.ikonli.javafx;
     requires eu.hansolo.tilesfx;
+    requires jakarta.persistence;
 
     opens com.gallery.gui to javafx.fxml;
     exports com.gallery.gui;
