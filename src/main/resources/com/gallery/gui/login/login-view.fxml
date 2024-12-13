@@ -8,10 +8,5 @@
     <!-- Contenitore per la WebView, posizionata in basso -->
     <StackPane fx:id="stackPane" alignment="CENTER" style="-fx-background-color: white;">
         <WebView fx:id="webView" maxWidth="Infinity" />
-
     </StackPane>
-
-
-
-
 </VBox>
