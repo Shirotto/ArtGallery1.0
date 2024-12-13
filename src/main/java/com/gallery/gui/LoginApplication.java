@@ -13,13 +13,14 @@ public class LoginApplication extends Application {
     public void start(Stage stage) throws Exception {
         // Carica il file FXML
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login/login-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());  // Non fissiamo la dimensione qui, lascia che il layout decida
+        Scene scene = new Scene(fxmlLoader.load());
+        scene.setFill(javafx.scene.paint.Color.WHITE);
         stage.setTitle("Login Screen");
         stage.setScene(scene);
 
-        // Imposta la dimensione della finestra in base alla scena
-        stage.setWidth(800);
-        stage.setHeight(1000);
+        // Limita le dimensioni della finestra
+        stage.setWidth(570);     // Larghezza iniziale
+        stage.setHeight(580);    // Altezza iniziale
 
         // Mostra la finestra
         stage.show();
