@@ -9,7 +9,9 @@ module com.gallery.gui {
     requires eu.hansolo.tilesfx;
     requires jakarta.persistence;
     requires org.hibernate.orm.core;
+    requires java.naming;
 
     opens com.gallery.gui to javafx.fxml;
+    opens com.entity to org.hibernate.orm.core;
     exports com.gallery.gui;
 }
