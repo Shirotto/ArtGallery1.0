@@ -14,31 +14,30 @@ public class GestioneUtente {
         // Crea la SessionFactory utilizzando hibernate.cfg.xml
         this.sessionFactory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class).buildSessionFactory();
     }
-
+    //Verifica se l'utente esiste gia nel db (Fase Registazione)
     public boolean verificaERegistraUtente(String username, String email, String password) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.openSession();  // creazione sessione (Permette di interagire con il db)
         Transaction transaction = null;
 
         try {
-            transaction = session.beginTransaction();
+            transaction = session.beginTransaction();  // inizio transazione (operazione atomica)
 
-            // Verifica se l'utente esiste già
+            //Crezione HQL che verifica se la mail esiste nel db
             String hql = "FROM User u WHERE u.email = :email";
             User utenteEsistente = session.createQuery(hql, User.class)
                     .setParameter("email", email)
                     .uniqueResult();
-
-
 
             if (utenteEsistente != null) {
                 System.out.println("Utente già registrato con questa email.");
                 return false;
             }
 
-            // Registra un nuovo utente
+            // Crea utente e salva sessione
             User nuovoUtente = new User(username, email, password);
             session.save(nuovoUtente);
 
+            //Termine transazione
             transaction.commit();
             System.out.println("Utente registrato con successo!");
             return true;
@@ -54,7 +53,7 @@ public class GestioneUtente {
             session.close();
         }
     }
-    //metodo che scorre nel db e verifica se ci sono email e pass
+    //Metodo che scorre nel db e verifica se ci sono email e pass ("FaseLogin")
     public boolean verificaCredenziali(String email, String password) {
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
@@ -72,7 +71,6 @@ public class GestioneUtente {
                 // Utente non trovato
                 return false;
             }
-
             // Verifica se la password corrisponde
             if (utente.getPassword().equals(password)) {
                 return true;
@@ -92,6 +90,5 @@ public class GestioneUtente {
             session.close();
         }
     }
-
 
 }
