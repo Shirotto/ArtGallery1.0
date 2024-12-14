@@ -9,13 +9,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increment ID
     private Long id;
 
-    @Column(name = "username", nullable = false, unique = true, length = 50)
-    private String username;
-
     @Column(name = "email", nullable = false, unique = true, length = 100)
     private String email;
 
-    @Column(name = "password", nullable = false, length = 255)
+    @Column(name = "username", nullable = false, unique = true, length = 50)
+    private String username;
+
+    @Column(name = "password", nullable= false, length = 255)
     private String password;
 
     // Default constructor (required by Hibernate)
@@ -23,9 +23,9 @@ public class User {
     }
 
     // Constructor for convenience
-    public User(String username, String email, String password) {
-        this.username = username;
+    public User(String username, String email,  String password) {
         this.email = email;
+        this.username = username;
         this.password = password;
     }
 
@@ -67,8 +67,8 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
                 '}';
     }
 }

@@ -10,6 +10,7 @@ module com.gallery.gui {
     requires jakarta.persistence;
     requires org.hibernate.orm.core;
     requires java.naming;
+    requires jdk.jsobject;
 
     opens com.gallery.gui to javafx.fxml;
     opens com.entity to org.hibernate.orm.core;
