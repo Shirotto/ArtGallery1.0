@@ -16,10 +16,8 @@ public class LoginApplication extends Application {
         stage.setScene(scene);
         stage.setWidth(570);
         stage.setHeight(580);
-
         stage.show();
     }
-
     public static void main(String[] args) {
         launch();
     }

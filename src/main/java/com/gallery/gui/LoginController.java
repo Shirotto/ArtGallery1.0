@@ -1,5 +1,4 @@
 package com.gallery.gui;
-
 import com.GestioneDB.GestioneUtente;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
@@ -11,9 +10,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
-
 import java.io.IOException;
-import java.net.URL;
 
 
 public class LoginController {
@@ -65,11 +62,11 @@ public class LoginController {
 
             // Mostra il menu principale
             System.out.println("Login avvenuto con successo!");
-            showAlert("", "Login avvenuto con successo!");
-            menuPrincipaleApplication.openMainMenu();  // Usa la tua logica per aprire il menu
+            showAlertInfo("", "Login avvenuto con successo!");
+            menuPrincipaleApplication.openMainMenu();
         } else {
             // Se le credenziali non sono valide, mostra un messaggio di errore
-            showAlert("Errore", "Email o password errate.");
+            showAlertErrore("Errore", "Email o password errate.");
         }
     }
 
@@ -87,68 +84,21 @@ public class LoginController {
 
         if (registrazioneSuccesso) {
             // Se la registrazione è avvenuta con successo
-            showAlert("Successo", "Registrazione avvenuta con successo!");
-
-
+            showAlertInfo("Successo", "Registrazione avvenuta con successo!");
             closeCurrentWindow();
             System.out.println("Registrazione avvenuta con successo!");
+            //chiamata al metodo che riapre la finestra di login
             riapriFinestraLogin();
-
-
         } else {
-            //Altrimenti
-            showAlert("Errore", "Controlla se sei registrato, o Utilizza un altro Nome");
+            //altrimenti
+            showAlertErrore("Errore", "Controlla se sei registrato, o Utilizza un altro Nome");
         }
-
     }
 
-    public boolean ControllaEmail(String email) {
-        if (email.isEmpty() || !email.contains("@gmail.com") && !email.contains("@outlook.it")) {
-            showAlert("Errore", "Inserisci un'email valida.");
-            return false;
-        }
-        return true;
-    }
-
-    public boolean ControllaPassword(String password) {
-
-        if (password.isEmpty()) {
-            showAlert("Errore", "Inserisci una password.");
-            return false;
-        } else {
-
-            if (password.length() < 8) {
-                showAlert("Errore", "La password deve avere almeno 8 caratteri");
-                return false;
-            }
-            // Verifica se la password contiene almeno un numero
-            if (!password.matches(".*\\d.*")) { // Verifica se c'è almeno un numero
-                showAlert("Errore", "La password deve contenere almeno un numero.");
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // Metodo per chiudere la finestra attuale
-    private void closeCurrentWindow() {
-        Stage currentStage = (Stage) stackPane.getScene().getWindow();
-        currentStage.close();
-    }
-
-    // Metodo per mostrare alert
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-
-    }
     private void riapriFinestraLogin() {
         try {
 
-            // Carica il file FXML della finestra di login
+            // Riapre la finestra login dopo essersi registrati
             FXMLLoader loader = new FXMLLoader(getClass().getResource("login/login-view.fxml"));
             Stage stage = new Stage(); // Crea una nuova finestra
             stage.setTitle("Login");
@@ -159,10 +109,60 @@ public class LoginController {
 
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Errore", "Non è stato possibile aprire la finestra di login.");
+            showAlertErrore("Errore", "Non è stato possibile aprire la finestra di login.");
         }
     }
+    // Metodo per mostrare alert Errore
+    private void showAlertErrore(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
 
+    }
+    // Metodo per mostrare alert Info
+    private void showAlertInfo(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+
+    }
+    public boolean ControllaEmail(String email) {
+        if (email.isEmpty() || !email.contains("@gmail.com") && !email.contains("@outlook.it")) {
+            showAlertErrore("Errore", "Inserisci un'email valida.");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean ControllaPassword(String password) {
+
+        //verifica se la pass è vuota
+        if (password.isEmpty()) {
+            showAlertErrore("Errore", "Inserisci una password.");
+            return false;
+        } else {
+            //verifica se la pass contiene almeno 8 caratteri
+            if (password.length() < 8) {
+                showAlertErrore("Errore", "La password deve avere almeno 8 caratteri");
+                return false;
+            }
+            // Verifica se la password contiene almeno un numero
+            if (!password.matches(".*\\d.*")) { // Verifica se c'è almeno un numero
+                showAlertErrore("Errore", "La password deve contenere almeno un numero.");
+                return false;
+            }
+        }
+        return true;
+    }
+    // Metodo per chiudere la finestra attuale
+    private void closeCurrentWindow() {
+        Stage currentStage = (Stage) stackPane.getScene().getWindow();
+        currentStage.close();
+    }
 }
 
 
