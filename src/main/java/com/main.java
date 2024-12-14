@@ -1,4 +1,4 @@
-package com;
+/*package com;
 import com.entity.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -15,17 +15,29 @@ public class main {
 
             // Create and save the first user
             User user1 = new User();
-            user1.setUsername("JohnDoe");
-            user1.setEmail("john.doe@example.com");
+            user1.setUsername("John");
+            user1.setEmail("john.doe@ciao.com");
             user1.setPassword("1234");
             session.save(user1);
 
             // Create and save the second user
             User user2 = new User();
-            user2.setUsername("JaneDoe");
-            user2.setEmail("jane.doe@example.com");
+            user2.setUsername("Jane");
+            user2.setEmail("jane.doe@eciao.com");
             user2.setPassword("1234");
             session.save(user2);
+
+
+
+            User user3 = new User();
+            user3.setUsername("JaneDun");
+            user3.setEmail("jane.dun@eciao.com");
+            user3.setPassword("1234");
+            session.save(user3);
+
+
+
+
 
             // Commit the transaction
             transaction.commit();
@@ -40,4 +52,4 @@ public class main {
 
         // Shutdown Hibernate
         HibernateUtil.shutdown();
-    }}
+    }}*/
