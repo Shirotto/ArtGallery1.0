@@ -47,7 +47,7 @@ public class LoginController {
     }
 
     // Metodo per gestire il login
-    public void handleLoginButtonClick(String email, String password) {
+   public void handleLoginButtonClick(String email, String password) {
         // Controlla se l'email e la password sono valide
         if (!ControllaEmail(email) || !ControllaPassword(password)) {
             return; // Se i dati non sono validi, interrompi l'esecuzione
@@ -131,10 +131,16 @@ public class LoginController {
 
     }
     public boolean ControllaEmail(String email) {
-        if (email.isEmpty() || !email.contains("@gmail.com") && !email.contains("@outlook.it")) {
+        // Definisce il pattern per un'email valida
+        String emailRegex = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$";
+
+        // Verifica se l'email è vuota o non corrisponde al pattern
+        if (email.isEmpty() || !email.matches(emailRegex)) {
             showAlertErrore("Errore", "Inserisci un'email valida.");
             return false;
         }
+
+        // Email valida
         return true;
     }
 
