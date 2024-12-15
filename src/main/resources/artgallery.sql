@@ -1,17 +1,17 @@
--- ArtGallery MySQL database file
+-- ArtGallery MySQL file del database
 
--- 1. Create the database
+-- 1. Crea il database
 CREATE DATABASE IF NOT EXISTS artgallery;
 
--- 2. Select the database
+-- 2. Seleziona il database
 USE artgallery;
 
--- 3. Create a user with a password (only if it doesn't already exist)
+-- 3. Crea l'utente admin (Sempre che non esista già)
 CREATE USER IF NOT EXISTS 'admin'@'localhost' IDENTIFIED BY 'password';
 
--- 4. Grant all privileges on the artgallery database to the admin user
+-- 4. Dai tutti i privilegi all'utente admin nel database artgallery
 GRANT ALL PRIVILEGES ON artgallery.* TO 'admin'@'localhost';
 
--- 5. Apply privilege changes
+-- 5. Applica i privilegi
 FLUSH PRIVILEGES;
 
