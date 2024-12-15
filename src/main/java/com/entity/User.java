@@ -2,11 +2,11 @@ package com.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users") // Specifies the table name in the database
+@Table(name = "users") // Specifica il nome della tabella nel database
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increment ID
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // ID auto-incrementato
     private Long id;
 
     @Column(name = "email", nullable = false, unique = true, length = 100)
@@ -18,19 +18,18 @@ public class User {
     @Column(name = "password", nullable= false, length = 255)
     private String password;
 
-    // Default constructor (required by Hibernate)
+    // Costruttore di default (richiesto da Hibernate)
     public User() {
     }
 
-    // Constructor for convenience
+    // Costruttore per comodità
     public User(String username, String email,  String password) {
         this.email = email;
         this.username = username;
         this.password = password;
     }
 
-    // Getters and Setters
-
+    // Getter e Setter
     public Long getId() {
         return id;
     }
