@@ -29,8 +29,6 @@ public class LoginController {
     private LogicaLogReg gestioneLR = new LogicaLogReg();
 
 
-
-
     @FXML
     public void initialize() {
         // Carica il contenuto HTML nel WebView
@@ -61,6 +59,7 @@ public class LoginController {
             apriMenuPrincipale();
         } else {
             alert.showAlertErrore("Errore", "Email o password non valide.");
+
         }
     }
 
@@ -92,8 +91,8 @@ public class LoginController {
     }
 
     private void riapriFinestraLogin() {
-
         try {
+
             // Riapre la finestra login dopo essersi registrati
             FXMLLoader loader = new FXMLLoader(getClass().getResource("login/login-view.fxml"));
             Stage stage = new Stage(); // Crea una nuova finestra
@@ -105,10 +104,14 @@ public class LoginController {
 
         } catch (IOException e) {
             e.printStackTrace();
-            alert.showAlertErrore("Errore", "Non è stato possibile aprire la finestra di login.");
+
+
         }
     }
 }
+
+
+
 
 
 

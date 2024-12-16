@@ -92,5 +92,4 @@ public class GestioneUtente {
             session.close();
         }
     }
-
 }
