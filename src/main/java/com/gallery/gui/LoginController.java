@@ -47,7 +47,7 @@ public class LoginController {
     }
 
     // Metodo per gestire il login
-   public void handleLoginButtonClick(String email, String password) {
+    public void handleLoginButtonClick(String email, String password) {
         // Controlla se l'email e la password sono valide
         if (!ControllaEmail(email) || !ControllaPassword(password)) {
             return; // Se i dati non sono validi, interrompi l'esecuzione
@@ -112,6 +112,7 @@ public class LoginController {
             showAlertErrore("Errore", "Non è stato possibile aprire la finestra di login.");
         }
     }
+
     // Metodo per mostrare alert Errore
     private void showAlertErrore(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -121,6 +122,7 @@ public class LoginController {
         alert.showAndWait();
 
     }
+
     // Metodo per mostrare alert Info
     private void showAlertInfo(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -130,6 +132,7 @@ public class LoginController {
         alert.showAndWait();
 
     }
+
     public boolean ControllaEmail(String email) {
         // Definisce il pattern per un'email valida
         String emailRegex = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$";
@@ -145,31 +148,52 @@ public class LoginController {
     }
 
     public boolean ControllaPassword(String password) {
-
-        //verifica se la pass è vuota
-        if (password.isEmpty()) {
+        // Verifica se la password è vuota
+        if (password == null || password.isEmpty()) {
             showAlertErrore("Errore", "Inserisci una password.");
             return false;
-        } else {
-            //verifica se la pass contiene almeno 8 caratteri
-            if (password.length() < 8) {
-                showAlertErrore("Errore", "La password deve avere almeno 8 caratteri");
-                return false;
-            }
-            // Verifica se la password contiene almeno un numero
-            if (!password.matches(".*\\d.*")) { // Verifica se c'è almeno un numero
-                showAlertErrore("Errore", "La password deve contenere almeno un numero.");
-                return false;
-            }
         }
+
+        // Verifica se la password contiene almeno 8 caratteri
+        if (password.length() < 8) {
+            showAlertErrore("Errore", "La password deve avere almeno 8 caratteri.");
+            return false;
+        }
+
+        // Verifica se la password contiene almeno un numero
+        if (!password.matches(".*\\d.*")) {
+            showAlertErrore("Errore", "La password deve contenere almeno un numero.");
+            return false;
+        }
+
+        // Verifica se la password contiene almeno una lettera maiuscola
+        if (!password.matches(".*[A-Z].*")) {
+            showAlertErrore("Errore", "La password deve contenere almeno una lettera maiuscola.");
+            return false;
+        }
+
+        // Verifica se la password contiene almeno una lettera minuscola
+        if (!password.matches(".*[a-z].*")) {
+            showAlertErrore("Errore", "La password deve contenere almeno una lettera minuscola.");
+            return false;
+        }
+
+        // Verifica se la password contiene almeno un carattere speciale
+        if (!password.matches(".*[!@#$%^&*(),.?\\\\\":{}|<>].*")) {
+            showAlertErrore("Errore", "La password deve contenere almeno un carattere speciale.");
+            return false;
+        }
+        //Password Valida
         return true;
     }
-    // Metodo per chiudere la finestra attuale
-    private void closeCurrentWindow() {
-        Stage currentStage = (Stage) stackPane.getScene().getWindow();
-        currentStage.close();
+
+        // Metodo per chiudere la finestra attuale
+        private void closeCurrentWindow () {
+            Stage currentStage = (Stage) stackPane.getScene().getWindow();
+            currentStage.close();
+        }
     }
-}
+
 
 
 
