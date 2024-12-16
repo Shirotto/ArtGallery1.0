@@ -30,6 +30,7 @@ public class GestioneUtente {
             if (utenteEsistente != null) {
                 System.out.println("Utente già registrato con questa email.");
                 return false;
+
             }
 
             // Crea utente e salva sessione
@@ -51,7 +52,10 @@ public class GestioneUtente {
         } finally {
             session.close();
         }
+
     }
+
+
     //Metodo che scorre nel db e verifica se ci sono email e pass ("FaseLogin")
     public boolean verificaCredenziali(String email, String password) {
         Session session = sessionFactory.openSession();
@@ -77,7 +81,6 @@ public class GestioneUtente {
                 // Password errata
                 return false;
             }
-
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
@@ -89,5 +92,4 @@ public class GestioneUtente {
             session.close();
         }
     }
-
 }
