@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 
 public class ProfiloController {
 
+    AlertInfo alert = new AlertInfo();
+
     @FXML
     private Label usernameLabel;
 
@@ -28,7 +30,7 @@ public class ProfiloController {
         // Chiudi la finestra corrente
         Stage stage = (Stage) usernameLabel.getScene().getWindow();
         stage.close();
-        showAlert("Logout", "Logout avvenuto con successo");
+        alert.showAlertInfo("Logout", "Logout avvenuto con successo");
 
         try {
             // Carica la schermata di login
@@ -55,14 +57,6 @@ public class ProfiloController {
         stage.close();
     }
 
-    // Metodo per mostrare alert
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 }
 
 

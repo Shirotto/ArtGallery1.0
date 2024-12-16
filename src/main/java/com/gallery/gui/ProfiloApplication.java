@@ -2,13 +2,15 @@ package com.gallery.gui;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class ProfiloApplication {
+
+    private AlertInfo alert = new AlertInfo();
+
 
     // Metodo per aprire il profilo in una nuova finestra
     public void openProfile() {
@@ -22,16 +24,11 @@ public class ProfiloApplication {
             menuStage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Errore", "Impossibile aprire il profilo.");
+            alert.showAlertErrore("Errore", "Impossibile aprire il profilo.");
         }
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+
+
 
 }
