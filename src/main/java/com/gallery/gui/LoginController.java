@@ -22,8 +22,9 @@ public class LoginController {
     private StackPane stackPane;
 
     private AlertInfo alert = new AlertInfo();
+    private ValidazioneInput validazioneInput;
 
-    private LogicaLogReg logReg = new LogicaLogReg();
+    //private LogicaLogReg logReg = new LogicaLogReg();
 
     GestioneUtente gestioneUtente = new GestioneUtente();
 
@@ -55,7 +56,7 @@ public class LoginController {
     public void handleLoginButtonClick(String email, String password) {
 
         boolean loginsuccesso = gestioneUtente.verificaCredenziali(email, password);
-        //da notare: qui  loginsuccesso "chiama esclusivamente il db" , non fa il check sulla sintassi
+        //da notare: qui  loginsuccesso "chiama esclusivamente il db" , non fa il check sulla sintassi perchè il check sulla sintassi si fa nel momento della registrazione
         if (loginsuccesso) {
 
             //recupero dati utente dopo login(da Gestione Db)
@@ -71,10 +72,11 @@ public class LoginController {
     // Gestione evento registrazione
     public void handleSignUpButtonClick(String name, String email, String password) {
 
-        boolean registrazioneSuccesso = logReg.verificaSintassiReg(name, email, password);
+        boolean registrazioneSuccesso = validazioneInput.validaInput(name, email, password);
 
         if (registrazioneSuccesso) {
             // Se la registrazione è avvenuta con successo
+            gestioneUtente.RegistraUtente(name,email,password);
             alert.showAlertInfo("Registrazione riuscita", "Clicca 'Ok' per tornare alla schermata di login");
             closeCurrentWindow();
             riapriFinestraLogin();

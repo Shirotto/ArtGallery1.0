@@ -1,12 +1,11 @@
 package com.gallery.gui;
 
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 public class ValidazioneInput {
 
     private AlertInfo alert = new AlertInfo();
+    public boolean validaInput(String nome, String email, String password){
+        return usernameValido(nome) || emailValida(email) || passwordValida(password);
+    }
 
 
     public boolean emailValida(String email) {
