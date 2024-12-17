@@ -64,7 +64,7 @@ public class ProfiloController {
             roleLabel.setText("Role: " + "Strunz");
         }
     }
-    
+
     @FXML
     private void exitApp() {
         // Chiudi l'applicazione
