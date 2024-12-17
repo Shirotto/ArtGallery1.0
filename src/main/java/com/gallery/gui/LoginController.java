@@ -1,6 +1,7 @@
 package com.gallery.gui;
 import com.GestioneDB.GestioneUtente;
 import com.Service.LogicaLogReg;
+import com.entity.User;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,11 +23,11 @@ public class LoginController {
 
     private AlertInfo alert = new AlertInfo();
 
-    private MenuPrincipaleApplication menuPrincipaleApplication = new MenuPrincipaleApplication();
+    private LogicaLogReg logReg = new LogicaLogReg();
 
-    private GestioneUtente gestione = new GestioneUtente(); // Inizializza GestioneUtente
+    GestioneUtente gestioneUtente = new GestioneUtente();
 
-    private LogicaLogReg gestioneLR = new LogicaLogReg();
+    private User currentUser;
 
 
     @FXML
@@ -53,9 +54,13 @@ public class LoginController {
     // Gestione evento di login
     public void handleLoginButtonClick(String email, String password) {
 
-        boolean loginsuccesso = gestioneLR.effettuaLogin(email, password);
+        boolean loginsuccesso = gestioneUtente.verificaCredenziali(email, password);
+        //da notare: qui  loginsuccesso "chiama esclusivamente il db" , non fa il check sulla sintassi
         if (loginsuccesso) {
-            alert.showAlertInfo("Login riuscito", "Accesso effettuato correttamente!");
+
+            //recupero dati utente dopo login(da Gestione Db)
+            currentUser = gestioneUtente.getUserByEmail(email);
+
             apriMenuPrincipale();
         } else {
             alert.showAlertErrore("Errore", "Email o password non valide.");
@@ -66,10 +71,11 @@ public class LoginController {
     // Gestione evento registrazione
     public void handleSignUpButtonClick(String name, String email, String password) {
 
-        boolean registrazioneSuccesso = gestioneLR.effettuaRegistrazione(name, email, password);
+        boolean registrazioneSuccesso = logReg.verificaSintassiReg(name, email, password);
+
         if (registrazioneSuccesso) {
             // Se la registrazione è avvenuta con successo
-            alert.showAlertInfo("Registrazione riuscita", "Benvenuto, registrazione completata!");
+            alert.showAlertInfo("Registrazione riuscita", "Clicca 'Ok' per tornare alla schermata di login");
             closeCurrentWindow();
             riapriFinestraLogin();
         } else {
@@ -86,14 +92,31 @@ public class LoginController {
     }
 
     private void apriMenuPrincipale() {
-        System.out.println("Apertura del menu principale...");
-        menuPrincipaleApplication.openMainMenu();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("menuPrincipale/menu-view.fxml"));
+            Stage menuStage = new Stage();
+            menuStage.setScene(new Scene(loader.load()));
+
+            //Ottieni il controller del menu principale
+            MenuPrincipaleController menuController = loader.getController();
+
+            //Passo l'utente corrente al controller
+            menuController.setUser(currentUser);
+
+            menuStage.setTitle("Menu Principale");
+            menuStage.show();
+
+            // Chiudi la finestra di login
+            closeCurrentWindow();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    // Riapre la finestra login dopo essersi registrati
     private void riapriFinestraLogin() {
-        try {
 
-            // Riapre la finestra login dopo essersi registrati
+        try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("login/login-view.fxml"));
             Stage stage = new Stage(); // Crea una nuova finestra
             stage.setTitle("Login");
@@ -107,8 +130,10 @@ public class LoginController {
 
 
         }
+
     }
 }
+
 
 
 
