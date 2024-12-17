@@ -13,7 +13,7 @@ public class GestioneUtente {
         // Crea la SessionFactory utilizzando hibernate.cfg.xml
         this.sessionFactory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class).buildSessionFactory();
     }
-    //Verifica se l'utente esiste gia nel db (Fase Registazione)
+    //Verifica e registra se l'utente esiste gia nel db (Fase Registazione)
     public boolean verificaERegistraUtente(String username, String email, String password) {
         Session session = sessionFactory.openSession();  // creazione sessione (Permette di interagire con il db)
         Transaction transaction = null;
@@ -92,4 +92,32 @@ public class GestioneUtente {
             session.close();
         }
     }
+    // Metodo per ottenere l'utente tramite email (Per il profilo utente)
+    public User getUserByEmail(String email) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        User utente = null;
+        try {
+            transaction = session.beginTransaction();
+
+            String hql = "FROM User u WHERE u.email = :email";
+            utente = session.createQuery(hql, User.class)
+                    .setParameter("email", email)
+                    .uniqueResult();
+
+            transaction.commit();
+            System.out.println(utente.getUsername());
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return utente;
+
+    }
+
+
 }
