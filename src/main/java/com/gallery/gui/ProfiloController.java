@@ -1,5 +1,6 @@
 package com.gallery.gui;
 
+import com.entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,8 @@ public class ProfiloController {
 
     @FXML
     private Text welcomeText;
+
+    private User currentUser;
 
     @FXML
     private void logout(ActionEvent event) {
@@ -55,6 +58,19 @@ public class ProfiloController {
         // Chiudi l'applicazione
         Stage stage = (Stage) welcomeText.getScene().getWindow();
         stage.close();
+    }
+
+    // Metodo per impostare i dati dell'utente nel profilo
+    public void setUserData(User user){
+        this.currentUser = user;
+
+        // Aggiorna le etichette con i dati dell'utente
+        if (currentUser != null) {
+            usernameLabel.setText("Username: " + currentUser.getUsername());
+            emailLabel.setText("email: " + currentUser.getEmail());
+            roleLabel.setText("Role: " + "Strunz");
+
+        }
     }
 
 }

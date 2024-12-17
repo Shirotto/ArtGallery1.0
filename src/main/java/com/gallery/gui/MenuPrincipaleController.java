@@ -27,7 +27,7 @@ public class MenuPrincipaleController {
     @FXML
     private void goToProfile() {
         if (currentUser != null) {
-            profilo.openProfile(currentUser); // Passa l'utente al profilo
+            profilo.openProfile(currentUser); // apro il profilo con l'utente corrente
             Stage stage = (Stage) welcomeText.getScene().getWindow();
             stage.close();
         } else {
