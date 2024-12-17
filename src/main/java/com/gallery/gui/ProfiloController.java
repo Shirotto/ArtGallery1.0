@@ -53,13 +53,6 @@ public class ProfiloController {
         }
     }
 
-    @FXML
-    private void exitApp() {
-        // Chiudi l'applicazione
-        Stage stage = (Stage) welcomeText.getScene().getWindow();
-        stage.close();
-    }
-
     // Metodo per impostare i dati dell'utente nel profilo
     public void setUserData(User user){
         this.currentUser = user;
@@ -69,8 +62,14 @@ public class ProfiloController {
             usernameLabel.setText("Username: " + currentUser.getUsername());
             emailLabel.setText("email: " + currentUser.getEmail());
             roleLabel.setText("Role: " + "Strunz");
-
         }
+    }
+    
+    @FXML
+    private void exitApp() {
+        // Chiudi l'applicazione
+        Stage stage = (Stage) welcomeText.getScene().getWindow();
+        stage.close();
     }
 
 }
