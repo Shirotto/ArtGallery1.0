@@ -1,6 +1,9 @@
 package com.gallery.gui;
 
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class ValidazioneInput {
 
     private AlertInfo alert = new AlertInfo();
@@ -15,17 +18,6 @@ public class ValidazioneInput {
         return true;
     }
 
-    public boolean passwordValida(String password) {
-        if (password == null || password.isEmpty() || password.length() < 8 ||  password.contains(" ") ||
-                !password.matches(".*\\d.*") || !password.matches(".*[A-Z].*") ||
-                !password.matches(".*[a-z].*") ||
-                !password.matches(".*[!@#$%^&*(),.?\\\\\":{}|<>].*")) {
-            alert.showAlertErrore("Password non valida", "Inserisci una password conforme ai requisiti.");
-            return false;
-        }
-        return true;
-    }
-
     public boolean usernameValido(String username) {
         if (username == null || username.isEmpty() ||
                 !username.matches("^[a-zA-Z0-9._-]+$")) {
@@ -34,6 +26,42 @@ public class ValidazioneInput {
         }
         return true;
     }
+
+     public boolean passwordValida(String password) {
+         if (password == null || password.isEmpty()) {
+             alert.showAlertErrore("Password non valida", "La password non può essere vuota.");
+             return false;
+         }
+         if (password.length() < 8) {
+             alert.showAlertErrore("Password non valida", "La password deve contenere almeno 8 caratteri.");
+             return false;
+         }
+         if (password.contains(" ")) {
+             alert.showAlertErrore("Password non valida", "La password non può contenere spazi.");
+             return false;
+         }
+         if (!password.matches(".*\\d.*")) {
+             alert.showAlertErrore("Password non valida", "La password deve contenere almeno un numero.");
+             return false;
+         }
+         if (!password.matches(".*[A-Z].*")) {
+             alert.showAlertErrore("Password non valida", "La password deve contenere almeno una lettera maiuscola.");
+             return false;
+         }
+         if (!password.matches(".*[a-z].*")) {
+             alert.showAlertErrore("Password non valida", "La password deve contenere almeno una lettera minuscola.");
+             return false;
+         }
+         if (!password.matches(".*[!@#$%^&*(),.?\\\\\":{}|<>].*")) {
+             alert.showAlertErrore("Password non valida", "La password deve contenere almeno un carattere speciale (!@#$%^&*...).");
+             return false;
+         }
+
+         return true; // Password valida
+     }
+
+
+
 
 
 }
