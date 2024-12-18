@@ -60,7 +60,7 @@ public class ProfiloController {
         if (currentUser != null) {
             usernameLabel.setText("Username: " + currentUser.getUsername());
             emailLabel.setText("email: " + currentUser.getEmail());
-            roleLabel.setText("Role: " + "Strunz");
+            roleLabel.setText("Role: " + "Utente");
         }
     }
 

@@ -21,10 +21,7 @@ public class LoginController {
     @FXML
     private StackPane stackPane;
 
-    private AlertInfo alert = new AlertInfo();
-    private ValidazioneInput validazioneInput;
-
-    //private LogicaLogReg logReg = new LogicaLogReg();
+    final AlertInfo alert = new AlertInfo();
 
     GestioneUtente gestioneUtente = new GestioneUtente();
 
@@ -55,13 +52,9 @@ public class LoginController {
     // Gestione evento di login
     public void handleLoginButtonClick(String email, String password) {
 
-        boolean loginsuccesso = gestioneUtente.verificaCredenziali(email, password);
-        //da notare: qui  loginsuccesso "chiama esclusivamente il db" , non fa il check sulla sintassi perchè il check sulla sintassi si fa nel momento della registrazione
-        if (loginsuccesso) {
-
-            //recupero dati utente dopo login(da Gestione Db)
+        if (gestioneUtente.verificaCredenziali(email, password)) {
+            //recupero dati utente dopo login
             currentUser = gestioneUtente.getUserByEmail(email);
-
             apriMenuPrincipale();
         } else {
             alert.showAlertErrore("Errore", "Email o password non valide.");
@@ -71,21 +64,11 @@ public class LoginController {
 
     // Gestione evento registrazione
     public void handleSignUpButtonClick(String name, String email, String password) {
-
-        boolean registrazioneSuccesso = validazioneInput.validaInput(name, email, password);
-
-        if (registrazioneSuccesso) {
-            // Se la registrazione è avvenuta con successo
-            gestioneUtente.RegistraUtente(name,email,password);
-            alert.showAlertInfo("Registrazione riuscita", "Clicca 'Ok' per tornare alla schermata di login");
+        if (gestioneUtente.RegistraUtente(name,email,password)) {
             closeCurrentWindow();
             riapriFinestraLogin();
-        } else {
-            //altrimenti
-            alert.showAlertErrore("Errore", "Errore durante la registrazione. Controlla i dati.");
         }
-    }
-
+        }
 
     // Metodo per chiudere la finestra attuale
     private void closeCurrentWindow() {
