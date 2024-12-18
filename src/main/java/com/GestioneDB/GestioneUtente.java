@@ -20,10 +20,12 @@ public class GestioneUtente {
     }
     //Verifica e registra se l'utente esiste gia nel db (Fase Registazione)
     public boolean registraUtente(String username, String email, String password) {
+
         if (verificaSeUnUtenteEsisteByUsername(username)){
             alertInfo.showAlertErrore("utente già registrato","Esiste già un utente con questo username");
             return false;
         }
+
         if (verificaSeUnUtenteEsisteByEmail(email)){
             alertInfo.showAlertErrore("utente già registrato","Esiste già un utente con questa email");
             return false;
@@ -39,7 +41,8 @@ public class GestioneUtente {
             alertInfo.showAlertInfo( "utente registrato con successo","BENVENUTO "+ username);
             return true;
         }
-        alertInfo.showAlertErrore("Errore", "Errore durante la registrazione. Controlla i dati.");
+        validazioneInput.validaInputConAlert(username,email,password);
+        //alertInfo.showAlertErrore("Errore", "Errore durante la registrazione. Controlla i dati.");
         return false;
 
 

@@ -1,123 +1,77 @@
 package com.gallery.gui;
 
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-class ValidazioneInputTest {
-    AlertInfoTest ait = new AlertInfoTest();
-    public boolean emailValidaTEST(String email) {
-        if (email == null || email.isEmpty() ||
-                !email.matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
-            ait.showAlertErroreTEST("Email non valida", "Inserisci un'email corretta.");
 
-            return false;
-        }
-        return true;
+public class ValidazioneInputTest {
+    ValidazioneInput validazioneInput = new ValidazioneInput();
+    @Test
+    public void validaEmail_DeveDareFalseSeLEmailNonHaIlGiustoPattern() {
+        String emailNonValida = "emailnonvalida";
+        assertFalse(validazioneInput.validaEmail(emailNonValida));
     }
-    public boolean usernameValidoTEST(String username) {
-        if (username == null || username.isEmpty() ||
-                !username.matches("^[a-zA-Z0-9._-]+$")) {
-            ait.showAlertErroreTEST("Username non valido", "Inserisci un nome utente valido.");
-            return false;
-        }
-        return true;
-    }
-
-    public String passwordValidaTEST(String password) {
-        if (password == null || password.isEmpty()) {
-            return ait.showAlertErroreTEST("Password non valida", "La password non può essere vuota.");
-
-        }
-        if (password.length() < 8) {
-            return ait.showAlertErroreTEST("Password non valida", "La password deve contenere almeno 8 caratteri.");
-
-        }
-        if (password.contains(" ")) {
-            return ait.showAlertErroreTEST("Password non valida", "La password non può contenere spazi.");
-
-        }
-        if (!password.matches(".*\\d.*")) {
-            return ait.showAlertErroreTEST("Password non valida", "La password deve contenere almeno un numero.");
-
-        }
-        if (!password.matches(".*[A-Z].*")) {
-            return ait.showAlertErroreTEST("Password non valida", "La password deve contenere almeno una lettera maiuscola.");
-
-        }
-        if (!password.matches(".*[a-z].*")) {
-            return ait.showAlertErroreTEST("Password non valida", "La password deve contenere almeno una lettera minuscola.");
-
-        }
-        if (!password.matches(".*[!@#$%^&*(),.?\\\\\":{}|<>].*")) {
-        return ait.showAlertErroreTEST("Password non valida", "La password deve contenere almeno un carattere speciale (!@#$%^&*...).");
-
-        }
-
-        return "Password valida";
+    @Test
+    public void emailValida_DeveDareTrueSeLEmailHaIlGiustoPattern() {
+        String emailValida = "emailvalida@libero.it";
+        assertTrue(validazioneInput.validaEmailConAlert(emailValida));
     }
 
     @Test
-    void SeEmailNonHaIlGiustoPatternDeveDareUnAlert() {
-        String email = "emailnonvalida";
-        assertFalse(emailValidaTEST(email));
+    void usernameValido_DeveDareFalseSeLUsernameNonHaIlGiustoPattern() {
+        String usernameNonValido = "ç*°*°ç*";
+        assertFalse(validazioneInput.validaUsername(usernameNonValido));
+    }
+    @Test
+    void usernameValido_DeveDareTrueSeLUsernameHaIlGiustoPattern() {
+        String usernameValido = "usernameTest";
+        assertTrue(validazioneInput.validaUsername(usernameValido));
     }
 
     @Test
-    void SeLUserNameNonHaIlGiustoPatternDeveDareUnAlert() {
-        String email = "usernameNonValido";
-        assertFalse(emailValidaTEST(email));
-    }
-
-    @Test
-    void SeLaPasswordRisultaVuotaDeveDareUnAlert() {
+    void passwordValida_SeLaPasswordRisultaVuotaDeveDareFalse() {
         String passVuota = "";
-
-        assertEquals("Password non valida La password non può essere vuota.",passwordValidaTEST(passVuota));
+        assertEquals("Password vuota",validazioneInput.validaPassword(passVuota));
     }
 
     @Test
-    void SeLaPasswordRisultaSenzaAlmenoUnNumeroDeveDareUnAlert() {
-        String passSenzaNumeri = "passwordsenzaNumeri";
-
-        assertEquals("Password non valida La password deve contenere almeno un numero.",passwordValidaTEST(passSenzaNumeri));
+    void passwordValida_SeLaPasswordRisultaSenzaAlmenoUnNumeroDeveDarefalse() {
+        String passSenzaNumeri = "passwordsenzaNumeri@";
+        assertEquals("Password senza numeri",validazioneInput.validaPassword(passSenzaNumeri));
     }
 
 
     @Test
-    void SeLaPasswordRisultaAvereMenoDi8CaratteriDeveDareUnAlert() {
+    void passwordValida_SeLaPasswordRisultaAvereMenoDi8CaratteriDeveDareFalse() {
         String passBreve = "pass0@";
-
-        assertEquals("Password non valida La password deve contenere almeno 8 caratteri.",passwordValidaTEST(passBreve));
+        assertEquals("Password corta",validazioneInput.validaPassword(passBreve));
     }
     @Test
-    void SeLaPasswordRisultaContenereSpaziDeveDareUnAlert() {
+    void passwordValida_SeLaPasswordRisultaContenereSpaziDeveDareFalse() {
         String passConSpazi = "password con spazi 0@";
-
-        assertEquals("Password non valida La password non può contenere spazi.",passwordValidaTEST(passConSpazi));
+        assertEquals("Password con spazi",validazioneInput.validaPassword(passConSpazi));
     }
     @Test
-    void SeLaPasswordRisultaSenzaCaratteriMaiuscoliDeveDareUnAlert() {
+    void passwordValida_SeLaPasswordRisultaSenzaCaratteriMaiuscoliDeveDareFalse() {
         String passSenzaLettereMaiuscole = "passwordsenzaletteremaiuscole0@";
-
-        assertEquals("Password non valida La password deve contenere almeno una lettera maiuscola.",passwordValidaTEST(passSenzaLettereMaiuscole));
+        assertEquals("Password senza maiuscole",validazioneInput.validaPassword(passSenzaLettereMaiuscole));
     }
     @Test
-    void SeLaPasswordRisultaSenzaCaratteriMinuscoliDeveDareUnAlert() {
+    void passwordValida_SeLaPasswordRisultaSenzaCaratteriMinuscoliDeveDareUnFalse() {
         String passSenzaMinuscole = "PASSWORDSENZAMINUSCOLE0@";
-
-        assertEquals("Password non valida La password deve contenere almeno una lettera minuscola.",passwordValidaTEST(passSenzaMinuscole));
+        assertEquals("Password senza minuscole",validazioneInput.validaPassword(passSenzaMinuscole));
     }
     @Test
-    void SeLaPasswordRisultaSenzaCaratteriSpecialiDeveDareUnAlert() {
+    void passwordValida_eLaPasswordRisultaSenzaCaratteriSpecialiDeveDareFalse() {
         String passSenzaCaratteriSpeciali = "passwordsenzaCaratteriSpeciali0";
-
-        assertEquals("Password non valida La password deve contenere almeno un carattere speciale (!@#$%^&*...).",passwordValidaTEST(passSenzaCaratteriSpeciali));
+        assertEquals("Password senza caratteri speciali",validazioneInput.validaPassword(passSenzaCaratteriSpeciali));
     }
     @Test
-    void SeLaPasswordRisultaAvereIlGiustoPatterNonDeveDareAlert() {
+    void passwordValida_SeLaPasswordRisultaAvereIlGiustoPatterDeveDareTrue() {
         String passCorretta = "PasswordCorretta0@";
-        assertEquals("Password valida",passwordValidaTEST(passCorretta));
+        assertEquals("Password valida",validazioneInput.validaPassword(passCorretta));
     }
+
+
 
 }

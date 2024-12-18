@@ -66,6 +66,7 @@ public class LoginController {
         if (gestioneUtente.registraUtente(name,email,password)) {
             closeCurrentWindow();
             riapriFinestraLogin();
+
         }
         }
 
