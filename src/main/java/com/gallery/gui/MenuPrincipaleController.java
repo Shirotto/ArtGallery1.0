@@ -1,20 +1,22 @@
 package com.gallery.gui;
 
+import com.entity.User;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class MenuPrincipaleController {
+
+    private AlertInfo alert = new AlertInfo();
+
+
     private ProfiloApplication profilo = new ProfiloApplication();
+
     @FXML
     private Text welcomeText;
-    @FXML
-    private void goToProfile() {
-       profilo.openProfile();
-        Stage stage = (Stage) welcomeText.getScene().getWindow();
-        stage.close();
-    }
+
+    private User currentUser;
+
 
     @FXML
     private void exitApp() {
@@ -22,13 +24,21 @@ public class MenuPrincipaleController {
         Stage stage = (Stage) welcomeText.getScene().getWindow();
         stage.close();
     }
+    @FXML
+    private void goToProfile() {
+        if (currentUser != null) {
+            profilo.openProfile(currentUser); // apro il profilo con l'utente corrente
+            Stage stage = (Stage) welcomeText.getScene().getWindow();
+            stage.close();
+        } else {
 
-    // Metodo per mostrare alert
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+            alert.showAlertErrore("Errore", "Nessun utente loggato.");
+        }
     }
+
+    public void setUser(User user) {
+        this.currentUser = user;
+    }
+
+
 }

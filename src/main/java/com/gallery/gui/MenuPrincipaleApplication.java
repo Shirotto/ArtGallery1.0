@@ -1,15 +1,16 @@
 package com.gallery.gui;
 
-import javafx.application.Application;
+import com.entity.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class MenuPrincipaleApplication {
+
+
+    private AlertInfo alert = new AlertInfo();
 
     // Metodo per aprire il menu principale in una nuova finestra
     public void openMainMenu() {
@@ -23,16 +24,8 @@ public class MenuPrincipaleApplication {
             menuStage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert("Errore", "Impossibile aprire il menu principale.");
+            alert.showAlertErrore("Errore", "Impossibile aprire il menu principale.");
         }
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
 }
