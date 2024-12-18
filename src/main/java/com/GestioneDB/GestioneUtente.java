@@ -11,15 +11,15 @@ import org.hibernate.cfg.Configuration;
 public class GestioneUtente {
 
     public SessionFactory sessionFactory;
-    final AlertInfo alertInfo = new AlertInfo();
-    final ValidazioneInput validazioneInput = new ValidazioneInput();
+    AlertInfo alertInfo = new AlertInfo();
+    ValidazioneInput validazioneInput = new ValidazioneInput();
 
-    public GestioneUtente() {
+    public GestioneUtente(String hibernate) {
         // Crea la SessionFactory utilizzando hibernate.cfg.xml
-        this.sessionFactory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class).buildSessionFactory();
+        this.sessionFactory = new Configuration().configure(hibernate).addAnnotatedClass(User.class).buildSessionFactory();
     }
     //Verifica e registra se l'utente esiste gia nel db (Fase Registazione)
-    public boolean RegistraUtente(String username, String email, String password) {
+    public boolean registraUtente(String username, String email, String password) {
         if (verificaSeUnUtenteEsisteByUsername(username)){
             alertInfo.showAlertErrore("utente già registrato","Esiste già un utente con questo username");
             return false;
@@ -71,10 +71,10 @@ public class GestioneUtente {
         return null;
     }
 
-    private boolean verificaSeUnUtenteEsiste(String username,String emailUtente) {
+    public boolean verificaSeUnUtenteEsiste(String username,String emailUtente) {
         return verificaSeUnUtenteEsisteByEmail(emailUtente) || verificaSeUnUtenteEsisteByUsername(username);
     }
-    private boolean verificaSeUnUtenteEsisteByEmail(String emailUtente) {
+    public boolean verificaSeUnUtenteEsisteByEmail(String emailUtente) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
@@ -87,7 +87,7 @@ public class GestioneUtente {
         session.close();
         return utente != null;
     }
-    private boolean verificaSeUnUtenteEsisteByUsername(String username) {
+    public boolean verificaSeUnUtenteEsisteByUsername(String username) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 

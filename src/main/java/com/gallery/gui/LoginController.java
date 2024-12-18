@@ -1,6 +1,5 @@
 package com.gallery.gui;
 import com.GestioneDB.GestioneUtente;
-import com.Service.LogicaLogReg;
 import com.entity.User;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
@@ -23,7 +22,7 @@ public class LoginController {
 
     final AlertInfo alert = new AlertInfo();
 
-    GestioneUtente gestioneUtente = new GestioneUtente();
+    GestioneUtente gestioneUtente = new GestioneUtente("hibernate.cfg.xml");
 
     private User currentUser;
 
@@ -64,7 +63,7 @@ public class LoginController {
 
     // Gestione evento registrazione
     public void handleSignUpButtonClick(String name, String email, String password) {
-        if (gestioneUtente.RegistraUtente(name,email,password)) {
+        if (gestioneUtente.registraUtente(name,email,password)) {
             closeCurrentWindow();
             riapriFinestraLogin();
         }
