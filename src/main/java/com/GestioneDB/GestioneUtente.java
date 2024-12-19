@@ -1,122 +1,107 @@
 package com.GestioneDB;
 import com.entity.User;
+import com.gallery.gui.AlertInfo;
+import com.gallery.gui.ValidazioneInput;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
+
 public class GestioneUtente {
 
-    private SessionFactory sessionFactory;
+    public SessionFactory sessionFactory;
+    AlertInfo alertInfo = new AlertInfo();
+    ValidazioneInput validazioneInput = new ValidazioneInput();
 
-    public GestioneUtente() {
+    public GestioneUtente(String hibernate) {
         // Crea la SessionFactory utilizzando hibernate.cfg.xml
-        this.sessionFactory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(User.class).buildSessionFactory();
+        this.sessionFactory = new Configuration().configure(hibernate).addAnnotatedClass(User.class).buildSessionFactory();
     }
     //Verifica e registra se l'utente esiste gia nel db (Fase Registazione)
-    public boolean verificaERegistraUtente(String username, String email, String password) {
-        Session session = sessionFactory.openSession();  // creazione sessione (Permette di interagire con il db)
-        Transaction transaction = null;
+    public boolean registraUtente(String username, String email, String password) {
 
-        try {
-            transaction = session.beginTransaction();  // inizio transazione (operazione atomica)
-
-            //Crezione HQL che verifica se la mail esiste nel db
-            String hql = "FROM User u WHERE u.email = :email";
-            User utenteEsistente = session.createQuery(hql, User.class)
-                    .setParameter("email", email)
-                    .uniqueResult();
-
-            if (utenteEsistente != null) {
-                System.out.println("Utente già registrato con questa email.");
-                return false;
-
-            }
-
-            // Crea utente e salva sessione
-            User nuovoUtente = new User(username, email, password);
-            session.save(nuovoUtente);
-
-            //Termine transazione
-            transaction.commit();
-            System.out.println("Utente registrato con successo!");
-            return true;
-
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
+        if (verificaSeUnUtenteEsisteByUsername(username)){
+            alertInfo.showAlertErrore("utente già registrato","Esiste già un utente con questo username");
             return false;
-
-        } finally {
-            session.close();
         }
+
+        if (verificaSeUnUtenteEsisteByEmail(email)){
+            alertInfo.showAlertErrore("utente già registrato","Esiste già un utente con questa email");
+            return false;
+        }
+        if (validazioneInput.validaInput(username,email,password)) {
+            Session session = sessionFactory.openSession();  // creazione sessione (Permette di interagire con il db)
+            Transaction transaction = session.beginTransaction();
+            User nuovoUtente = new User(username, email, password);
+            session.persist(nuovoUtente);
+
+            transaction.commit();
+            session.close();
+            alertInfo.showAlertInfo( "utente registrato con successo","BENVENUTO "+ username);
+            return true;
+        }
+        validazioneInput.validaInputConAlert(username,email,password);
+        //alertInfo.showAlertErrore("Errore", "Errore durante la registrazione. Controlla i dati.");
+        return false;
+
 
     }
 
 
     //Metodo che scorre nel db e verifica se ci sono email e pass ("FaseLogin")
     public boolean verificaCredenziali(String email, String password) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = null;
+        if(!verificaSeUnUtenteEsisteByEmail(email)) return false;
+        User utente = getUserByEmail(email);
+        return utente.getPassword().equals(password);
 
-        try {
-            transaction = session.beginTransaction();
 
-            // Verifica se l'utente esiste nel database con l'email fornita
+    }
+    // Metodo per ottenere l'utente tramite email (Per il profilo utente)
+    public User getUserByEmail(String email) {
+        if (verificaSeUnUtenteEsisteByEmail(email)) {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            // recupera l'utente dal DB
             String hql = "FROM User u WHERE u.email = :email";
             User utente = session.createQuery(hql, User.class)
                     .setParameter("email", email)
                     .uniqueResult();
-
-            if (utente == null) {
-                // Utente non trovato
-                return false;
-            }
-            // Verifica se la password corrisponde
-            if (utente.getPassword().equals(password)) {
-                return true;
-            } else {
-                // Password errata
-                return false;
-            }
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-            return false;
-
-        } finally {
-            session.close();
-        }
-    }
-    // Metodo per ottenere l'utente tramite email (Per il profilo utente)
-    public User getUserByEmail(String email) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = null;
-        User utente = null;
-        try {
-            transaction = session.beginTransaction();
-
-            String hql = "FROM User u WHERE u.email = :email";
-            utente = session.createQuery(hql, User.class)
-                    .setParameter("email", email)
-                    .uniqueResult();
-
             transaction.commit();
-            System.out.println(utente.getUsername());
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        } finally {
             session.close();
+            return utente;
         }
-        return utente;
+        return null;
+    }
 
+    public boolean verificaSeUnUtenteEsiste(String username,String emailUtente) {
+        return verificaSeUnUtenteEsisteByEmail(emailUtente) || verificaSeUnUtenteEsisteByUsername(username);
+    }
+    public boolean verificaSeUnUtenteEsisteByEmail(String emailUtente) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        // Verifica se l'utente esiste nel database con l'email fornita
+        String hql = "FROM User u WHERE u.email = :email";
+        User utente = session.createQuery(hql, User.class)
+                .setParameter("email", emailUtente)
+                .uniqueResult();
+        transaction.commit();
+        session.close();
+        return utente != null;
+    }
+    public boolean verificaSeUnUtenteEsisteByUsername(String username) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        // Verifica se l'utente esiste nel database con l'email fornita
+        String hql = "FROM User u WHERE u.username = :username";
+        User utente = session.createQuery(hql, User.class)
+                .setParameter("username", username)
+                .uniqueResult();
+        transaction.commit();
+        session.close();
+        return utente != null;
     }
 
 

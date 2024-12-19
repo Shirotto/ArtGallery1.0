@@ -1,6 +1,5 @@
 package com.gallery.gui;
 import com.GestioneDB.GestioneUtente;
-import com.Service.LogicaLogReg;
 import com.entity.User;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
@@ -21,11 +20,9 @@ public class LoginController {
     @FXML
     private StackPane stackPane;
 
-    private AlertInfo alert = new AlertInfo();
+    final AlertInfo alert = new AlertInfo();
 
-    private LogicaLogReg logReg = new LogicaLogReg();
-
-    GestioneUtente gestioneUtente = new GestioneUtente();
+    GestioneUtente gestioneUtente = new GestioneUtente("hibernate.cfg.xml");
 
     private User currentUser;
 
@@ -54,13 +51,9 @@ public class LoginController {
     // Gestione evento di login
     public void handleLoginButtonClick(String email, String password) {
 
-        boolean loginsuccesso = gestioneUtente.verificaCredenziali(email, password);
-        //da notare: qui  loginsuccesso "chiama esclusivamente il db" , non fa il check sulla sintassi
-        if (loginsuccesso) {
-
-            //recupero dati utente dopo login(da Gestione Db)
+        if (gestioneUtente.verificaCredenziali(email, password)) {
+            //recupero dati utente dopo login
             currentUser = gestioneUtente.getUserByEmail(email);
-
             apriMenuPrincipale();
         } else {
             alert.showAlertErrore("Errore", "Email o password non valide.");
@@ -70,20 +63,12 @@ public class LoginController {
 
     // Gestione evento registrazione
     public void handleSignUpButtonClick(String name, String email, String password) {
-
-        boolean registrazioneSuccesso = logReg.verificaSintassiReg(name, email, password);
-
-        if (registrazioneSuccesso) {
-            // Se la registrazione è avvenuta con successo
-            alert.showAlertInfo("Registrazione riuscita", "Clicca 'Ok' per tornare alla schermata di login");
+        if (gestioneUtente.registraUtente(name,email,password)) {
             closeCurrentWindow();
             riapriFinestraLogin();
-        } else {
-            //altrimenti
-            alert.showAlertErrore("Errore", "Errore durante la registrazione. Controlla i dati.");
-        }
-    }
 
+        }
+        }
 
     // Metodo per chiudere la finestra attuale
     private void closeCurrentWindow() {

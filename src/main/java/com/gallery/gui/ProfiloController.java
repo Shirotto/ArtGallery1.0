@@ -5,7 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -61,7 +60,7 @@ public class ProfiloController {
         if (currentUser != null) {
             usernameLabel.setText("Username: " + currentUser.getUsername());
             emailLabel.setText("email: " + currentUser.getEmail());
-            roleLabel.setText("Role: " + "Strunz");
+            roleLabel.setText("Role: " + "Utente");
         }
     }
 
