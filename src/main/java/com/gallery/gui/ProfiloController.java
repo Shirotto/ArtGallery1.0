@@ -35,17 +35,11 @@ public class ProfiloController {
         alert.showAlertInfo("Logout", "Logout avvenuto con successo");
 
         try {
-            // Carica la schermata di login
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login/login-view.fxml"));
-            Scene loginScene = new Scene(fxmlLoader.load());
-
-            // Crea un nuovo stage per la schermata di login
             Stage loginStage = new Stage();
-            loginStage.setTitle("Login Screen");
-            loginStage.setScene(loginScene);
-            loginStage.setWidth(570);
-            loginStage.setHeight(580);
-            loginStage.show();
+            stage.setWidth(570);
+            stage.setHeight(580);
+            stage.setResizable(false);
+            LoginApplication.showLogin(loginStage);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Errore durante il caricamento della schermata di login.");

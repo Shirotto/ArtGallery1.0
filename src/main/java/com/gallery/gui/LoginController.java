@@ -78,24 +78,22 @@ public class LoginController {
 
     private void apriMenuPrincipale() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("menuPrincipale/menu-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/gallery/gui/menuprincipale/menu-view.fxml"));
+            Scene scene = new Scene(loader.load(), 800, 600);
             Stage menuStage = new Stage();
-            menuStage.setScene(new Scene(loader.load()));
-
-            //Ottieni il controller del menu principale
+            menuStage.setScene(scene);
             MenuPrincipaleController menuController = loader.getController();
-
-            //Passo l'utente corrente al controller
             menuController.setUser(currentUser);
-
             menuStage.setTitle("Menu Principale");
+            menuStage.setResizable(false);
             menuStage.show();
-
-            // Chiudi la finestra di login
             closeCurrentWindow();
+
         } catch (IOException e) {
             e.printStackTrace();
+            throw new RuntimeException("Errore durante il caricamento di menu-view.fxml", e);
         }
+
     }
 
     // Riapre la finestra login dopo essersi registrati
@@ -113,9 +111,7 @@ public class LoginController {
         } catch (IOException e) {
             e.printStackTrace();
 
-
         }
-
     }
 }
 
