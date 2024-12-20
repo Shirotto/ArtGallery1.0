@@ -31,20 +31,13 @@ public class ProfiloController {
     public void initialize() {
         WebEngine webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
-
         String htmlFilePath = getClass().getResource("/com/gallery/gui/profilo/profilo.html").toExternalForm();
         webEngine.load(htmlFilePath);
-
-        // Listener per la fine del caricamento
         webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
                 System.out.println("Profilo HTML caricato con successo");
-
-                // Espone il controller al JavaScript
                 JSObject window = (JSObject) webEngine.executeScript("window");
                 window.setMember("javafxController", this);
-
-                // Aggiorna i dati del profilo solo dopo che la pagina è caricata
                 if (currentUser != null) {
                     updateHTML(currentUser);
                 }
@@ -55,19 +48,15 @@ public class ProfiloController {
     // Metodo per impostare i dati dell'utente
     public void setUserData(User user) {
         this.currentUser = user;
-
-        // Aggiorna i dati nella WebView e nelle etichette JavaFX
         if (webView.getEngine().getLoadWorker().getState() == Worker.State.SUCCEEDED) {
             updateHTML(user);
         }
-
         updateJavaFXLabels(user);
     }
 
     // Metodo per aggiornare i dati HTML
     private void updateHTML(User user) {
         WebEngine webEngine = webView.getEngine();
-
         try {
             webEngine.executeScript("document.getElementById('username').innerText = '" + user.getUsername() + "';");
             webEngine.executeScript("document.getElementById('email').innerText = '" + user.getEmail() + "';");
@@ -86,25 +75,31 @@ public class ProfiloController {
 
     // Metodo per aggiornare campi specifici nel profilo
     public void updateProfileData(String field, String value) {
+        switch (field.toLowerCase()) {
+            case "username":
+                currentUser.setUsername(value);
+                break;
+            case "email":
+                currentUser.setEmail(value);
+                break;
+            case "password":
+                currentUser.setPassword(value);
+                break;
+            default:
+                System.err.println("Campo non riconosciuto: " + field);
+        }
         WebEngine webEngine = webView.getEngine();
-
         try {
-            switch (field.toLowerCase()) {
-                case "username":
-                    webEngine.executeScript("document.getElementById('username').innerText = '" + value + "';");
-                    break;
-                case "email":
-                    webEngine.executeScript("document.getElementById('email').innerText = '" + value + "';");
-                    break;
-                case "role":
-                    webEngine.executeScript("document.getElementById('role').innerText = '" + value + "';");
-                    break;
-                default:
-                    System.err.println("Campo non riconosciuto: " + field);
-            }
+            webEngine.executeScript("document.getElementById('" + field.toLowerCase() + "').innerText = '" + value + "';");
         } catch (Exception e) {
             System.err.println("Errore durante l'aggiornamento dei dati nella WebView: " + e.getMessage());
         }
+        saveUserDataToDatabase(currentUser);
+    }
+
+    private void saveUserDataToDatabase(User user) {
+        // Qui implementare logica per cambio dati nel database
+        System.out.println("Dati utente aggiornati nel database: " + user);
     }
 
     @FXML
@@ -113,10 +108,8 @@ public class ProfiloController {
             Stage stage = (Stage) webView.getScene().getWindow();
             stage.close();
             alert.showAlertInfo("Logout", "Logout avvenuto con successo");
-
             Stage loginStage = new Stage();
             LoginApplication.showLogin(loginStage);
-
             loginStage.setWidth(570);
             loginStage.setHeight(580);
             loginStage.setResizable(false);
