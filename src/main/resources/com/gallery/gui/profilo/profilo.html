@@ -7,8 +7,9 @@
   <style>
     :root {
       --main-bg: #f0f0f0; /* Sfondo principale (grigio chiaro) */
+      --sidebar-bg: #e0e0e0; /* Sfondo della sidebar (grigio più scuro) */
       --secondary-bg: #fff; /* Sfondo secondario (bianco) */
-      --highlight-color: #666; /* Colore di evidenza (grigio) */
+      --highlight-color: #666; /* Colore di evidenza (grigio scuro) */
       --font-color: #323232; /* Colore del testo (grigio scuro) */
       --input-bg: #fff; /* Sfondo degli input (bianco) */
       --button-bg: #666; /* Sfondo dei pulsanti (grigio) */
@@ -33,14 +34,16 @@
       border-radius: 15px;
       overflow: hidden;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombra leggera */
+      border: 2px solid var(--highlight-color); /* Bordo stile seconda pagina */
     }
 
     .sidebar {
-      background-color: var(--secondary-bg); /* Bianco */
+      background-color: var(--sidebar-bg); /* Grigio più scuro */
       width: 250px;
       padding: 20px;
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 20px;
     }
 
@@ -48,7 +51,7 @@
       width: 100px;
       height: 100px;
       border-radius: 50%;
-      border: 3px solid var(--highlight-color); /* Grigio */
+      border: 2px solid var(--highlight-color); /* Grigio */
     }
 
     .sidebar h2 {
@@ -69,16 +72,17 @@
       font-size: 16px;
       cursor: pointer;
       color: var(--font-color); /* Grigio scuro */
+      text-align: center;
     }
 
     .menu li:hover {
-      background-color: var(--highlight-color); /* Grigio chiaro */
+      background-color: var(--highlight-color); /* Grigio scuro */
       color: var(--secondary-bg); /* Bianco */
       border-radius: 5px;
     }
 
     .menu li.active {
-      background-color: var(--highlight-color); /* Grigio chiaro */
+      background-color: var(--highlight-color); /* Grigio scuro */
       color: var(--secondary-bg); /* Bianco */
       border-radius: 5px;
     }
@@ -100,7 +104,7 @@
       margin-bottom: 10px;
       padding: 10px;
       background-color: var(--input-bg); /* Bianco */
-      border: 1px solid var(--highlight-color); /* Grigio */
+      border: 2px solid var(--highlight-color); /* Grigio scuro, stile seconda pagina */
       border-radius: 5px;
       color: var(--font-color); /* Grigio scuro */
     }
@@ -109,6 +113,9 @@
       color: var(--highlight-color); /* Grigio */
     }
 
+    .hidden {
+      display: none;
+    }
   </style>
   <script>
     function logout() {
@@ -122,28 +129,58 @@
         window.javafxController.exitApp();
       }
     }
+
+    function showSection(sectionId) {
+      // Nascondi tutte le sezioni
+      const sections = document.querySelectorAll('.content > div');
+      sections.forEach(section => section.classList.add('hidden'));
+
+      // Mostra la sezione selezionata
+      document.getElementById(sectionId).classList.remove('hidden');
+
+      // Rimuovi la classe 'active' da tutte le voci del menu
+      const menuItems = document.querySelectorAll('.menu li');
+      menuItems.forEach(item => item.classList.remove('active'));
+
+      // Aggiungi la classe 'active' solo alla voce cliccata
+      const clickedItem = document.querySelector(`.menu li[onclick="showSection('${sectionId}')"]`);
+      if (clickedItem) {
+        clickedItem.classList.add('active');
+      }
+    }
   </script>
 </head>
 <body>
 <div class="container">
   <div class="sidebar">
     <img src="https://via.placeholder.com/100" alt="Profile Picture">
-    <h2 id="name">Nome Utente</h2>
+    <h2 id="name">Benvenuto!</h2>
     <ul class="menu">
-      <li class="active">Profilo</li>
-      <li>Notifiche</li>
-      <li>Impostazioni</li>
+      <li class="active" onclick="showSection('profile-section')">Profilo</li>
+      <li onclick="showSection('notifications-section')">Notifiche</li>
+      <li onclick="showSection('settings-section')">Impostazioni</li>
       <li onclick="logout()">Logout</li>
       <li onclick="exitApp()">Esci</li>
     </ul>
   </div>
   <div class="content">
-    <h1>Informazioni Profilo</h1>
-    <div class="info"><strong>Username:</strong> <span id="username"></span></div>
-    <div class="info"><strong>Email:</strong> <span id="email"></span></div>
-    <div class="info"><strong>Data di nascita:</strong> <span id="dob"></span></div>
-    <div class="info"><strong>Ruolo:</strong> <span id="role"></span></div>
+    <div id="profile-section">
+      <h1>Informazioni Profilo</h1>
+      <div class="info"><strong>Username:</strong> <span id="username"></span></div>
+      <div class="info"><strong>Email:</strong> <span id="email"></span></div>
+      <div class="info"><strong>Data di nascita:</strong> <span id="dob"></span></div>
+      <div class="info"><strong>Ruolo:</strong> <span id="role"></span></div>
+    </div>
 
+    <div id="notifications-section" class="hidden">
+      <h1>Notifiche</h1>
+      <div class="info">Non hai nuove notifiche.</div>
+    </div>
+
+    <div id="settings-section" class="hidden">
+      <h1>Impostazioni</h1>
+      <div class="info">Gestisci le tue impostazioni qui.</div>
+    </div>
   </div>
 </div>
 </body>
