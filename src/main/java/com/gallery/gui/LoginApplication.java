@@ -18,7 +18,7 @@ public class LoginApplication extends Application {
             Scene scene = new Scene(fxmlLoader.load());
             scene.setFill(javafx.scene.paint.Color.WHITE);
 
-            stage.setTitle("Login Screen");
+            stage.setTitle("");
             stage.setScene(scene);
             stage.setWidth(570);
             stage.setHeight(580);
