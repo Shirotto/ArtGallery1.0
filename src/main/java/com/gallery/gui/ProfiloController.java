@@ -3,11 +3,12 @@ package com.gallery.gui;
 import com.entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+
+import java.net.URL;
 
 public class ProfiloController {
 
@@ -24,6 +25,9 @@ public class ProfiloController {
 
     @FXML
     private Text welcomeText;
+
+    @FXML
+    private WebView webView;
 
     private User currentUser;
 
@@ -47,7 +51,7 @@ public class ProfiloController {
     }
 
     // Metodo per impostare i dati dell'utente nel profilo
-    public void setUserData(User user){
+    public void setUserData(User user) {
         this.currentUser = user;
 
         // Aggiorna le etichette con i dati dell'utente
@@ -65,6 +69,17 @@ public class ProfiloController {
         stage.close();
     }
 
+    @FXML
+    private void initialize() {
+        System.out.println("Inizializzazione WebView...");
+        URL resourceUrl = getClass().getResource("/com/gallery/gui/profilo/profilo.html");
+        if (resourceUrl == null) {
+            System.err.println("File HTML non trovato: /com/gallery/gui/profilo/profilo.html");
+        } else {
+            String url = resourceUrl.toExternalForm();
+            System.out.println("Caricamento HTML da: " + url);
+            webView.getEngine().load(url);
+        }
+    }
+
 }
-
-
