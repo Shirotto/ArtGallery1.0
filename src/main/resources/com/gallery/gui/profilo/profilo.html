@@ -1,26 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile Settings</title>
+  <title>Profilo Utente</title>
   <style>
     :root {
-      --main-bg: #1b1b3a;
-      --secondary-bg: #29294d;
-      --highlight-color: #666;
-      --font-color: #fff;
-      --input-bg: #1b1b3a;
-      --button-bg: #666;
-      --button-hover: #323232;
+      --main-bg: #f0f0f0; /* Sfondo principale (grigio chiaro) */
+      --secondary-bg: #fff; /* Sfondo secondario (bianco) */
+      --highlight-color: #666; /* Colore di evidenza (grigio) */
+      --font-color: #323232; /* Colore del testo (grigio scuro) */
+      --input-bg: #fff; /* Sfondo degli input (bianco) */
+      --button-bg: #666; /* Sfondo dei pulsanti (grigio) */
     }
 
     body {
       margin: 0;
       padding: 0;
       font-family: Arial, sans-serif;
-      background-color: var(--main-bg);
-      color: var(--font-color);
+      background-color: var(--main-bg); /* Grigio chiaro */
+      color: var(--font-color); /* Grigio scuro */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -30,19 +29,18 @@
     .container {
       display: flex;
       width: 900px;
-      background-color: var(--secondary-bg);
+      background-color: var(--secondary-bg); /* Bianco */
       border-radius: 15px;
       overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombra leggera */
     }
 
     .sidebar {
-      background-color: var(--main-bg);
+      background-color: var(--secondary-bg); /* Bianco */
       width: 250px;
       padding: 20px;
       display: flex;
       flex-direction: column;
-      align-items: center;
       gap: 20px;
     }
 
@@ -50,25 +48,13 @@
       width: 100px;
       height: 100px;
       border-radius: 50%;
-      border: 3px solid var(--highlight-color);
+      border: 3px solid var(--highlight-color); /* Grigio */
     }
 
     .sidebar h2 {
       font-size: 18px;
       margin: 10px 0;
-    }
-
-    .sidebar button {
-      background-color: var(--button-bg);
-      color: var(--font-color);
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .sidebar button:hover {
-      background-color: var(--button-hover);
+      color: var(--font-color); /* Grigio scuro */
     }
 
     .menu {
@@ -82,126 +68,82 @@
       padding: 15px 20px;
       font-size: 16px;
       cursor: pointer;
-      color: var(--font-color);
-      display: flex;
-      align-items: center;
+      color: var(--font-color); /* Grigio scuro */
     }
 
     .menu li:hover {
-      background-color: var(--highlight-color);
+      background-color: var(--highlight-color); /* Grigio chiaro */
+      color: var(--secondary-bg); /* Bianco */
       border-radius: 5px;
     }
 
     .menu li.active {
-      background-color: var(--highlight-color);
+      background-color: var(--highlight-color); /* Grigio chiaro */
+      color: var(--secondary-bg); /* Bianco */
       border-radius: 5px;
     }
 
     .content {
       flex: 1;
       padding: 40px;
+      background-color: var(--secondary-bg); /* Bianco */
     }
 
     .content h1 {
       font-size: 24px;
       margin-bottom: 20px;
+      color: var(--font-color); /* Grigio scuro */
     }
 
-    .section {
-      margin-bottom: 20px;
-    }
-
-    .section h2 {
-      font-size: 18px;
+    .info {
+      font-size: 14px;
       margin-bottom: 10px;
-    }
-
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .input-group label {
-      font-size: 14px;
-    }
-
-    .input-group input {
       padding: 10px;
-      font-size: 14px;
-      background-color: var(--input-bg);
-      color: var(--font-color);
-      border: 1px solid var(--highlight-color);
+      background-color: var(--input-bg); /* Bianco */
+      border: 1px solid var(--highlight-color); /* Grigio */
       border-radius: 5px;
+      color: var(--font-color); /* Grigio scuro */
     }
 
-    .input-group input:focus {
-      outline: none;
-      border-color: var(--button-bg);
+    .info strong {
+      color: var(--highlight-color); /* Grigio */
     }
 
-    .save-btn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 14px;
-      background-color: var(--button-bg);
-      color: var(--font-color);
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .save-btn:hover {
-      background-color: var(--button-hover);
-    }
   </style>
+  <script>
+    function logout() {
+      if (window.javafxController) {
+        window.javafxController.logout();
+      }
+    }
+
+    function exitApp() {
+      if (window.javafxController) {
+        window.javafxController.exitApp();
+      }
+    }
+  </script>
 </head>
 <body>
 <div class="container">
   <div class="sidebar">
     <img src="https://via.placeholder.com/100" alt="Profile Picture">
-    <h2>Mahmoud Hamwi</h2>
-    <button>Edit Profile</button>
+    <h2 id="name">Nome Utente</h2>
     <ul class="menu">
-      <li class="active">Profile</li>
-      <li>Notifications</li>
-      <li>Password</li>
-      <li>Settings</li>
-      <li>Privacy Policy</li>
+      <li class="active">Profilo</li>
+      <li>Notifiche</li>
+      <li>Impostazioni</li>
+      <li onclick="logout()">Logout</li>
+      <li onclick="exitApp()">Esci</li>
     </ul>
   </div>
   <div class="content">
-    <h1>Profile Settings</h1>
+    <h1>Informazioni Profilo</h1>
+    <div class="info"><strong>Username:</strong> <span id="username"></span></div>
+    <div class="info"><strong>Email:</strong> <span id="email"></span></div>
+    <div class="info"><strong>Data di nascita:</strong> <span id="dob"></span></div>
+    <div class="info"><strong>Ruolo:</strong> <span id="role"></span></div>
 
-    <div class="section">
-      <h2>Profile details</h2>
-      <div class="input-group">
-        <label for="name">Name</label>
-        <input type="text" id="name" value="Mahmoud Hamwi">
-      </div>
-      <div class="input-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" value="@mahmoud_hamwi">
-      </div>
-      <div class="input-group">
-        <label for="dob">Date of Birth</label>
-        <input type="text" id="dob" value="dd/mm/yyyy">
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Contact info</h2>
-      <div class="input-group">
-        <label for="phone">Phone</label>
-        <input type="text" id="phone" value="+1234567890">
-      </div>
-      <div class="input-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" value="mahmoudhamwi90@gmail.com">
-      </div>
-    </div>
-
-    <button class="save-btn">Save Changes</button>
   </div>
 </div>
 </body>

@@ -11,25 +11,23 @@ import java.net.URL;
 
 public class ProfiloApplication {
 
-    private AlertInfo alert = new AlertInfo();
-
+    private final AlertInfo alert = new AlertInfo();
 
     // Metodo per aprire il profilo in una nuova finestra
     public void openProfile(User currentUser) {
         try {
-            // Verifica il percorso del file FXML
+            // Percorso del file FXML
             URL fxmlLocation = getClass().getResource("/com/gallery/gui/profilo/profilo-view.fxml");
             if (fxmlLocation == null) {
                 System.err.println("File FXML non trovato: /com/gallery/gui/profilo/profilo-view.fxml");
                 return;
             }
-            System.out.println("Caricamento FXML da: " + fxmlLocation);
 
             // Carica il file FXML
             FXMLLoader loader = new FXMLLoader(fxmlLocation);
             AnchorPane root = loader.load();
 
-            // Ottieni il controller e imposta i dati dell'utente
+            // Ottieni il controller dal FXML e imposta i dati dell'utente
             ProfiloController profiloController = loader.getController();
             if (profiloController != null) {
                 profiloController.setUserData(currentUser);
@@ -46,6 +44,7 @@ public class ProfiloApplication {
             profileStage.setMinHeight(600);
             profileStage.setResizable(false);
             profileStage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
             alert.showAlertErrore("Errore", "Impossibile aprire il profilo.");

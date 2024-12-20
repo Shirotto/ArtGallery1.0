@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.web.WebView?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx"
             fx:controller="com.gallery.gui.ProfiloController">
-
-    <!-- WebView per visualizzare il file HTML -->
-    <WebView fx:id="webView" layoutX="0.0" layoutY="0.0" prefHeight="400.0" prefWidth="600.0" />
-
-    <!-- Informazioni utente -->
-    <Label fx:id="usernameLabel" layoutX="20.0" layoutY="420.0" text="Username: "
-           style="-fx-font-size: 14px; -fx-text-fill: black;" />
-    <Label fx:id="emailLabel" layoutX="20.0" layoutY="450.0" text="Email: "
-           style="-fx-font-size: 14px; -fx-text-fill: black;" />
-    <Label fx:id="roleLabel" layoutX="20.0" layoutY="480.0" text="Ruolo: "
-           style="-fx-font-size: 14px; -fx-text-fill: black;" />
-
+    <WebView fx:id="webView" layoutX="0.0" layoutY="0.0" prefHeight="600.0" prefWidth="800.0" />
 </AnchorPane>
