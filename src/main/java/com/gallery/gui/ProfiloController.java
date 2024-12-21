@@ -1,6 +1,7 @@
 package com.gallery.gui;
 
 import com.entity.User;
+import com.util.HibernateUtil;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -8,6 +9,10 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import java.sql.PreparedStatement;
 
 public class ProfiloController {
 
@@ -16,6 +21,9 @@ public class ProfiloController {
 
     @FXML
     private Label emailLabel;
+
+    @FXML
+    private Label passwordLabel;
 
     @FXML
     private Label roleLabel;
@@ -52,6 +60,10 @@ public class ProfiloController {
             updateHTML(user);
         }
         updateJavaFXLabels(user);
+        // Pre-popolare i campi nelle impostazioni
+        if (usernameLabel != null) usernameLabel.setText(user.getUsername());
+        if (emailLabel != null) emailLabel.setText(user.getEmail());
+        if (passwordLabel != null) passwordLabel.setText(""); // Lascia vuoto per sicurezza
     }
 
     // Metodo per aggiornare i dati HTML
@@ -73,33 +85,70 @@ public class ProfiloController {
         if (roleLabel != null) roleLabel.setText("Utente");
     }
 
-    // Metodo per aggiornare campi specifici nel profilo
+
+    private boolean alertShown = false; // Variabile per controllare se l'alert è stato mostrato
+
     public void updateProfileData(String field, String value) {
-        switch (field.toLowerCase()) {
-            case "username":
-                currentUser.setUsername(value);
-                break;
-            case "email":
-                currentUser.setEmail(value);
-                break;
-            case "password":
-                currentUser.setPassword(value);
-                break;
-            default:
-                System.err.println("Campo non riconosciuto: " + field);
+
+        // Azzera il flag per ogni invocazione della funzione
+        if (!alertShown) {
+
+            switch (field.toLowerCase()) {
+                case "username":
+                    currentUser.setUsername(value);
+                    break;
+                case "email":
+                    currentUser.setEmail(value);
+                    break;
+                case "password":
+                    currentUser.setPassword(value);
+                    break;
+                default:
+                    System.err.println("Campo non riconosciuto: " + field);
+            }
+
+            WebEngine webEngine = webView.getEngine();
+            try {
+                // Aggiorna la visualizzazione nel WebView
+                webEngine.executeScript("document.getElementById('" + field.toLowerCase() + "').innerText = '" + value + "';");
+            } catch (Exception e) {
+                System.err.println("Errore durante l'aggiornamento dei dati nella WebView: " + e.getMessage());
+            }
+
+
+            saveUserDataToDatabase(currentUser);
+
+
+            alert.showAlertInfo("Successo", "Credenziali Aggiornate correttamente");
+
+
+            alertShown = true;
+        } else {
+            System.out.println("Alert già mostrato, nessuna nuova notifica.");
         }
-        WebEngine webEngine = webView.getEngine();
-        try {
-            webEngine.executeScript("document.getElementById('" + field.toLowerCase() + "').innerText = '" + value + "';");
-        } catch (Exception e) {
-            System.err.println("Errore durante l'aggiornamento dei dati nella WebView: " + e.getMessage());
-        }
-        saveUserDataToDatabase(currentUser);
     }
 
+
     private void saveUserDataToDatabase(User user) {
-        // Qui implementare logica per cambio dati nel database
-        System.out.println("Dati utente aggiornati nel database: " + user);
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+
+            session.merge(user); // `merge`  aggiorna o sincronizza un'entità esistente
+
+            transaction.commit();
+            System.out.println("Dati utente aggiornati nel database: " + user);
+
+        } catch (Exception e) {
+
+            if (transaction != null)
+                transaction.rollback();
+
+
+        }
+
+
     }
 
     @FXML
