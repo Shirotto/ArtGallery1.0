@@ -85,47 +85,55 @@ public class ProfiloController {
         if (roleLabel != null) roleLabel.setText("Utente");
     }
 
+    public void updateProfileData(String usernameValue, String emailValue, String passwordValue) {
+        System.out.println("updateProfileData chiamato con: " + usernameValue + ", " + emailValue + ", " + passwordValue);
 
-    private boolean alertShown = false; // Variabile per controllare se l'alert è stato mostrato
-
-    public void updateProfileData(String field, String value) {
-
-        // Azzera il flag per ogni invocazione della funzione
-        if (!alertShown) {
-
-            switch (field.toLowerCase()) {
-                case "username":
-                    currentUser.setUsername(value);
-                    break;
-                case "email":
-                    currentUser.setEmail(value);
-                    break;
-                case "password":
-                    currentUser.setPassword(value);
-                    break;
-                default:
-                    System.err.println("Campo non riconosciuto: " + field);
-            }
-
-            WebEngine webEngine = webView.getEngine();
-            try {
-                // Aggiorna la visualizzazione nel WebView
-                webEngine.executeScript("document.getElementById('" + field.toLowerCase() + "').innerText = '" + value + "';");
-            } catch (Exception e) {
-                System.err.println("Errore durante l'aggiornamento dei dati nella WebView: " + e.getMessage());
-            }
-
-
-            saveUserDataToDatabase(currentUser);
-
-
-            alert.showAlertInfo("Successo", "Credenziali Aggiornate correttamente");
-
-
-            alertShown = true;
-        } else {
-            System.out.println("Alert già mostrato, nessuna nuova notifica.");
+        // Verifica che tutti i campi siano non nulli e non vuoti
+        if (usernameValue == null || usernameValue.isEmpty() ||
+                emailValue == null || emailValue.isEmpty() ||
+                passwordValue == null || passwordValue.isEmpty()) {
+            alert.showAlertInfo("Errore", "Tutti i campi devono essere compilati.");
+            return; // Se uno dei campi è vuoto, fermati qui
         }
+
+        // Verifica che username e password non siano uguali ai precedenti
+        if (usernameValue.equals(currentUser.getUsername())) {
+            alert.showAlertInfo("Errore", "Il nuovo nome utente deve essere diverso dal precedente.");
+            return; // Impedisce il salvataggio
+        }
+        if (passwordValue.equals(currentUser.getPassword())) {
+            alert.showAlertInfo("Errore", "La nuova password deve essere diversa dalla precedente.");
+            return; // Impedisce il salvataggio
+        }
+
+        // Validazione della password (almeno 8 caratteri, una maiuscola, un numero e un carattere speciale)
+        String passwordRegex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?\":{}|<>]).{8,}$";
+        // Almeno 8 caratteri, una maiuscola, un numero e un carattere speciale
+        if (!passwordValue.matches(passwordRegex)) {
+            alert.showAlertInfo("Errore", "La password deve contenere almeno 8 caratteri, una lettera maiuscola, un numero e un carattere speciale.");
+            return; // Impedisce il salvataggio se la password non è valida
+        }
+
+        // Modifica i dati utente
+        currentUser.setUsername(usernameValue);
+        currentUser.setEmail(emailValue);
+        currentUser.setPassword(passwordValue);
+
+        // Salva i dati nel database prima di aggiornare la WebView
+        saveUserDataToDatabase(currentUser);
+
+        // Aggiorna la visualizzazione nel WebView
+        WebEngine webEngine = webView.getEngine();
+        try {
+            webEngine.executeScript("document.getElementById('username').innerText = '" + usernameValue + "';");
+            webEngine.executeScript("document.getElementById('email').innerText = '" + emailValue + "';");
+            // Non aggiorno la password per sicurezza
+        } catch (Exception e) {
+            System.err.println("Errore durante l'aggiornamento dei dati nella WebView: " + e.getMessage());
+        }
+
+        // Mostra un messaggio di successo
+        alert.showAlertInfo("Successo", "Credenziali aggiornate correttamente");
     }
 
 
