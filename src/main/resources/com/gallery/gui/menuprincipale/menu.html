@@ -7,12 +7,12 @@
   <style>
     :root {
       --main-bg: #f0f0f0;
-      --navbar-bg: #666;
       --sidebar-bg: #e0e0e0;
-      --secondary-bg: #fff;
-      --highlight-color: #fff;
+      --highlight-color: #666;
       --font-color: #323232;
-      --button-bg: #666;
+      --secondary-bg: #fff;
+      --icon-color: #666;
+      --icon-hover-color: #fff;
     }
 
     body {
@@ -22,93 +22,182 @@
       background-color: var(--main-bg);
       color: var(--font-color);
       display: flex;
-      flex-direction: column;
       height: 100vh;
     }
 
-    .navbar {
+    /* Sidebar */
+    #navbar {
+      top: 0;
+      padding: 0;
+      width: 5em;
+      height: 100vh;
+      position: fixed;
+      background-color: var(--sidebar-bg);
+      transition: width 0.3s ease;
+      overflow-y: auto;
+      overflow-x: hidden;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    #navbar:hover {
+      width: 16em;
+    }
+
+    .navbar-logo {
+      height: 5em;
       display: flex;
-      justify-content: center;
       align-items: center;
-      background-color: var(--navbar-bg);
-      color: var(--highlight-color);
-      padding: 10px 20px;
-      gap: 20px;
-    }
-
-    .navbar input {
-      padding: 8px;
-      border: none;
-      border-radius: 5px;
-      width: 300px;
-    }
-
-    .content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
       justify-content: center;
-      align-items: center;
-    }
-
-    .menu-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .menu-buttons button {
-      background-color: var(--button-bg);
-      color: var(--secondary-bg);
-      border: none;
-      padding: 15px 30px;
-      font-size: 18px;
-      cursor: pointer;
-      border-radius: 5px;
-      transition: background-color 0.3s;
-    }
-
-    .menu-buttons button:hover {
       background-color: var(--highlight-color);
+      border-bottom: 1px solid var(--font-color);
+    }
+
+    .navbar-logo svg {
+      width: 2.5em;
+      height: 2.5em;
+      fill: var(--secondary-bg);
+    }
+
+    .navbar-items {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    .navbar-item {
+      padding: 0.5em 0;
+      cursor: pointer;
+    }
+
+    .navbar-item-inner {
+      padding: 1em 0;
+      display: flex;
+      align-items: center;
       color: var(--font-color);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-item-inner:hover {
+      background-color: var(--highlight-color);
+      color: var(--icon-hover-color);
+    }
+
+    .navbar-item-inner-icon-wrapper {
+      width: 3em;
+      display: flex;
+      justify-content: center;
+    }
+
+    .navbar-item-inner-icon-wrapper ion-icon {
+      font-size: 1.5em;
+      color: var(--icon-color);
+      transition: color 0.3s ease;
+    }
+
+    .navbar-item-inner:hover ion-icon {
+      color: var(--icon-hover-color);
+    }
+
+    .link-text {
+      margin-left: 1em;
+      opacity: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      transition: opacity 0.3s ease;
+    }
+
+    #navbar:hover .link-text {
+      opacity: 1;
+    }
+
+    .logout-section {
+      margin-top: auto;
     }
   </style>
+  <!-- Ionicons CDN -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
   <script>
     function goToProfile() {
-      try {
-        if (window.javafxController) {
-          window.javafxController.openProfile();
-        } else {
-          console.error("Controller JavaFX non trovato.");
-        }
-      } catch (err) {
-        console.error("Errore nell'apertura del profilo: ", err);
+      if (window.javafxController) {
+        window.javafxController.openProfile();
       }
     }
 
+    function goToGallery() {
+      alert("Funzione non implementata");
+    }
+
+    function goToAuctions() {
+      alert("Funzione non implementata");
+    }
+
     function exitApp() {
-      try {
-        if (window.javafxController) {
-          window.javafxController.exitApp();
-        } else {
-          console.error("Controller JavaFX non trovato.");
-        }
-      } catch (err) {
-        console.error("Errore durante l'uscita dall'app: ", err);
+      if (window.javafxController) {
+        window.javafxController.exitApp();
       }
     }
   </script>
 </head>
 <body>
-<div class="navbar">
-  <input type="text" placeholder="Cerca...">
-</div>
-<div class="content">
-  <div class="menu-buttons">
-    <button onclick="goToProfile()">Vai al Profilo</button>
-    <button onclick="alert('Funzione non implementata')">Galleria</button>
-    <button onclick="exitApp()">Esci</button>
+<nav id="navbar">
+  <!-- Logo -->
+  <div class="navbar-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1438.88 1819.54">
+      <polygon points="925.79 318.48 830.56 0 183.51 1384.12 510.41 1178.46 925.79 318.48"
+               fill="var(--secondary-bg)"/>
+      <polygon points="1438.88 1663.28 1126.35 948.08 111.98 1586.26 0 1819.54 1020.91 1250.57 1123.78 1471.02 783.64 1663.28 1438.88 1663.28"
+               fill="var(--font-color)"/>
+    </svg>
   </div>
-</div>
+  <ul class="navbar-items">
+    <!-- Cerca -->
+    <li class="navbar-item">
+      <a class="navbar-item-inner">
+        <div class="navbar-item-inner-icon-wrapper">
+          <ion-icon name="search-outline"></ion-icon>
+        </div>
+        <span class="link-text">Cerca</span>
+      </a>
+    </li>
+    <!-- Profilo -->
+    <li class="navbar-item">
+      <a class="navbar-item-inner" onclick="goToProfile()">
+        <div class="navbar-item-inner-icon-wrapper">
+          <ion-icon name="people-outline"></ion-icon>
+        </div>
+        <span class="link-text">Profilo</span>
+      </a>
+    </li>
+    <!-- Opere -->
+    <li class="navbar-item">
+      <a class="navbar-item-inner" onclick="goToGallery()">
+        <div class="navbar-item-inner-icon-wrapper">
+          <ion-icon name="folder-open-outline"></ion-icon>
+        </div>
+        <span class="link-text">Opere</span>
+      </a>
+    </li>
+    <!-- Aste -->
+    <li class="navbar-item">
+      <a class="navbar-item-inner" onclick="goToAuctions()">
+        <div class="navbar-item-inner-icon-wrapper">
+          <ion-icon name="pie-chart-outline"></ion-icon>
+        </div>
+        <span class="link-text">Aste</span>
+      </a>
+    </li>
+    <!-- Esci -->
+    <li class="navbar-item logout-section">
+      <a class="navbar-item-inner" onclick="exitApp()">
+        <div class="navbar-item-inner-icon-wrapper">
+          <ion-icon name="log-out-outline"></ion-icon>
+        </div>
+        <span class="link-text">Esci</span>
+      </a>
+    </li>
+  </ul>
+</nav>
 </body>
 </html>
