@@ -1,4 +1,5 @@
 package com.GestioneDB;
+//import com.Service.Mail;
 import com.entity.User;
 import com.gallery.gui.AlertInfo;
 import com.gallery.gui.ValidazioneInput;
@@ -9,6 +10,7 @@ import org.hibernate.cfg.Configuration;
 
 
 public class GestioneUtente {
+
 
     public SessionFactory sessionFactory;
     AlertInfo alertInfo = new AlertInfo();
@@ -38,11 +40,12 @@ public class GestioneUtente {
 
             transaction.commit();
             session.close();
+
             alertInfo.showAlertInfo( "utente registrato con successo","BENVENUTO "+ username);
             return true;
         }
         validazioneInput.validaInputConAlert(username,email,password);
-        //alertInfo.showAlertErrore("Errore", "Errore durante la registrazione. Controlla i dati.");
+
         return false;
 
 
