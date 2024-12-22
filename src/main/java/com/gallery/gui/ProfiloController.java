@@ -1,6 +1,7 @@
 package com.gallery.gui;
 
 import com.entity.User;
+import com.util.HibernateUtil;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -8,6 +9,8 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class ProfiloController {
 
@@ -60,6 +63,7 @@ public class ProfiloController {
         try {
             webEngine.executeScript("document.getElementById('username').innerText = '" + user.getUsername() + "';");
             webEngine.executeScript("document.getElementById('email').innerText = '" + user.getEmail() + "';");
+            webEngine.executeScript("document.getElementById('password').innerText = '" + user.getPassword() + "';");
             webEngine.executeScript("document.getElementById('role').innerText = 'Utente';");
         } catch (Exception e) {
             System.err.println("Errore durante l'aggiornamento dei dati nella WebView: " + e.getMessage());
@@ -98,8 +102,21 @@ public class ProfiloController {
     }
 
     private void saveUserDataToDatabase(User user) {
-        // Qui implementare logica per cambio dati nel database
-        System.out.println("Dati utente aggiornati nel database: " + user);
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.update(user);
+            transaction.commit();
+            System.out.println("Dati utente aggiornati con successo nel database.");
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.err.println("Errore durante l'aggiornamento dei dati nel database: " + e.getMessage());
+        } finally {
+            session.close();
+        }
     }
 
     @FXML

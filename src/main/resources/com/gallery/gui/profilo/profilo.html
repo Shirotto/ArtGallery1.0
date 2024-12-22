@@ -6,21 +6,21 @@
     <title>Profilo Utente</title>
     <style>
         :root {
-            --main-bg: #f0f0f0; /* Sfondo principale (grigio chiaro) */
-            --sidebar-bg: #e0e0e0; /* Sfondo della sidebar (grigio più scuro) */
-            --secondary-bg: #fff; /* Sfondo secondario (bianco) */
-            --highlight-color: #666; /* Colore di evidenza (grigio scuro) */
-            --font-color: #323232; /* Colore del testo (grigio scuro) */
-            --input-bg: #fff; /* Sfondo degli input (bianco) */
-            --button-bg: #666; /* Sfondo dei pulsanti (grigio) */
+            --main-bg: #f0f0f0;
+            --sidebar-bg: #e0e0e0;
+            --secondary-bg: #fff;
+            --highlight-color: #666;
+            --font-color: #323232;
+            --input-bg: #fff;
+            --button-bg: #666;
         }
 
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-color: var(--main-bg); /* Grigio chiaro */
-            color: var(--font-color); /* Grigio scuro */
+            background-color: var(--main-bg);
+            color: var(--font-color);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -30,15 +30,15 @@
         .container {
             display: flex;
             width: 900px;
-            background-color: var(--secondary-bg); /* Bianco */
+            background-color: var(--secondary-bg);
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombra leggera */
-            border: 2px solid var(--highlight-color); /* Bordo stile seconda pagina */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--highlight-color);
         }
 
         .sidebar {
-            background-color: var(--sidebar-bg); /* Grigio più scuro */
+            background-color: var(--sidebar-bg);
             width: 250px;
             padding: 20px;
             display: flex;
@@ -51,14 +51,14 @@
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            border: 2px solid var(--highlight-color); /* Grigio */
+            border: 2px solid var(--highlight-color);
         }
 
         .sidebar h2 {
-            font-size: 22px; /* Testo leggermente più grande */
+            font-size: 22px;
             margin: 10px 0;
-            color: var(--font-color); /* Grigio scuro */
-            text-align: center; /* Riposizionata al centro */
+            color: var(--font-color);
+            text-align: center;
         }
 
         .menu {
@@ -72,46 +72,46 @@
             padding: 15px 20px;
             font-size: 16px;
             cursor: pointer;
-            color: var(--font-color); /* Grigio scuro */
-            text-align: left; /* Allinea le voci a sinistra */
+            color: var(--font-color);
+            text-align: left;
         }
 
         .menu li:hover {
-            background-color: var(--highlight-color); /* Grigio scuro */
-            color: var(--secondary-bg); /* Bianco */
+            background-color: var(--highlight-color);
+            color: var(--secondary-bg);
             border-radius: 5px;
         }
 
         .menu li.active {
-            background-color: var(--highlight-color); /* Grigio scuro */
-            color: var(--secondary-bg); /* Bianco */
+            background-color: var(--highlight-color);
+            color: var(--secondary-bg);
             border-radius: 5px;
         }
 
         .content {
             flex: 1;
             padding: 40px;
-            background-color: var(--secondary-bg); /* Bianco */
+            background-color: var(--secondary-bg);
         }
 
         .content h1 {
-            font-size: 28px; /* Impostazioni leggermente più grande */
+            font-size: 28px;
             margin-bottom: 20px;
-            color: var(--font-color); /* Grigio scuro */
+            color: var(--font-color);
         }
 
         .info {
             font-size: 14px;
             margin-bottom: 10px;
             padding: 10px;
-            background-color: var(--input-bg); /* Bianco */
-            border: 2px solid var(--highlight-color); /* Grigio scuro, stile seconda pagina */
+            background-color: var(--input-bg);
+            border: 2px solid var(--highlight-color);
             border-radius: 5px;
-            color: var(--font-color); /* Grigio scuro */
+            color: var(--font-color);
         }
 
         .info strong {
-            color: var(--highlight-color); /* Grigio */
+            color: var(--highlight-color);
         }
 
         .hidden {
@@ -154,7 +154,7 @@
         }
 
         .settings-form {
-            margin-top: 20px; /* Sposta i campi verso il basso */
+            margin-top: 20px;
         }
     </style>
     <script>
@@ -171,18 +171,11 @@
         }
 
         function showSection(sectionId) {
-            // Nascondi tutte le sezioni
             const sections = document.querySelectorAll('.content > div');
             sections.forEach(section => section.classList.add('hidden'));
-
-            // Mostra la sezione selezionata
             document.getElementById(sectionId).classList.remove('hidden');
-
-            // Rimuovi la classe 'active' da tutte le voci del menu
             const menuItems = document.querySelectorAll('.menu li');
             menuItems.forEach(item => item.classList.remove('active'));
-
-            // Aggiungi la classe 'active' solo alla voce cliccata
             const clickedItem = document.querySelector(`.menu li[onclick="showSection('${sectionId}')"]`);
             if (clickedItem) {
                 clickedItem.classList.add('active');
@@ -234,7 +227,7 @@
             <h1>Informazioni Profilo</h1>
             <div class="info"><strong>Username:</strong> <span id="username"></span></div>
             <div class="info"><strong>Email:</strong> <span id="email"></span></div>
-            <div class="info"><strong>Data di nascita:</strong> <span id="dob"></span></div>
+            <div class="info"><strong>Password:</strong> <span id="password"></span></div>
             <div class="info"><strong>Ruolo:</strong> <span id="role"></span></div>
         </div>
 
