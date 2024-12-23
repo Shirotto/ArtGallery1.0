@@ -25,7 +25,6 @@
       height: 100vh;
     }
 
-    /* Sidebar */
     #navbar {
       top: 0;
       padding: 0;
@@ -87,6 +86,7 @@
       width: 3em;
       display: flex;
       justify-content: center;
+      padding-left: 1.5em;
     }
 
     .navbar-item-inner-icon-wrapper ion-icon {
@@ -105,17 +105,43 @@
       white-space: nowrap;
       overflow: hidden;
       transition: opacity 0.3s ease;
+      margin-left: 2.0em;
     }
 
     #navbar:hover .link-text {
       opacity: 1;
     }
 
+
+    #main {
+      margin: 0 0 0 5em;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start; /* Porta il contenuto verso l'alto */
+      text-align: center;
+      padding-top: 5em; /* Aggiungi un margine dall'alto */
+      padding: 2em;
+    }
+
+    #main > h2 {
+      font-size: 2.5em; /* Titolo più grande */
+      font-weight: bold; /* Titolo in grassetto */
+      margin-bottom: 0.5em;
+    }
+
+    #main > p {
+      font-size: 1.2em;
+      line-height: 1.6; /* Migliore leggibilità */
+      max-width: 80%; /* Limita la larghezza */
+      color: var(--font-color);
+    }
+
     .logout-section {
       margin-top: auto;
     }
   </style>
-  <!-- Ionicons CDN -->
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
   <script>
@@ -199,5 +225,12 @@
     </li>
   </ul>
 </nav>
+<!-- Main -->
+<main id="main" class="flexbox-col">
+  <h2>ArtGallery</h2>
+  <p>
+    Benvenuti nella nostra galleria d'arte digitale, uno spazio dove l'arte incontra la tecnologia. Esplora opere uniche di artisti emergenti e affermati, accuratamente curate per offrirti un'esperienza visiva coinvolgente. Immergiti in collezioni che celebrano creatività, innovazione e ispirazione, il tutto accessibile comodamente dal tuo dispositivo. Scopri l'arte in un modo completamente nuovo.
+  </p>
+</main>
 </body>
 </html>

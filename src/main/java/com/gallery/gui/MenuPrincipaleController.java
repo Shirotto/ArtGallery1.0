@@ -39,12 +39,7 @@ public class MenuPrincipaleController {
 
     @FXML
     public void exitApp() {
-        try {
-            Stage stage = (Stage) webView.getScene().getWindow();
-            stage.close();
-        } catch (Exception e) {
-            System.err.println("Errore durante la chiusura dell'applicazione: " + e.getMessage());
-        }
+        System.exit(0);
     }
 
     @FXML
