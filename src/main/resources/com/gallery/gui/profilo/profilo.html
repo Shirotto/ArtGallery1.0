@@ -196,17 +196,15 @@
             const newUsername = document.getElementById('new-username').value;
             const newEmail = document.getElementById('new-email').value;
             const newPassword = document.getElementById('new-password').value;
-
+            if (!newUsername || !newEmail || !newPassword) {
+                alert('Tutti i campi devono essere compilati!');
+                return;
+            }
+            document.getElementById('new-username').value = '';
+            document.getElementById('new-email').value = '';
+            document.getElementById('new-password').value = '';
             if (window.javafxController) {
-                if (newUsername) {
-                    window.javafxController.updateProfileData('username', newUsername);
-                }
-                if (newEmail) {
-                    window.javafxController.updateProfileData('email', newEmail);
-                }
-                if (newPassword) {
-                    window.javafxController.updateProfileData('password', newPassword);
-                }
+                window.javafxController.updateProfileData(newUsername, newEmail, newPassword);
                 alert('Dati aggiornati con successo!');
             } else {
                 console.error("Controller JavaFX non trovato.");

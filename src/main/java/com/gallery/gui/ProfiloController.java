@@ -77,45 +77,52 @@ public class ProfiloController {
         if (roleLabel != null) roleLabel.setText("Utente");
     }
 
-    // Metodo per aggiornare campi specifici nel profilo
-    public void updateProfileData(String field, String value) {
-        switch (field.toLowerCase()) {
-            case "username":
-                currentUser.setUsername(value);
-                break;
-            case "email":
-                currentUser.setEmail(value);
-                break;
-            case "password":
-                currentUser.setPassword(value);
-                break;
-            default:
-                System.err.println("Campo non riconosciuto: " + field);
+    public void updateProfileData(String usernameValue, String emailValue, String passwordValue) {
+        System.out.println("updateProfileData chiamato con: " + usernameValue + ", " + emailValue + ", " + passwordValue);
+        if (usernameValue == null || usernameValue.isEmpty() ||
+                emailValue == null || emailValue.isEmpty() ||
+                passwordValue == null || passwordValue.isEmpty()) {
+            alert.showAlertInfo("Errore", "Tutti i campi devono essere compilati.");
+            return;
         }
+        if (usernameValue.equals(currentUser.getUsername())) {
+            alert.showAlertInfo("Errore", "Il nuovo nome utente deve essere diverso dal precedente.");
+            return;
+        }
+        if (passwordValue.equals(currentUser.getPassword())) {
+            alert.showAlertInfo("Errore", "La nuova password deve essere diversa dalla precedente.");
+            return;
+        }
+        String passwordRegex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?\":{}|<>]).{8,}$";
+        if (!passwordValue.matches(passwordRegex)) {
+            alert.showAlertInfo("Errore", "La password deve contenere almeno 8 caratteri, una lettera maiuscola, un numero e un carattere speciale.");
+            return;
+        }
+        currentUser.setUsername(usernameValue);
+        currentUser.setEmail(emailValue);
+        currentUser.setPassword(passwordValue);
+        saveUserDataToDatabase(currentUser);
         WebEngine webEngine = webView.getEngine();
         try {
-            webEngine.executeScript("document.getElementById('" + field.toLowerCase() + "').innerText = '" + value + "';");
+            webEngine.executeScript("document.getElementById('username').innerText = '" + usernameValue + "';");
+            webEngine.executeScript("document.getElementById('email').innerText = '" + emailValue + "';");
+            webEngine.executeScript("document.getElementById('password').innerText = '" + passwordValue + "';");
         } catch (Exception e) {
             System.err.println("Errore durante l'aggiornamento dei dati nella WebView: " + e.getMessage());
         }
-        saveUserDataToDatabase(currentUser);
+        alert.showAlertInfo("Successo", "Credenziali aggiornate correttamente");
     }
 
     private void saveUserDataToDatabase(User user) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = null;
-        try {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.update(user);
+            session.merge(user);
             transaction.commit();
-            System.out.println("Dati utente aggiornati con successo nel database.");
+            System.out.println("Dati utente aggiornati nel database: " + user);
         } catch (Exception e) {
-            if (transaction != null) {
+            if (transaction != null)
                 transaction.rollback();
-            }
-            System.err.println("Errore durante l'aggiornamento dei dati nel database: " + e.getMessage());
-        } finally {
-            session.close();
         }
     }
 
