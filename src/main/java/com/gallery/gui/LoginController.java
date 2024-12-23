@@ -30,13 +30,10 @@ public class LoginController {
 
     @FXML
     public void initialize() {
-        // Carica il contenuto HTML nel WebView
         WebEngine webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
         String htmlFilePath = getClass().getResource("login/login.html").toExternalForm();
         webEngine.load(htmlFilePath);
-
-        // listener per verificare se la pagina è stata caricata correttamente
         webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
                 System.out.println("Pagina caricata con successo");
@@ -53,7 +50,6 @@ public class LoginController {
     public void handleLoginButtonClick(String email, String password) {
 
         if (gestioneUtente.verificaCredenziali(email, password)) {
-            //recupero dati utente dopo login
             currentUser = gestioneUtente.getUserByEmail(email);
             apriMenuPrincipale();
         } else {
@@ -84,7 +80,7 @@ public class LoginController {
             menuStage.setScene(scene);
             MenuPrincipaleController menuController = loader.getController();
             menuController.setUser(currentUser);
-            menuStage.setTitle("Menu Principale");
+            menuStage.setTitle("");
             menuStage.setResizable(false);
             menuStage.show();
             closeCurrentWindow();
@@ -102,7 +98,7 @@ public class LoginController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("login/login-view.fxml"));
             Stage stage = new Stage(); // Crea una nuova finestra
-            stage.setTitle("Login");
+            stage.setTitle("");
             stage.setScene(new Scene(loader.load())); // Carica la scena
             stage.setWidth(570);
             stage.setHeight(580);
