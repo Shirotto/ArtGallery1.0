@@ -26,6 +26,7 @@
     }
 
     #navbar {
+      z-index: 10;
       top: 0;
       padding: 0;
       width: 5em;
@@ -113,6 +114,8 @@
     }
 
     #main {
+      position: relative;
+      z-index: 1;
       margin: 0 0 0 5em;
       min-height: 100vh;
       display: flex;
@@ -144,6 +147,66 @@
     .logout-section {
       margin-top: auto;
     }
+
+    .c4 .btn {
+      position: relative;
+      background: var(--sidebar-bg);
+      color: var(--font-color);
+      font-size: 1.1em;
+      padding: 10px 18px 8px 18px;
+      margin: 8px;
+      transition: background 100ms ease, color 100ms ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .c4 .btn:hover {
+      background: white;
+      color: black;
+      transition: background 150ms linear, color 150ms linear;
+    }
+
+    .c4 .btn:before {
+      position: absolute;
+      content: "";
+      inset: 0;
+      background: rgba(255, 255, 255, 0.1);
+      pointer-events: none;
+      clip-path: polygon(-10% -10%, -10% 110%, 10% 90%, 6% 10%, 94% 10%, 91% 90%, 10% 90%, -10% 110%, 110% 110%, 110% -10%);
+    }
+
+    .c4 .btn:after {
+      position: absolute;
+      content: "";
+      inset: 0;
+      border: 0px solid white;
+    }
+
+    .c4 .btn:hover:after {
+      animation: 300ms ease c4border;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes c4border {
+      0% {
+        inset: -16px;
+        border: 2px solid white;
+        border-radius: 10px;
+        opacity: 0;
+      }
+      60% {
+        inset: -7px;
+        border: 6px solid white;
+        border-radius: 7px;
+        opacity: 0.7;
+      }
+      100% {
+        inset: -8px;
+        border: 4px solid white;
+        border-radius: 8px;
+        opacity: 0.7;
+      }
+    }
   </style>
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
@@ -173,6 +236,7 @@
     }
 
     function updateUserData() {
+      const settingsForm = document.getElementById('settings-form');
       const newUsername = document.getElementById('new-username').value;
       const newEmail = document.getElementById('new-email').value;
       const newPassword = document.getElementById('new-password').value;
@@ -186,6 +250,7 @@
       if (window.javafxController) {
         window.javafxController.updateProfilo(newUsername, newEmail, newPassword);
         alert('Dati aggiornati con successo!');
+        settingsForm.classList.add('hidden');
       } else {
         console.error("Controller JavaFX non trovato.");
       }
@@ -298,24 +363,24 @@
     <div class="info">Non hai nuove notifiche.</div>
   </div>
 
-  <div id="settings-section" class="hidden">
-    <h1>Impostazioni</h1>
-    <div>
-      <button class="settings-button" onclick="toggleSettingsForm()">Cambia i tuoi dati</button>
-      <button class="settings-button" onclick="logout()">Logout</button>
+  <div id="settings-section" class="hidden" style="position: relative;">
+    <h1 style="text-align: left; margin-left: 8px;">Impostazioni</h1>
+    <div class="c4">
+      <button class="btn" onclick="toggleSettingsForm()">Cambia i tuoi dati</button>
+      <button class="btn" onclick="logout()">Logout</button>
     </div>
-    <form id="settings-form" class="hidden settings-form">
-      <div>
+    <form id="settings-form" class="hidden settings-form" style="border: 1px solid var(--font-color); padding: 10px; margin-top: 20px; width: fit-content; text-align: left; position: absolute; top: 120px; left: 0;">
+      <div style="margin-bottom: 10px;">
         <label for="new-username"><strong>Nuovo Username:</strong></label>
-        <input type="text" id="new-username" placeholder="Nuovo username">
+        <input type="text" id="new-username" placeholder="Nuovo username" style="margin-left: 10px;">
       </div>
-      <div>
+      <div style="margin-bottom: 10px;">
         <label for="new-email"><strong>Nuova Email:</strong></label>
-        <input type="email" id="new-email" placeholder="Nuova email">
+        <input type="email" id="new-email" placeholder="Nuova email" style="margin-left: 10px;">
       </div>
-      <div>
+      <div style="margin-bottom: 10px;">
         <label for="new-password"><strong>Nuova Password:</strong></label>
-        <input type="password" id="new-password" placeholder="Nuova password">
+        <input type="password" id="new-password" placeholder="Nuova password" style="margin-left: 10px;">
       </div>
       <button type="button" onclick="updateUserData()">Salva</button>
     </form>
