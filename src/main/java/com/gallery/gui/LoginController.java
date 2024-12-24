@@ -61,12 +61,8 @@ public class LoginController {
 
     // Gestione evento registrazione
     public void handleSignUpButtonClick(String name, String email, String password) {
-<<<<<<< HEAD
-        if (gestioneUtente.registraUtente(name,email,password)) {
 
-=======
-        if (gestioneUtente.RegistraUtente(name, email, password)) {
->>>>>>> Antonio
+        if (gestioneUtente.registraUtente(name, email, password)) {
             closeCurrentWindow();
             riapriFinestraLogin();
 
