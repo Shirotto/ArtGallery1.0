@@ -1,4 +1,5 @@
 package com.entity;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -22,7 +23,7 @@ public class User {
     public User() {
     }
 
-    // Costruttore per comodità
+    // Costruttore con parametri
     public User(String username, String email,  String password) {
         this.email = email;
         this.username = username;

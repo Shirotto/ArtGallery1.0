@@ -11,6 +11,9 @@ module com.gallery.gui {
     requires org.hibernate.orm.core;
     requires java.naming;
     requires jdk.jsobject;
+    requires mysql.connector.j;
+    requires javafx.swing;
+    //requires java.mail;
 
     opens com.gallery.gui to javafx.fxml;
     opens com.entity to org.hibernate.orm.core;
