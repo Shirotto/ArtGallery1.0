@@ -29,13 +29,10 @@ public class LoginController {
 
     @FXML
     public void initialize() {
-        // Carica il contenuto HTML nel WebView
         WebEngine webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
         String htmlFilePath = getClass().getResource("login/login.html").toExternalForm();
         webEngine.load(htmlFilePath);
-
-        // listener per verificare se la pagina è stata caricata correttamente
         webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
                 System.out.println("Pagina caricata con successo");
@@ -52,7 +49,6 @@ public class LoginController {
     public void handleLoginButtonClick(String email, String password) {
 
         if (gestioneUtente.verificaCredenziali(email, password)) {
-            //recupero dati utente dopo login
             currentUser = gestioneUtente.getUserByEmail(email);
             apriMenuPrincipale();
         } else {

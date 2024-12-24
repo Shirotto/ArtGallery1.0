@@ -12,8 +12,6 @@ import netscape.javascript.JSObject;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.sql.PreparedStatement;
-
 public class ProfiloController {
 
     @FXML
@@ -21,9 +19,6 @@ public class ProfiloController {
 
     @FXML
     private Label emailLabel;
-
-    @FXML
-    private Label passwordLabel;
 
     @FXML
     private Label roleLabel;
@@ -60,10 +55,6 @@ public class ProfiloController {
             updateHTML(user);
         }
         updateJavaFXLabels(user);
-        // Pre-popolare i campi nelle impostazioni
-        if (usernameLabel != null) usernameLabel.setText(user.getUsername());
-        if (emailLabel != null) emailLabel.setText(user.getEmail());
-        if (passwordLabel != null) passwordLabel.setText(""); // Lascia vuoto per sicurezza
     }
 
     // Metodo per aggiornare i dati HTML
@@ -72,6 +63,7 @@ public class ProfiloController {
         try {
             webEngine.executeScript("document.getElementById('username').innerText = '" + user.getUsername() + "';");
             webEngine.executeScript("document.getElementById('email').innerText = '" + user.getEmail() + "';");
+            webEngine.executeScript("document.getElementById('password').innerText = '" + user.getPassword() + "';");
             webEngine.executeScript("document.getElementById('role').innerText = 'Utente';");
         } catch (Exception e) {
             System.err.println("Errore durante l'aggiornamento dei dati nella WebView: " + e.getMessage());
@@ -87,76 +79,51 @@ public class ProfiloController {
 
     public void updateProfileData(String usernameValue, String emailValue, String passwordValue) {
         System.out.println("updateProfileData chiamato con: " + usernameValue + ", " + emailValue + ", " + passwordValue);
-
-        // Verifica che tutti i campi siano non nulli e non vuoti
         if (usernameValue == null || usernameValue.isEmpty() ||
                 emailValue == null || emailValue.isEmpty() ||
                 passwordValue == null || passwordValue.isEmpty()) {
             alert.showAlertInfo("Errore", "Tutti i campi devono essere compilati.");
-            return; // Se uno dei campi è vuoto, fermati qui
+            return;
         }
-
-        // Verifica che username e password non siano uguali ai precedenti
         if (usernameValue.equals(currentUser.getUsername())) {
             alert.showAlertInfo("Errore", "Il nuovo nome utente deve essere diverso dal precedente.");
-            return; // Impedisce il salvataggio
+            return;
         }
         if (passwordValue.equals(currentUser.getPassword())) {
             alert.showAlertInfo("Errore", "La nuova password deve essere diversa dalla precedente.");
-            return; // Impedisce il salvataggio
+            return;
         }
-
-        // Validazione della password (almeno 8 caratteri, una maiuscola, un numero e un carattere speciale)
         String passwordRegex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?\":{}|<>]).{8,}$";
-        // Almeno 8 caratteri, una maiuscola, un numero e un carattere speciale
         if (!passwordValue.matches(passwordRegex)) {
             alert.showAlertInfo("Errore", "La password deve contenere almeno 8 caratteri, una lettera maiuscola, un numero e un carattere speciale.");
-            return; // Impedisce il salvataggio se la password non è valida
+            return;
         }
-
-        // Modifica i dati utente
         currentUser.setUsername(usernameValue);
         currentUser.setEmail(emailValue);
         currentUser.setPassword(passwordValue);
-
-        // Salva i dati nel database prima di aggiornare la WebView
         saveUserDataToDatabase(currentUser);
-
-        // Aggiorna la visualizzazione nel WebView
         WebEngine webEngine = webView.getEngine();
         try {
             webEngine.executeScript("document.getElementById('username').innerText = '" + usernameValue + "';");
             webEngine.executeScript("document.getElementById('email').innerText = '" + emailValue + "';");
-            // Non aggiorno la password per sicurezza
+            webEngine.executeScript("document.getElementById('password').innerText = '" + passwordValue + "';");
         } catch (Exception e) {
             System.err.println("Errore durante l'aggiornamento dei dati nella WebView: " + e.getMessage());
         }
-
-        // Mostra un messaggio di successo
         alert.showAlertInfo("Successo", "Credenziali aggiornate correttamente");
     }
-
 
     private void saveUserDataToDatabase(User user) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-
-
-            session.merge(user); // `merge`  aggiorna o sincronizza un'entità esistente
-
+            session.merge(user);
             transaction.commit();
             System.out.println("Dati utente aggiornati nel database: " + user);
-
         } catch (Exception e) {
-
             if (transaction != null)
                 transaction.rollback();
-
-
         }
-
-
     }
 
     @FXML

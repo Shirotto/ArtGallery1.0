@@ -16,26 +16,19 @@ public class ProfiloApplication {
     // Metodo per aprire il profilo in una nuova finestra
     public void openProfile(User currentUser) {
         try {
-            // Percorso del file FXML
             URL fxmlLocation = getClass().getResource("/com/gallery/gui/profilo/profilo-view.fxml");
             if (fxmlLocation == null) {
                 System.err.println("File FXML non trovato: /com/gallery/gui/profilo/profilo-view.fxml");
                 return;
             }
-
-            // Carica il file FXML
             FXMLLoader loader = new FXMLLoader(fxmlLocation);
             AnchorPane root = loader.load();
-
-            // Ottieni il controller dal FXML e imposta i dati dell'utente
             ProfiloController profiloController = loader.getController();
             if (profiloController != null) {
                 profiloController.setUserData(currentUser);
             } else {
                 System.err.println("Il controller ProfiloController non è stato inizializzato correttamente.");
             }
-
-            // Configura la finestra del profilo
             Stage profileStage = new Stage();
             Scene scene = new Scene(root, 800, 600);
             profileStage.setScene(scene);
@@ -44,7 +37,6 @@ public class ProfiloApplication {
             profileStage.setMinHeight(600);
             profileStage.setResizable(false);
             profileStage.show();
-
         } catch (IOException e) {
             e.printStackTrace();
             alert.showAlertErrore("Errore", "Impossibile aprire il profilo.");
