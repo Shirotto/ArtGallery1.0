@@ -1,203 +1,656 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menu Principale</title>
-  <style>
-    :root {
-      --main-bg: #f0f0f0;
-      --sidebar-bg: #e0e0e0;
-      --highlight-color: #666;
-      --font-color: #323232;
-      --secondary-bg: #fff;
-      --icon-color: #666;
-      --icon-hover-color: #fff;
-    }
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Menu Principale</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
 
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: var(--main-bg);
-      color: var(--font-color);
-      display: flex;
-      height: 100vh;
-    }
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #323232;
+            height: 100vh;
+        }
 
-    /* Sidebar */
-    #navbar {
-      top: 0;
-      padding: 0;
-      width: 5em;
-      height: 100vh;
-      position: fixed;
-      background-color: var(--sidebar-bg);
-      transition: width 0.3s ease;
-      overflow-y: auto;
-      overflow-x: hidden;
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    #navbar:hover {
-      width: 16em;
-    }
+        #navbar {
+            z-index: 10;
+            top: 0;
+            padding: 0;
+            width: 5em;
+            height: 100vh;
+            position: fixed;
+            background-color: #e0e0e0;
+            transition: width 0.3s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
 
-    .navbar-logo {
-      height: 5em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: var(--highlight-color);
-      border-bottom: 1px solid var(--font-color);
-    }
+        #navbar:hover {
+            width: 16em;
+        }
 
-    .navbar-logo svg {
-      width: 2.5em;
-      height: 2.5em;
-      fill: var(--secondary-bg);
-    }
+        .navbar-logo {
+            height: 5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #666;
+            border-bottom: 1px solid #323232;
+        }
 
-    .navbar-items {
-      margin: 0;
-      padding: 0;
-      list-style-type: none;
-    }
+        .navbar-logo svg {
+            width: 2.5em;
+            height: 2.5em;
+            fill: #fff;
+        }
 
-    .navbar-item {
-      padding: 0.5em 0;
-      cursor: pointer;
-    }
+        .navbar-items {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
 
-    .navbar-item-inner {
-      padding: 1em 0;
-      display: flex;
-      align-items: center;
-      color: var(--font-color);
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
+        .navbar-item {
+            padding: 0.5em 0;
+            cursor: pointer;
+        }
 
-    .navbar-item-inner:hover {
-      background-color: var(--highlight-color);
-      color: var(--icon-hover-color);
-    }
+        .navbar-item-inner {
+            padding: 1em 0;
+            display: flex;
+            align-items: center;
+            color: #323232;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
 
-    .navbar-item-inner-icon-wrapper {
-      width: 3em;
-      display: flex;
-      justify-content: center;
-    }
+        .navbar-item-inner:hover {
+            background-color: #666;
+            color: #fff;
+        }
 
-    .navbar-item-inner-icon-wrapper ion-icon {
-      font-size: 1.5em;
-      color: var(--icon-color);
-      transition: color 0.3s ease;
-    }
+        .navbar-item-inner-icon-wrapper {
+            width: 3em;
+            display: flex;
+            justify-content: center;
+            padding-left: 1.5em;
+        }
 
-    .navbar-item-inner:hover ion-icon {
-      color: var(--icon-hover-color);
-    }
+        .navbar-item-inner-icon-wrapper ion-icon {
+            font-size: 1.5em;
+            color: #666;
+            transition: color 0.3s ease;
+        }
 
-    .link-text {
-      margin-left: 1em;
-      opacity: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      transition: opacity 0.3s ease;
-    }
+        .navbar-item-inner:hover ion-icon {
+            color: #fff;
+        }
 
-    #navbar:hover .link-text {
-      opacity: 1;
-    }
+        .link-text {
+            margin-left: 1em;
+            opacity: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            transition: opacity 0.3s ease;
+            margin-left: 2em;
+        }
 
-    .logout-section {
-      margin-top: auto;
-    }
-  </style>
-  <!-- Ionicons CDN -->
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-  <script>
-    function goToProfile() {
-      if (window.javafxController) {
-        window.javafxController.openProfile();
-      }
-    }
+        #navbar:hover .link-text {
+            opacity: 1;
+        }
 
-    function goToGallery() {
-      alert("Funzione non implementata");
-    }
+        #main {
+            position: relative;
+            z-index: 1;
+            margin: 0 0 0 5em;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: center;
+            padding-top: 5em;
+            padding: 2em;
+        }
 
-    function goToAuctions() {
-      alert("Funzione non implementata");
-    }
+        #main > h2 {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 0.5em;
+        }
 
-    function exitApp() {
-      if (window.javafxController) {
-        window.javafxController.exitApp();
-      }
-    }
-  </script>
+        #main > p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            max-width: 80%;
+            color: #323232;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .c4 .btn {
+            position: relative;
+            background: #e0e0e0;
+            color: #323232;
+            font-size: 1.1em;
+            padding: 10px 18px 8px 18px;
+            margin: 8px;
+            transition: background 100ms ease, color 100ms ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .c4 .btn:hover {
+            background: white;
+            color: black;
+            transition: background 150ms linear, color 150ms linear;
+        }
+
+        .c4 .btn:before {
+            position: absolute;
+            content: "";
+            inset: 0;
+            background: rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+            clip-path: polygon(-10% -10%, -10% 110%, 10% 90%, 6% 10%, 94% 10%, 91% 90%, 10% 90%, -10% 110%, 110% 110%, 110% -10%);
+        }
+
+        .c4 .btn:after {
+            position: absolute;
+            content: "";
+            inset: 0;
+            border: 0px solid white;
+        }
+
+        .c4 .btn:hover:after {
+            animation: 300ms ease c4border;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes c4border {
+            0% {
+                inset: -16px;
+                border: 2px solid white;
+                border-radius: 10px;
+                opacity: 0;
+            }
+            60% {
+                inset: -7px;
+                border: 6px solid white;
+                border-radius: 7px;
+                opacity: 0.7;
+            }
+            100% {
+                inset: -8px;
+                border: 4px solid white;
+                border-radius: 8px;
+                opacity: 0.7;
+            }
+        }
+
+        .inp {
+            position: relative;
+            margin: auto;
+            width: 100%;
+            max-width: 280px;
+            height: 60px;
+        }
+
+        .inp .border {
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            height: 18px;
+            fill: none;
+        }
+
+        .inp .border path {
+            stroke: #C8CCD4;
+            stroke-width: 2;
+            transition: all 0.2s ease;
+        }
+
+        .inp .check {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            fill: none;
+            transform: scale(0);
+            transition: all 0.3s cubic-bezier(0.5, 0.9, 0.25, 1.3);
+            transition-delay: 0.15s;
+        }
+
+        .inp .check path {
+            stroke: #0077FF;
+            stroke-width: 2;
+        }
+
+        .inp input {
+            -webkit-appearance: none;
+            width: 100%;
+            border: 0;
+            font-family: inherit;
+            padding: 0;
+            height: 48px;
+            font-size: 16px;
+            font-weight: 500;
+            background: none;
+            border-radius: 0;
+            color: #223254;
+            transition: all 0.15s ease;
+        }
+
+        .inp input:focus {
+            outline: none;
+        }
+
+        .inp input:focus + .border path {
+            stroke: #0077FF;
+        }
+
+        .inp input:valid + .border path {
+            animation: elasticInput 0.8s ease forwards;
+        }
+
+        .inp input:valid + .border + .check {
+            transform: scale(1);
+        }
+
+        .inp input::placeholder {
+            color: #9098A9;
+        }
+        @keyframes elasticInput {
+            33% {
+                d: path("M0,12 L226,12 C220,12 220.666667,12 228,12 C239,12 245,1 253,1 C261,1 268,12 278,12 C284.666667,12 285.333333,12 280,12");
+            }
+            66% {
+                d: path("M0,12 L226,12 C220,12 220.666667,12 228,12 C239,12 245,17 253,17 C261,17 268,12 278,12 C284.666667,12 285.333333,12 280,12");
+            }
+        }
+        #gallery-section {
+            width: 100%;
+            text-align: left;
+        }
+        #gallery-section h1 {
+            margin-bottom: 1em;
+            font-size: 2em;
+            color: #323232;
+        }
+
+        .gallery-category {
+            margin-bottom: 2em;
+        }
+        .gallery-category h2 {
+            margin: 0 0 0.5em 0;
+            font-size: 1.4em;
+            color: #666;
+            padding-left: 10px;
+        }
+
+        .gallery-row-container {
+            position: relative;
+            width: 80%;
+            margin-left: 5px;
+            overflow-x: auto;
+            min-height: 120px;
+        }
+
+        .gallery-row {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            margin-left: 10px;
+        }
+        .gallery-row::-webkit-scrollbar {
+            height: 8px;
+        }
+        .gallery-row::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 4px;
+        }
+        .gallery-item {
+            min-width: 160px;
+            height: 100px;
+            background-color: #ccc;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #666;
+            border-radius: 4px;
+        }
+    </style>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <!-- Script funzioni -->
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('main > div');
+            sections.forEach(section => section.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+
+            const menuItems = document.querySelectorAll('.navbar-item');
+            menuItems.forEach(item => item.classList.remove('active'));
+
+            const clickedItem = document.querySelector('.navbar-item a[onclick="showSection(\'' + sectionId + '\')"]');
+            if (clickedItem) {
+                clickedItem.parentElement.classList.add('active');
+            }
+        }
+
+        function exitApp() {
+            if (window.javafxController) {
+                window.javafxController.exitApp();
+            }
+        }
+
+        function logout() {
+            if (window.javafxController) {
+                window.javafxController.logout();
+            }
+        }
+
+        function updateUserData() {
+            const newUsername = document.getElementById('new-username').value;
+            const newEmail = document.getElementById('new-email').value;
+            const newPassword = document.getElementById('new-password').value;
+
+            // Svuota i campi dopo aver salvato
+            document.getElementById('new-username').value = '';
+            document.getElementById('new-email').value = '';
+            document.getElementById('new-password').value = '';
+
+            // Se il controller JavaFX è presente, invia i dati
+            if (window.javafxController) {
+                window.javafxController.updateProfilo(newUsername, newEmail, newPassword);
+            } else {
+                console.error("Controller JavaFX non trovato.");
+            }
+            document.getElementById('settings-form').classList.add('hidden');
+        }
+
+        function toggleSettingsForm() {
+            const settingsForm = document.getElementById('settings-form');
+            if (settingsForm.classList.contains('hidden')) {
+                settingsForm.classList.remove('hidden');
+            } else {
+                settingsForm.classList.add('hidden');
+            }
+        }
+
+
+        function goToGallery() {
+            showSection('gallery-section');
+        }
+
+        function goToAuctions() {
+            if (window.javafxController) {
+                window.javafxController.goToAuctions();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('home-section');
+        });
+    </script>
 </head>
+
 <body>
+<!-- Barra laterale di navigazione -->
 <nav id="navbar">
-  <!-- Logo -->
-  <div class="navbar-logo">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1438.88 1819.54">
-      <polygon points="925.79 318.48 830.56 0 183.51 1384.12 510.41 1178.46 925.79 318.48"
-               fill="var(--secondary-bg)"/>
-      <polygon points="1438.88 1663.28 1126.35 948.08 111.98 1586.26 0 1819.54 1020.91 1250.57 1123.78 1471.02 783.64 1663.28 1438.88 1663.28"
-               fill="var(--font-color)"/>
-    </svg>
-  </div>
-  <ul class="navbar-items">
-    <!-- Cerca -->
-    <li class="navbar-item">
-      <a class="navbar-item-inner">
-        <div class="navbar-item-inner-icon-wrapper">
-          <ion-icon name="search-outline"></ion-icon>
-        </div>
-        <span class="link-text">Cerca</span>
-      </a>
-    </li>
-    <!-- Profilo -->
-    <li class="navbar-item">
-      <a class="navbar-item-inner" onclick="goToProfile()">
-        <div class="navbar-item-inner-icon-wrapper">
-          <ion-icon name="people-outline"></ion-icon>
-        </div>
-        <span class="link-text">Profilo</span>
-      </a>
-    </li>
-    <!-- Opere -->
-    <li class="navbar-item">
-      <a class="navbar-item-inner" onclick="goToGallery()">
-        <div class="navbar-item-inner-icon-wrapper">
-          <ion-icon name="folder-open-outline"></ion-icon>
-        </div>
-        <span class="link-text">Galleria</span>
-      </a>
-    </li>
-    <!-- Aste -->
-    <li class="navbar-item">
-      <a class="navbar-item-inner" onclick="goToAuctions()">
-        <div class="navbar-item-inner-icon-wrapper">
-          <ion-icon name="pie-chart-outline"></ion-icon>
-        </div>
-        <span class="link-text">Aste</span>
-      </a>
-    </li>
-    <!-- Esci -->
-    <li class="navbar-item logout-section">
-      <a class="navbar-item-inner" onclick="exitApp()">
-        <div class="navbar-item-inner-icon-wrapper">
-          <ion-icon name="log-out-outline"></ion-icon>
-        </div>
-        <span class="link-text">Esci</span>
-      </a>
-    </li>
-  </ul>
+    <div class="navbar-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1438.88 1819.54">
+            <polygon
+                    points="925.79 318.48 830.56 0 183.51 1384.12 510.41 1178.46 925.79 318.48"
+                    fill="#fff"
+            />
+            <polygon
+                    points="1438.88 1663.28 1126.35 948.08 111.98 1586.26 0 1819.54 1020.91 1250.57 1123.78 1471.02 783.64 1663.28 1438.88 1663.28"
+                    fill="#323232"
+            />
+        </svg>
+    </div>
+    <ul class="navbar-items">
+        <li class="navbar-item">
+            <a class="navbar-item-inner" onclick="showSection('home-section')">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="home-outline"></ion-icon>
+                </div>
+                <span class="link-text">Home</span>
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a class="navbar-item-inner">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="search-outline"></ion-icon>
+                </div>
+                <span class="link-text">Cerca</span>
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a class="navbar-item-inner" onclick="showSection('profile-section')">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="people-outline"></ion-icon>
+                </div>
+                <span class="link-text">Profilo</span>
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a class="navbar-item-inner" onclick="goToGallery()">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="folder-open-outline"></ion-icon>
+                </div>
+                <span class="link-text">Galleria</span>
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a class="navbar-item-inner" onclick="goToAuctions()">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="pie-chart-outline"></ion-icon>
+                </div>
+                <span class="link-text">Aste</span>
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a class="navbar-item-inner" onclick="showSection('notifications-section')">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="notifications-outline"></ion-icon>
+                </div>
+                <span class="link-text">Notifiche</span>
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a class="navbar-item-inner" onclick="showSection('settings-section')">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="settings-outline"></ion-icon>
+                </div>
+                <span class="link-text">Impostazioni</span>
+            </a>
+        </li>
+        <li class="navbar-item logout-section">
+            <a class="navbar-item-inner" onclick="exitApp()">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="log-out-outline"></ion-icon>
+                </div>
+                <span class="link-text">Esci</span>
+            </a>
+        </li>
+    </ul>
 </nav>
+<!-- Contenuto principale -->
+<main id="main">
+    <!-- Sezione Home -->
+    <div id="home-section">
+        <h1>Benvenuto!</h1>
+        <p>Questa è la pagina principale.</p>
+    </div>
+    <!-- Sezione Profilo -->
+    <div id="profile-section" class="hidden" style="text-align: left; padding: 20px;">
+        <h1 style="font-size: 2em; font-weight: bold; color: #323232; margin-bottom: 1em;">Informazioni Profilo</h1>
+        <div class="info" style="margin-bottom: 1em;">
+            <strong style="font-size: 1.2em; color: #666;">Username:</strong>
+            <span id="username" style="font-size: 1.1em; color: #323232; margin-left: 10px;">Inserisci Username</span>
+        </div>
+        <div class="info" style="margin-bottom: 1em;">
+            <strong style="font-size: 1.2em; color: #666;">Email:</strong>
+            <span id="email" style="font-size: 1.1em; color: #323232; margin-left: 10px;">Inserisci Email</span>
+        </div>
+        <div class="info" style="margin-bottom: 1em;">
+            <strong style="font-size: 1.2em; color: #666;">Password:</strong>
+            <span id="password" style="font-size: 1.1em; color: #323232; margin-left: 10px;">Inserisci Password</span>
+        </div>
+        <div class="info" style="margin-bottom: 1em;">
+            <strong style="font-size: 1.2em; color: #666;">Ruolo:</strong>
+            <span id="role" style="font-size: 1.1em; color: #323232; margin-left: 10px;">Inserisci Ruolo</span>
+        </div>
+    </div>
+
+    <!-- Sezione Notifiche -->
+    <div id="notifications-section" class="hidden">
+        <h1>Notifiche</h1>
+        <div class="info">Non hai nuove notifiche.</div>
+    </div>
+
+    <!-- sezione galleria -->
+    <div id="gallery-section" class="hidden">
+        <h1>Galleria</h1>
+
+        <!-- Categoria 1 -->
+        <div class="gallery-category">
+            <h2>Categoria 1</h2>
+            <div class="gallery-row-container">
+                <div class="gallery-row" id="row-cat1">
+                    <div class="gallery-item">Opera 1</div>
+                    <div class="gallery-item">Opera 2</div>
+                    <div class="gallery-item">Opera 3</div>
+                    <div class="gallery-item">Opera 4</div>
+                    <div class="gallery-item">Opera 5</div>
+                    <div class="gallery-item">Opera 6</div>
+                    <div class="gallery-item">Opera 7</div>
+                    <div class="gallery-item">Opera 8</div>
+                    <div class="gallery-item">Opera 9</div>
+                    <div class="gallery-item">Opera 10</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categoria 2 -->
+        <div class="gallery-category">
+            <h2>Categoria 2</h2>
+            <div class="gallery-row-container">
+                <div class="gallery-row" id="row-cat2">
+                    <div class="gallery-item">Opera A</div>
+                    <div class="gallery-item">Opera B</div>
+                    <div class="gallery-item">Opera C</div>
+                    <div class="gallery-item">Opera D</div>
+                    <div class="gallery-item">Opera E</div>
+                    <div class="gallery-item">Opera F</div>
+                    <div class="gallery-item">Opera G</div>
+                    <div class="gallery-item">Opera H</div>
+                    <div class="gallery-item">Opera I</div>
+                    <div class="gallery-item">Opera J</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categoria 3 -->
+        <div class="gallery-category">
+            <h2>Categoria 3</h2>
+            <div class="gallery-row-container">
+                <div class="gallery-row" id="row-cat3">
+                    <div class="gallery-item">Opera X</div>
+                    <div class="gallery-item">Opera Y</div>
+                    <div class="gallery-item">Opera Z</div>
+                    <div class="gallery-item">Opera W</div>
+                    <div class="gallery-item">Opera K</div>
+                    <div class="gallery-item">Opera L</div>
+                    <div class="gallery-item">Opera M</div>
+                    <div class="gallery-item">Opera N</div>
+                    <div class="gallery-item">Opera O</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Sezione Impostazioni -->
+    <div id="settings-section" class="hidden" style="position: relative;">
+        <h1 style="text-align: left; margin-left: 8px;">Impostazioni</h1>
+        <div class="c4">
+            <button class="btn" onclick="toggleSettingsForm()">Cambia i tuoi dati</button>
+            <button class="btn" onclick="logout()">Logout</button>
+        </div>
+        <form id="settings-form" class="hidden settings-form" style="
+              border: 1px solid #323232;
+              padding: 10px;
+              margin-top: 20px;
+              width: fit-content;
+              text-align: left;
+              position: absolute;
+              top: 120px;
+              left: 0; ">
+            <div class="inp" style="margin-bottom: 20px;">
+                <label for="new-username" class="inp">
+                    <input type="text" id="new-username" placeholder="Nuovo Username" pattern=".{1,}" required/>
+                    <svg width="185px" height="18px" viewBox="0 0 280 18" class="border">
+                        <path d="M0,12 L223.166144,12 C217.241379,12 217.899687,12 225.141066,12
+                               C236.003135,12 241.9279,12 249.827586,12
+                               C257.727273,12 264.639498,12 274.514107,12
+                               C281.097179,12 281.755486,12 276.489028,12"></path>
+                    </svg>
+                    <svg width="14px" height="12px" viewBox="0 0 14 12" class="check">
+                        <path d="M1 7 5.5 11 L13 1"></path>
+                    </svg>
+                </label>
+            </div>
+            <div class="inp" style="margin-bottom: 20px;">
+                <label for="new-email" class="inp">
+                    <input type="text" id="new-email" placeholder="Nuova Email" pattern=".{1,}" required/>
+                    <svg width="185px" height="18px" viewBox="0 0 280 18" class="border">
+                        <path d="M0,12 L223.166144,12 C217.241379,12 217.899687,12 225.141066,12
+                               C236.003135,12 241.9279,12 249.827586,12
+                               C257.727273,12 264.639498,12 274.514107,12
+                               C281.097179,12 281.755486,12 276.489028,12"></path>
+                    </svg>
+                    <svg width="14px" height="12px" viewBox="0 0 14 12" class="check">
+                        <path d="M1 7 5.5 11 L13 1"></path>
+                    </svg>
+                </label>
+            </div>
+            <div class="inp" style="margin-bottom: 10px;">
+                <label for="new-password" class="inp">
+                    <input type="password" id="new-password" placeholder="Nuova Password" pattern=".{6,}" required/>
+                    <svg width="185px" height="18px" viewBox="0 0 280 18" class="border">
+                        <path d="M0,12 L223.166144,12 C217.241379,12 217.899687,12 225.141066,12
+                               C236.003135,12 241.9279,12 249.827586,12
+                               C257.727273,12 264.639498,12 274.514107,12
+                               C281.097179,12 281.755486,12 276.489028,12"></path>
+                    </svg>
+                    <svg width="14px" height="12px" viewBox="0 0 14 12" class="check">
+                        <path d="M1 7 5.5 11 L13 1"></path>
+                    </svg>
+                </label>
+            </div>
+            <button type="button" onclick="updateUserData()">Salva</button>
+        </form>
+    </div>
+</main>
 </body>
 </html>

@@ -23,42 +23,22 @@ public class ProfiloController {
     @FXML
     private Label roleLabel;
 
-    @FXML
-    private WebView webView;
-
     private User currentUser;
 
     private final AlertInfo alert = new AlertInfo();
 
-    @FXML
-    public void initialize() {
-        WebEngine webEngine = webView.getEngine();
-        webEngine.setJavaScriptEnabled(true);
-        String htmlFilePath = getClass().getResource("/com/gallery/gui/profilo/profilo.html").toExternalForm();
-        webEngine.load(htmlFilePath);
-        webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
+    // Metodo per impostare i dati dell'utente
+    public void setUserData(User user, WebView webView) {
+        this.currentUser = user;
+        webView.getEngine().getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
-                System.out.println("Profilo HTML caricato con successo");
-                JSObject window = (JSObject) webEngine.executeScript("window");
-                window.setMember("javafxController", this);
-                if (currentUser != null) {
-                    updateHTML(currentUser);
-                }
+                updateHTML(user, webView);
             }
         });
     }
 
-    // Metodo per impostare i dati dell'utente
-    public void setUserData(User user) {
-        this.currentUser = user;
-        if (webView.getEngine().getLoadWorker().getState() == Worker.State.SUCCEEDED) {
-            updateHTML(user);
-        }
-        updateJavaFXLabels(user);
-    }
-
     // Metodo per aggiornare i dati HTML
-    private void updateHTML(User user) {
+    public void updateHTML(User user,WebView webView) {
         WebEngine webEngine = webView.getEngine();
         try {
             webEngine.executeScript("document.getElementById('username').innerText = '" + user.getUsername() + "';");
@@ -70,21 +50,25 @@ public class ProfiloController {
         }
     }
 
-    // Metodo per aggiornare le etichette JavaFX
-    private void updateJavaFXLabels(User user) {
-        if (usernameLabel != null) usernameLabel.setText(user.getUsername());
-        if (emailLabel != null) emailLabel.setText(user.getEmail());
-        if (roleLabel != null) roleLabel.setText("Utente");
-    }
-
-    public void updateProfileData(String usernameValue, String emailValue, String passwordValue) {
+    public void updateProfileData(String usernameValue, String emailValue, String passwordValue, WebView webView) {
         System.out.println("updateProfileData chiamato con: " + usernameValue + ", " + emailValue + ", " + passwordValue);
-        if (usernameValue == null || usernameValue.isEmpty() ||
-                emailValue == null || emailValue.isEmpty() ||
-                passwordValue == null || passwordValue.isEmpty()) {
+
+        // Verifica che tutti i campi siano non nulli e non vuoti
+        if (usernameValue == null || usernameValue.trim().isEmpty() ||
+                emailValue == null || emailValue.trim().isEmpty() ||
+                passwordValue == null || passwordValue.trim().isEmpty()) {
             alert.showAlertInfo("Errore", "Tutti i campi devono essere compilati.");
             return;
         }
+
+        // Controllo email con una regex di base
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        if (!emailValue.matches(emailRegex)) {
+            alert.showAlertInfo("Errore", "Inserire un indirizzo email valido.");
+            return;
+        }
+
+        // Verifica che username e password non siano uguali ai precedenti
         if (usernameValue.equals(currentUser.getUsername())) {
             alert.showAlertInfo("Errore", "Il nuovo nome utente deve essere diverso dal precedente.");
             return;
@@ -93,15 +77,24 @@ public class ProfiloController {
             alert.showAlertInfo("Errore", "La nuova password deve essere diversa dalla precedente.");
             return;
         }
+
+        // Validazione della password (almeno 8 caratteri, una maiuscola, un numero e un carattere speciale)
         String passwordRegex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?\":{}|<>]).{8,}$";
         if (!passwordValue.matches(passwordRegex)) {
-            alert.showAlertInfo("Errore", "La password deve contenere almeno 8 caratteri, una lettera maiuscola, un numero e un carattere speciale.");
+            alert.showAlertInfo("Errore", "La password deve contenere almeno 8 caratteri, " +
+                    "una lettera maiuscola, un numero e un carattere speciale.");
             return;
         }
+
+        // Aggiorno i dati utente
         currentUser.setUsername(usernameValue);
         currentUser.setEmail(emailValue);
         currentUser.setPassword(passwordValue);
+
+        // Salvataggio su DB
         saveUserDataToDatabase(currentUser);
+
+        // Aggiorno l'interfaccia
         WebEngine webEngine = webView.getEngine();
         try {
             webEngine.executeScript("document.getElementById('username').innerText = '" + usernameValue + "';");
@@ -110,8 +103,11 @@ public class ProfiloController {
         } catch (Exception e) {
             System.err.println("Errore durante l'aggiornamento dei dati nella WebView: " + e.getMessage());
         }
+
         alert.showAlertInfo("Successo", "Credenziali aggiornate correttamente");
     }
+
+
 
     private void saveUserDataToDatabase(User user) {
         Transaction transaction = null;
@@ -127,7 +123,7 @@ public class ProfiloController {
     }
 
     @FXML
-    public void logout() {
+    public void logout(WebView webView) {
         try {
             Stage stage = (Stage) webView.getScene().getWindow();
             stage.close();
@@ -140,18 +136,6 @@ public class ProfiloController {
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Errore durante il logout.");
-        }
-    }
-
-    @FXML
-    public void exitApp() {
-        try {
-            Stage stage = (Stage) webView.getScene().getWindow();
-            stage.close();
-            System.out.println("Applicazione chiusa con successo.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Errore durante la chiusura dell'applicazione.");
         }
     }
 }
