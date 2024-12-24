@@ -112,30 +112,33 @@
       opacity: 1;
     }
 
-
     #main {
       margin: 0 0 0 5em;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start; /* Porta il contenuto verso l'alto */
+      justify-content: flex-start;
       text-align: center;
-      padding-top: 5em; /* Aggiungi un margine dall'alto */
+      padding-top: 5em;
       padding: 2em;
     }
 
     #main > h2 {
-      font-size: 2.5em; /* Titolo più grande */
-      font-weight: bold; /* Titolo in grassetto */
+      font-size: 2.5em;
+      font-weight: bold;
       margin-bottom: 0.5em;
     }
 
     #main > p {
       font-size: 1.2em;
-      line-height: 1.6; /* Migliore leggibilità */
-      max-width: 80%; /* Limita la larghezza */
+      line-height: 1.6;
+      max-width: 80%;
       color: var(--font-color);
+    }
+
+    .hidden {
+      display: none;
     }
 
     .logout-section {
@@ -145,18 +148,16 @@
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
   <script>
-    function goToProfile() {
-      if (window.javafxController) {
-        window.javafxController.openProfile();
+    function showSection(sectionId) {
+      const sections = document.querySelectorAll('main > div');
+      sections.forEach(section => section.classList.add('hidden'));
+      document.getElementById(sectionId).classList.remove('hidden');
+      const menuItems = document.querySelectorAll('.navbar-item');
+      menuItems.forEach(item => item.classList.remove('active'));
+      const clickedItem = document.querySelector(`.navbar-item a[onclick="showSection('${sectionId}')"]`);
+      if (clickedItem) {
+        clickedItem.parentElement.classList.add('active');
       }
-    }
-
-    function goToGallery() {
-      alert("Funzione non implementata");
-    }
-
-    function goToAuctions() {
-      alert("Funzione non implementata");
     }
 
     function exitApp() {
@@ -164,21 +165,63 @@
         window.javafxController.exitApp();
       }
     }
+
+    function logout() {
+      if (window.javafxController) {
+        window.javafxController.logout();
+      }
+    }
+
+    function updateUserData() {
+      const newUsername = document.getElementById('new-username').value;
+      const newEmail = document.getElementById('new-email').value;
+      const newPassword = document.getElementById('new-password').value;
+      if (!newUsername || !newEmail || !newPassword) {
+        alert('Tutti i campi devono essere compilati!');
+        return;
+      }
+      document.getElementById('new-username').value = '';
+      document.getElementById('new-email').value = '';
+      document.getElementById('new-password').value = '';
+      if (window.javafxController) {
+        window.javafxController.updateProfilo(newUsername, newEmail, newPassword);
+        alert('Dati aggiornati con successo!');
+      } else {
+        console.error("Controller JavaFX non trovato.");
+      }
+    }
+
+    function toggleSettingsForm() {
+      const settingsForm = document.getElementById('settings-form');
+      if (settingsForm.classList.contains('hidden')) {
+        settingsForm.classList.remove('hidden'); // Mostra il modulo
+      } else {
+        settingsForm.classList.add('hidden'); // Nascondi il modulo
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      showSection('home-section');
+    });
   </script>
 </head>
 <body>
 <nav id="navbar">
-  <!-- Logo -->
   <div class="navbar-logo">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1438.88 1819.54">
-      <polygon points="925.79 318.48 830.56 0 183.51 1384.12 510.41 1178.46 925.79 318.48"
-               fill="var(--secondary-bg)"/>
-      <polygon points="1438.88 1663.28 1126.35 948.08 111.98 1586.26 0 1819.54 1020.91 1250.57 1123.78 1471.02 783.64 1663.28 1438.88 1663.28"
-               fill="var(--font-color)"/>
+      <polygon points="925.79 318.48 830.56 0 183.51 1384.12 510.41 1178.46 925.79 318.48" fill="var(--secondary-bg)"/>
+      <polygon points="1438.88 1663.28 1126.35 948.08 111.98 1586.26 0 1819.54 1020.91 1250.57 1123.78 1471.02 783.64 1663.28 1438.88 1663.28" fill="var(--font-color)"/>
     </svg>
   </div>
   <ul class="navbar-items">
-    <!-- Cerca -->
+    <li class="navbar-item">
+      <a class="navbar-item-inner" onclick="showSection('home-section')">
+        <div class="navbar-item-inner-icon-wrapper">
+          <ion-icon name="home-outline"></ion-icon>
+        </div>
+        <span class="link-text">Home</span>
+      </a>
+    </li>
     <li class="navbar-item">
       <a class="navbar-item-inner">
         <div class="navbar-item-inner-icon-wrapper">
@@ -187,16 +230,14 @@
         <span class="link-text">Cerca</span>
       </a>
     </li>
-    <!-- Profilo -->
     <li class="navbar-item">
-      <a class="navbar-item-inner" onclick="goToProfile()">
+      <a class="navbar-item-inner" onclick="showSection('profile-section')">
         <div class="navbar-item-inner-icon-wrapper">
           <ion-icon name="people-outline"></ion-icon>
         </div>
         <span class="link-text">Profilo</span>
       </a>
     </li>
-    <!-- Opere -->
     <li class="navbar-item">
       <a class="navbar-item-inner" onclick="goToGallery()">
         <div class="navbar-item-inner-icon-wrapper">
@@ -205,7 +246,6 @@
         <span class="link-text">Galleria</span>
       </a>
     </li>
-    <!-- Aste -->
     <li class="navbar-item">
       <a class="navbar-item-inner" onclick="goToAuctions()">
         <div class="navbar-item-inner-icon-wrapper">
@@ -214,7 +254,22 @@
         <span class="link-text">Aste</span>
       </a>
     </li>
-    <!-- Esci -->
+    <li class="navbar-item">
+      <a class="navbar-item-inner" onclick="showSection('notifications-section')">
+        <div class="navbar-item-inner-icon-wrapper">
+          <ion-icon name="notifications-outline"></ion-icon>
+        </div>
+        <span class="link-text">Notifiche</span>
+      </a>
+    </li>
+    <li class="navbar-item">
+      <a class="navbar-item-inner" onclick="showSection('settings-section')">
+        <div class="navbar-item-inner-icon-wrapper">
+          <ion-icon name="settings-outline"></ion-icon>
+        </div>
+        <span class="link-text">Impostazioni</span>
+      </a>
+    </li>
     <li class="navbar-item logout-section">
       <a class="navbar-item-inner" onclick="exitApp()">
         <div class="navbar-item-inner-icon-wrapper">
@@ -225,12 +280,46 @@
     </li>
   </ul>
 </nav>
-<!-- Main -->
-<main id="main" class="flexbox-col">
-  <h2>ArtGallery</h2>
-  <p>
-    Benvenuti nella nostra galleria d'arte digitale, uno spazio dove l'arte incontra la tecnologia. Esplora opere uniche di artisti emergenti e affermati, accuratamente curate per offrirti un'esperienza visiva coinvolgente. Immergiti in collezioni che celebrano creatività, innovazione e ispirazione, il tutto accessibile comodamente dal tuo dispositivo. Scopri l'arte in un modo completamente nuovo.
-  </p>
+<main id="main">
+  <div id="home-section">
+    <h1>Benvenuto!</h1>
+    <p>Questa è la pagina principale.</p>
+  </div>
+  <div id="profile-section" class="hidden">
+    <h1>Informazioni Profilo</h1>
+    <div class="info"><strong>Username:</strong> <span id="username"></span></div>
+    <div class="info"><strong>Email:</strong> <span id="email"></span></div>
+    <div class="info"><strong>Password:</strong> <span id="password"></span></div>
+    <div class="info"><strong>Ruolo:</strong> <span id="role"></span></div>
+  </div>
+
+  <div id="notifications-section" class="hidden">
+    <h1>Notifiche</h1>
+    <div class="info">Non hai nuove notifiche.</div>
+  </div>
+
+  <div id="settings-section" class="hidden">
+    <h1>Impostazioni</h1>
+    <div>
+      <button class="settings-button" onclick="toggleSettingsForm()">Cambia i tuoi dati</button>
+      <button class="settings-button" onclick="logout()">Logout</button>
+    </div>
+    <form id="settings-form" class="hidden settings-form">
+      <div>
+        <label for="new-username"><strong>Nuovo Username:</strong></label>
+        <input type="text" id="new-username" placeholder="Nuovo username">
+      </div>
+      <div>
+        <label for="new-email"><strong>Nuova Email:</strong></label>
+        <input type="email" id="new-email" placeholder="Nuova email">
+      </div>
+      <div>
+        <label for="new-password"><strong>Nuova Password:</strong></label>
+        <input type="password" id="new-password" placeholder="Nuova password">
+      </div>
+      <button type="button" onclick="updateUserData()">Salva</button>
+    </form>
+  </div>
 </main>
 </body>
 </html>

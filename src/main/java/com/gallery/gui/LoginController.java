@@ -1,4 +1,5 @@
 package com.gallery.gui;
+
 import com.GestioneDB.GestioneUtente;
 import com.Service.LogicaLogReg;
 import com.entity.User;
@@ -11,6 +12,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
+
 import java.io.IOException;
 
 
@@ -60,11 +62,11 @@ public class LoginController {
 
     // Gestione evento registrazione
     public void handleSignUpButtonClick(String name, String email, String password) {
-        if (gestioneUtente.RegistraUtente(name,email,password)) {
+        if (gestioneUtente.RegistraUtente(name, email, password)) {
             closeCurrentWindow();
             riapriFinestraLogin();
         }
-        }
+    }
 
     // Metodo per chiudere la finestra attuale
     private void closeCurrentWindow() {
@@ -75,7 +77,7 @@ public class LoginController {
     private void apriMenuPrincipale() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/gallery/gui/menuprincipale/menu-view.fxml"));
-            Scene scene = new Scene(loader.load(), 800, 600);
+            Scene scene = new Scene(loader.load(), 850, 700);
             Stage menuStage = new Stage();
             menuStage.setScene(scene);
             MenuPrincipaleController menuController = loader.getController();
@@ -84,7 +86,12 @@ public class LoginController {
             menuStage.setResizable(false);
             menuStage.show();
             closeCurrentWindow();
-
+            ProfiloController profiloController = loader.getController();
+            if (profiloController != null) {
+                profiloController.setUserData(currentUser, webView);
+            } else {
+                System.err.println("Il controller ProfiloController non è stato inizializzato correttamente.");
+            }
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Errore durante il caricamento di menu-view.fxml", e);
@@ -94,7 +101,6 @@ public class LoginController {
 
     // Riapre la finestra login dopo essersi registrati
     private void riapriFinestraLogin() {
-
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("login/login-view.fxml"));
             Stage stage = new Stage(); // Crea una nuova finestra
@@ -103,10 +109,8 @@ public class LoginController {
             stage.setWidth(570);
             stage.setHeight(580);
             stage.show();
-
         } catch (IOException e) {
             e.printStackTrace();
-
         }
     }
 }
