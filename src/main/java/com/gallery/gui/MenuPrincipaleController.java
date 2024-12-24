@@ -60,13 +60,7 @@ public class MenuPrincipaleController {
             System.err.println("ProfiloController non è inizializzato!");
             return;
         }
-        if (nuovoUsername == null || nuovaEmail == null || nuovaPassword == null ||
-                nuovoUsername.isEmpty() || nuovaEmail.isEmpty() || nuovaPassword.isEmpty()) {
-            System.out.println("Tutti i campi devono essere compilati!");
-            return;
-        }
         profilo.updateProfileData(nuovoUsername, nuovaEmail, nuovaPassword, webView);
-        System.out.println("Dati aggiornati con successo!");
     }
 
     public void setUser(User user) {

@@ -1,390 +1,530 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menu Principale</title>
-  <style>
-    :root {
-      --main-bg: #f0f0f0;
-      --sidebar-bg: #e0e0e0;
-      --highlight-color: #666;
-      --font-color: #323232;
-      --secondary-bg: #fff;
-      --icon-color: #666;
-      --icon-hover-color: #fff;
-    }
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Menu Principale</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
 
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: var(--main-bg);
-      color: var(--font-color);
-      display: flex;
-      height: 100vh;
-    }
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #323232;
+            height: 100vh;
+        }
 
-    #navbar {
-      z-index: 10;
-      top: 0;
-      padding: 0;
-      width: 5em;
-      height: 100vh;
-      position: fixed;
-      background-color: var(--sidebar-bg);
-      transition: width 0.3s ease;
-      overflow-y: auto;
-      overflow-x: hidden;
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    #navbar:hover {
-      width: 16em;
-    }
+        #navbar {
+            z-index: 10;
+            top: 0;
+            padding: 0;
+            width: 5em;
+            height: 100vh;
+            position: fixed;
+            background-color: #e0e0e0;
+            transition: width 0.3s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
 
-    .navbar-logo {
-      height: 5em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: var(--highlight-color);
-      border-bottom: 1px solid var(--font-color);
-    }
+        #navbar:hover {
+            width: 16em;
+        }
 
-    .navbar-logo svg {
-      width: 2.5em;
-      height: 2.5em;
-      fill: var(--secondary-bg);
-    }
+        .navbar-logo {
+            height: 5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #666;
+            border-bottom: 1px solid #323232;
+        }
 
-    .navbar-items {
-      margin: 0;
-      padding: 0;
-      list-style-type: none;
-    }
+        .navbar-logo svg {
+            width: 2.5em;
+            height: 2.5em;
+            fill: #fff;
+        }
 
-    .navbar-item {
-      padding: 0.5em 0;
-      cursor: pointer;
-    }
+        .navbar-items {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
 
-    .navbar-item-inner {
-      padding: 1em 0;
-      display: flex;
-      align-items: center;
-      color: var(--font-color);
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
+        .navbar-item {
+            padding: 0.5em 0;
+            cursor: pointer;
+        }
 
-    .navbar-item-inner:hover {
-      background-color: var(--highlight-color);
-      color: var(--icon-hover-color);
-    }
+        .navbar-item-inner {
+            padding: 1em 0;
+            display: flex;
+            align-items: center;
+            color: #323232;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
 
-    .navbar-item-inner-icon-wrapper {
-      width: 3em;
-      display: flex;
-      justify-content: center;
-      padding-left: 1.5em;
-    }
+        .navbar-item-inner:hover {
+            background-color: #666;
+            color: #fff;
+        }
 
-    .navbar-item-inner-icon-wrapper ion-icon {
-      font-size: 1.5em;
-      color: var(--icon-color);
-      transition: color 0.3s ease;
-    }
+        .navbar-item-inner-icon-wrapper {
+            width: 3em;
+            display: flex;
+            justify-content: center;
+            padding-left: 1.5em;
+        }
 
-    .navbar-item-inner:hover ion-icon {
-      color: var(--icon-hover-color);
-    }
+        .navbar-item-inner-icon-wrapper ion-icon {
+            font-size: 1.5em;
+            color: #666;
+            transition: color 0.3s ease;
+        }
 
-    .link-text {
-      margin-left: 1em;
-      opacity: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      transition: opacity 0.3s ease;
-      margin-left: 2.0em;
-    }
+        .navbar-item-inner:hover ion-icon {
+            color: #fff;
+        }
 
-    #navbar:hover .link-text {
-      opacity: 1;
-    }
+        .link-text {
+            margin-left: 1em;
+            opacity: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            transition: opacity 0.3s ease;
+            margin-left: 2em;
+        }
 
-    #main {
-      position: relative;
-      z-index: 1;
-      margin: 0 0 0 5em;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      text-align: center;
-      padding-top: 5em;
-      padding: 2em;
-    }
+        #navbar:hover .link-text {
+            opacity: 1;
+        }
 
-    #main > h2 {
-      font-size: 2.5em;
-      font-weight: bold;
-      margin-bottom: 0.5em;
-    }
+        #main {
+            position: relative;
+            z-index: 1;
+            margin: 0 0 0 5em;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: center;
+            padding-top: 5em;
+            padding: 2em;
+        }
 
-    #main > p {
-      font-size: 1.2em;
-      line-height: 1.6;
-      max-width: 80%;
-      color: var(--font-color);
-    }
+        #main > h2 {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 0.5em;
+        }
 
-    .hidden {
-      display: none;
-    }
+        #main > p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            max-width: 80%;
+            color: #323232;
+        }
 
-    .logout-section {
-      margin-top: auto;
-    }
+        .hidden {
+            display: none;
+        }
 
-    .c4 .btn {
-      position: relative;
-      background: var(--sidebar-bg);
-      color: var(--font-color);
-      font-size: 1.1em;
-      padding: 10px 18px 8px 18px;
-      margin: 8px;
-      transition: background 100ms ease, color 100ms ease;
-      border: none;
-      cursor: pointer;
-    }
+        .c4 .btn {
+            position: relative;
+            background: #e0e0e0;
+            color: #323232;
+            font-size: 1.1em;
+            padding: 10px 18px 8px 18px;
+            margin: 8px;
+            transition: background 100ms ease, color 100ms ease;
+            border: none;
+            cursor: pointer;
+        }
 
-    .c4 .btn:hover {
-      background: white;
-      color: black;
-      transition: background 150ms linear, color 150ms linear;
-    }
+        .c4 .btn:hover {
+            background: white;
+            color: black;
+            transition: background 150ms linear, color 150ms linear;
+        }
 
-    .c4 .btn:before {
-      position: absolute;
-      content: "";
-      inset: 0;
-      background: rgba(255, 255, 255, 0.1);
-      pointer-events: none;
-      clip-path: polygon(-10% -10%, -10% 110%, 10% 90%, 6% 10%, 94% 10%, 91% 90%, 10% 90%, -10% 110%, 110% 110%, 110% -10%);
-    }
+        .c4 .btn:before {
+            position: absolute;
+            content: "";
+            inset: 0;
+            background: rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+            clip-path: polygon(-10% -10%, -10% 110%, 10% 90%, 6% 10%, 94% 10%, 91% 90%, 10% 90%, -10% 110%, 110% 110%, 110% -10%);
+        }
 
-    .c4 .btn:after {
-      position: absolute;
-      content: "";
-      inset: 0;
-      border: 0px solid white;
-    }
+        .c4 .btn:after {
+            position: absolute;
+            content: "";
+            inset: 0;
+            border: 0px solid white;
+        }
 
-    .c4 .btn:hover:after {
-      animation: 300ms ease c4border;
-      animation-fill-mode: forwards;
-    }
+        .c4 .btn:hover:after {
+            animation: 300ms ease c4border;
+            animation-fill-mode: forwards;
+        }
 
-    @keyframes c4border {
-      0% {
-        inset: -16px;
-        border: 2px solid white;
-        border-radius: 10px;
-        opacity: 0;
-      }
-      60% {
-        inset: -7px;
-        border: 6px solid white;
-        border-radius: 7px;
-        opacity: 0.7;
-      }
-      100% {
-        inset: -8px;
-        border: 4px solid white;
-        border-radius: 8px;
-        opacity: 0.7;
-      }
-    }
-  </style>
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-  <script>
-    function showSection(sectionId) {
-      const sections = document.querySelectorAll('main > div');
-      sections.forEach(section => section.classList.add('hidden'));
-      document.getElementById(sectionId).classList.remove('hidden');
-      const menuItems = document.querySelectorAll('.navbar-item');
-      menuItems.forEach(item => item.classList.remove('active'));
-      const clickedItem = document.querySelector(`.navbar-item a[onclick="showSection('${sectionId}')"]`);
-      if (clickedItem) {
-        clickedItem.parentElement.classList.add('active');
-      }
-    }
+        @keyframes c4border {
+            0% {
+                inset: -16px;
+                border: 2px solid white;
+                border-radius: 10px;
+                opacity: 0;
+            }
+            60% {
+                inset: -7px;
+                border: 6px solid white;
+                border-radius: 7px;
+                opacity: 0.7;
+            }
+            100% {
+                inset: -8px;
+                border: 4px solid white;
+                border-radius: 8px;
+                opacity: 0.7;
+            }
+        }
 
-    function exitApp() {
-      if (window.javafxController) {
-        window.javafxController.exitApp();
-      }
-    }
+        .inp {
+            position: relative;
+            margin: auto;
+            width: 100%;
+            max-width: 280px;
+            height: 60px;
+        }
 
-    function logout() {
-      if (window.javafxController) {
-        window.javafxController.logout();
-      }
-    }
+        .inp .border {
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            height: 18px;
+            fill: none;
+        }
 
-    function updateUserData() {
-      const settingsForm = document.getElementById('settings-form');
-      const newUsername = document.getElementById('new-username').value;
-      const newEmail = document.getElementById('new-email').value;
-      const newPassword = document.getElementById('new-password').value;
-      if (!newUsername || !newEmail || !newPassword) {
-        alert('Tutti i campi devono essere compilati!');
-        return;
-      }
-      document.getElementById('new-username').value = '';
-      document.getElementById('new-email').value = '';
-      document.getElementById('new-password').value = '';
-      if (window.javafxController) {
-        window.javafxController.updateProfilo(newUsername, newEmail, newPassword);
-        alert('Dati aggiornati con successo!');
-        settingsForm.classList.add('hidden');
-      } else {
-        console.error("Controller JavaFX non trovato.");
-      }
-    }
+        .inp .border path {
+            stroke: #C8CCD4;
+            stroke-width: 2;
+            transition: all 0.2s ease;
+        }
 
-    function toggleSettingsForm() {
-      const settingsForm = document.getElementById('settings-form');
-      if (settingsForm.classList.contains('hidden')) {
-        settingsForm.classList.remove('hidden'); // Mostra il modulo
-      } else {
-        settingsForm.classList.add('hidden'); // Nascondi il modulo
-      }
-    }
+        .inp .check {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            fill: none;
+            transform: scale(0);
+            transition: all 0.3s cubic-bezier(0.5, 0.9, 0.25, 1.3);
+            transition-delay: 0.15s;
+        }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      showSection('home-section');
-    });
-  </script>
+        .inp .check path {
+            stroke: #0077FF;
+            stroke-width: 2;
+        }
+
+        .inp input {
+            -webkit-appearance: none;
+            width: 100%;
+            border: 0;
+            font-family: inherit;
+            padding: 0;
+            height: 48px;
+            font-size: 16px;
+            font-weight: 500;
+            background: none;
+            border-radius: 0;
+            color: #223254;
+            transition: all 0.15s ease;
+        }
+
+        .inp input:focus {
+            outline: none;
+        }
+
+        .inp input:focus + .border path {
+            stroke: #0077FF;
+        }
+
+        .inp input:valid + .border path {
+            animation: elasticInput 0.8s ease forwards;
+        }
+
+        .inp input:valid + .border + .check {
+            transform: scale(1);
+        }
+
+        .inp input::placeholder {
+            color: #9098A9;
+        }
+
+        @keyframes elasticInput {
+            33% {
+                d: path("M0,12 L226,12 C220,12 220.666667,12 228,12 C239,12 245,1 253,1 C261,1 268,12 278,12 C284.666667,12 285.333333,12 280,12");
+            }
+            66% {
+                d: path("M0,12 L226,12 C220,12 220.666667,12 228,12 C239,12 245,17 253,17 C261,17 268,12 278,12 C284.666667,12 285.333333,12 280,12");
+            }
+        }
+    </style>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <!-- Script funzioni -->
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('main > div');
+            sections.forEach(section => section.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+
+            const menuItems = document.querySelectorAll('.navbar-item');
+            menuItems.forEach(item => item.classList.remove('active'));
+
+            const clickedItem = document.querySelector('.navbar-item a[onclick="showSection(\'' + sectionId + '\')"]');
+            if (clickedItem) {
+                clickedItem.parentElement.classList.add('active');
+            }
+        }
+
+        function exitApp() {
+            if (window.javafxController) {
+                window.javafxController.exitApp();
+            }
+        }
+
+        function logout() {
+            if (window.javafxController) {
+                window.javafxController.logout();
+            }
+        }
+
+        function updateUserData() {
+            const newUsername = document.getElementById('new-username').value;
+            const newEmail = document.getElementById('new-email').value;
+            const newPassword = document.getElementById('new-password').value;
+
+            // Svuota i campi dopo aver salvato
+            document.getElementById('new-username').value = '';
+            document.getElementById('new-email').value = '';
+            document.getElementById('new-password').value = '';
+
+            // Se il controller JavaFX è presente, invia i dati
+            if (window.javafxController) {
+                window.javafxController.updateProfilo(newUsername, newEmail, newPassword);
+            } else {
+                console.error("Controller JavaFX non trovato.");
+            }
+            document.getElementById('settings-form').classList.add('hidden');
+        }
+
+        function toggleSettingsForm() {
+            const settingsForm = document.getElementById('settings-form');
+            if (settingsForm.classList.contains('hidden')) {
+                settingsForm.classList.remove('hidden');
+            } else {
+                settingsForm.classList.add('hidden');
+            }
+        }
+
+        function goToGallery() {
+            if (window.javafxController) {
+                window.javafxController.goToGallery();
+            }
+        }
+
+        function goToAuctions() {
+            if (window.javafxController) {
+                window.javafxController.goToAuctions();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('home-section');
+        });
+    </script>
 </head>
+
 <body>
+<!-- Barra laterale di navigazione -->
 <nav id="navbar">
-  <div class="navbar-logo">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1438.88 1819.54">
-      <polygon points="925.79 318.48 830.56 0 183.51 1384.12 510.41 1178.46 925.79 318.48" fill="var(--secondary-bg)"/>
-      <polygon points="1438.88 1663.28 1126.35 948.08 111.98 1586.26 0 1819.54 1020.91 1250.57 1123.78 1471.02 783.64 1663.28 1438.88 1663.28" fill="var(--font-color)"/>
-    </svg>
-  </div>
-  <ul class="navbar-items">
-    <li class="navbar-item">
-      <a class="navbar-item-inner" onclick="showSection('home-section')">
-        <div class="navbar-item-inner-icon-wrapper">
-          <ion-icon name="home-outline"></ion-icon>
-        </div>
-        <span class="link-text">Home</span>
-      </a>
-    </li>
-    <li class="navbar-item">
-      <a class="navbar-item-inner">
-        <div class="navbar-item-inner-icon-wrapper">
-          <ion-icon name="search-outline"></ion-icon>
-        </div>
-        <span class="link-text">Cerca</span>
-      </a>
-    </li>
-    <li class="navbar-item">
-      <a class="navbar-item-inner" onclick="showSection('profile-section')">
-        <div class="navbar-item-inner-icon-wrapper">
-          <ion-icon name="people-outline"></ion-icon>
-        </div>
-        <span class="link-text">Profilo</span>
-      </a>
-    </li>
-    <li class="navbar-item">
-      <a class="navbar-item-inner" onclick="goToGallery()">
-        <div class="navbar-item-inner-icon-wrapper">
-          <ion-icon name="folder-open-outline"></ion-icon>
-        </div>
-        <span class="link-text">Galleria</span>
-      </a>
-    </li>
-    <li class="navbar-item">
-      <a class="navbar-item-inner" onclick="goToAuctions()">
-        <div class="navbar-item-inner-icon-wrapper">
-          <ion-icon name="pie-chart-outline"></ion-icon>
-        </div>
-        <span class="link-text">Aste</span>
-      </a>
-    </li>
-    <li class="navbar-item">
-      <a class="navbar-item-inner" onclick="showSection('notifications-section')">
-        <div class="navbar-item-inner-icon-wrapper">
-          <ion-icon name="notifications-outline"></ion-icon>
-        </div>
-        <span class="link-text">Notifiche</span>
-      </a>
-    </li>
-    <li class="navbar-item">
-      <a class="navbar-item-inner" onclick="showSection('settings-section')">
-        <div class="navbar-item-inner-icon-wrapper">
-          <ion-icon name="settings-outline"></ion-icon>
-        </div>
-        <span class="link-text">Impostazioni</span>
-      </a>
-    </li>
-    <li class="navbar-item logout-section">
-      <a class="navbar-item-inner" onclick="exitApp()">
-        <div class="navbar-item-inner-icon-wrapper">
-          <ion-icon name="log-out-outline"></ion-icon>
-        </div>
-        <span class="link-text">Esci</span>
-      </a>
-    </li>
-  </ul>
-</nav>
-<main id="main">
-  <div id="home-section">
-    <h1>Benvenuto!</h1>
-    <p>Questa è la pagina principale.</p>
-  </div>
-  <div id="profile-section" class="hidden">
-    <h1>Informazioni Profilo</h1>
-    <div class="info"><strong>Username:</strong> <span id="username"></span></div>
-    <div class="info"><strong>Email:</strong> <span id="email"></span></div>
-    <div class="info"><strong>Password:</strong> <span id="password"></span></div>
-    <div class="info"><strong>Ruolo:</strong> <span id="role"></span></div>
-  </div>
-
-  <div id="notifications-section" class="hidden">
-    <h1>Notifiche</h1>
-    <div class="info">Non hai nuove notifiche.</div>
-  </div>
-
-  <div id="settings-section" class="hidden" style="position: relative;">
-    <h1 style="text-align: left; margin-left: 8px;">Impostazioni</h1>
-    <div class="c4">
-      <button class="btn" onclick="toggleSettingsForm()">Cambia i tuoi dati</button>
-      <button class="btn" onclick="logout()">Logout</button>
+    <div class="navbar-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1438.88 1819.54">
+            <polygon
+                    points="925.79 318.48 830.56 0 183.51 1384.12 510.41 1178.46 925.79 318.48"
+                    fill="#fff"
+            />
+            <polygon
+                    points="1438.88 1663.28 1126.35 948.08 111.98 1586.26 0 1819.54 1020.91 1250.57 1123.78 1471.02 783.64 1663.28 1438.88 1663.28"
+                    fill="#323232"
+            />
+        </svg>
     </div>
-    <form id="settings-form" class="hidden settings-form" style="border: 1px solid var(--font-color); padding: 10px; margin-top: 20px; width: fit-content; text-align: left; position: absolute; top: 120px; left: 0;">
-      <div style="margin-bottom: 10px;">
-        <label for="new-username"><strong>Nuovo Username:</strong></label>
-        <input type="text" id="new-username" placeholder="Nuovo username" style="margin-left: 10px;">
-      </div>
-      <div style="margin-bottom: 10px;">
-        <label for="new-email"><strong>Nuova Email:</strong></label>
-        <input type="email" id="new-email" placeholder="Nuova email" style="margin-left: 10px;">
-      </div>
-      <div style="margin-bottom: 10px;">
-        <label for="new-password"><strong>Nuova Password:</strong></label>
-        <input type="password" id="new-password" placeholder="Nuova password" style="margin-left: 10px;">
-      </div>
-      <button type="button" onclick="updateUserData()">Salva</button>
-    </form>
-  </div>
+    <ul class="navbar-items">
+        <li class="navbar-item">
+            <a class="navbar-item-inner" onclick="showSection('home-section')">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="home-outline"></ion-icon>
+                </div>
+                <span class="link-text">Home</span>
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a class="navbar-item-inner">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="search-outline"></ion-icon>
+                </div>
+                <span class="link-text">Cerca</span>
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a class="navbar-item-inner" onclick="showSection('profile-section')">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="people-outline"></ion-icon>
+                </div>
+                <span class="link-text">Profilo</span>
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a class="navbar-item-inner" onclick="goToGallery()">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="folder-open-outline"></ion-icon>
+                </div>
+                <span class="link-text">Galleria</span>
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a class="navbar-item-inner" onclick="goToAuctions()">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="pie-chart-outline"></ion-icon>
+                </div>
+                <span class="link-text">Aste</span>
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a class="navbar-item-inner" onclick="showSection('notifications-section')">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="notifications-outline"></ion-icon>
+                </div>
+                <span class="link-text">Notifiche</span>
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a class="navbar-item-inner" onclick="showSection('settings-section')">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="settings-outline"></ion-icon>
+                </div>
+                <span class="link-text">Impostazioni</span>
+            </a>
+        </li>
+        <li class="navbar-item logout-section">
+            <a class="navbar-item-inner" onclick="exitApp()">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="log-out-outline"></ion-icon>
+                </div>
+                <span class="link-text">Esci</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+<!-- Contenuto principale -->
+<main id="main">
+    <!-- Sezione Home -->
+    <div id="home-section">
+        <h1>Benvenuto!</h1>
+        <p>Questa è la pagina principale.</p>
+    </div>
+    <!-- Sezione Profilo -->
+    <div id="profile-section" class="hidden">
+        <h1>Informazioni Profilo</h1>
+        <div class="info"><strong>Username:</strong> <span id="username"></span></div>
+        <div class="info"><strong>Email:</strong> <span id="email"></span></div>
+        <div class="info"><strong>Password:</strong> <span id="password"></span></div>
+        <div class="info"><strong>Ruolo:</strong> <span id="role"></span></div>
+    </div>
+    <!-- Sezione Notifiche -->
+    <div id="notifications-section" class="hidden">
+        <h1>Notifiche</h1>
+        <div class="info">Non hai nuove notifiche.</div>
+    </div>
+    <!-- Sezione Impostazioni -->
+    <div id="settings-section" class="hidden" style="position: relative;">
+        <h1 style="text-align: left; margin-left: 8px;">Impostazioni</h1>
+        <div class="c4">
+            <button class="btn" onclick="toggleSettingsForm()">Cambia i tuoi dati</button>
+            <button class="btn" onclick="logout()">Logout</button>
+        </div>
+        <!-- Form di modifica dati, inizialmente nascosto -->
+        <form id="settings-form" class="hidden settings-form" style="
+              border: 1px solid #323232;
+              padding: 10px;
+              margin-top: 20px;
+              width: fit-content;
+              text-align: left;
+              position: absolute;
+              top: 120px;
+              left: 0; ">
+            <div class="inp" style="margin-bottom: 20px;">
+                <label for="new-username" class="inp">
+                    <input type="text" id="new-username" placeholder="Nuovo Username" pattern=".{1,}" required/>
+                    <svg width="185px" height="18px" viewBox="0 0 280 18" class="border">
+                        <path d="M0,12 L223.166144,12 C217.241379,12 217.899687,12 225.141066,12
+                               C236.003135,12 241.9279,12 249.827586,12
+                               C257.727273,12 264.639498,12 274.514107,12
+                               C281.097179,12 281.755486,12 276.489028,12"></path>
+                    </svg>
+                    <svg width="14px" height="12px" viewBox="0 0 14 12" class="check">
+                        <path d="M1 7 5.5 11 L13 1"></path>
+                    </svg>
+                </label>
+            </div>
+            <div class="inp" style="margin-bottom: 20px;">
+                <label for="new-email" class="inp">
+                    <input type="text" id="new-email" placeholder="Nuova Email" pattern=".{1,}" required/>
+                    <svg width="185px" height="18px" viewBox="0 0 280 18" class="border">
+                        <path d="M0,12 L223.166144,12 C217.241379,12 217.899687,12 225.141066,12
+                               C236.003135,12 241.9279,12 249.827586,12
+                               C257.727273,12 264.639498,12 274.514107,12
+                               C281.097179,12 281.755486,12 276.489028,12"></path>
+                    </svg>
+                    <svg width="14px" height="12px" viewBox="0 0 14 12" class="check">
+                        <path d="M1 7 5.5 11 L13 1"></path>
+                    </svg>
+                </label>
+            </div>
+            <div class="inp" style="margin-bottom: 10px;">
+                <label for="new-password" class="inp">
+                    <input type="password" id="new-password" placeholder="Nuova Password" pattern=".{6,}" required/>
+                    <svg width="185px" height="18px" viewBox="0 0 280 18" class="border">
+                        <path d="M0,12 L223.166144,12 C217.241379,12 217.899687,12 225.141066,12
+                               C236.003135,12 241.9279,12 249.827586,12
+                               C257.727273,12 264.639498,12 274.514107,12
+                               C281.097179,12 281.755486,12 276.489028,12"></path>
+                    </svg>
+                    <svg width="14px" height="12px" viewBox="0 0 14 12" class="check">
+                        <path d="M1 7 5.5 11 L13 1"></path>
+                    </svg>
+                </label>
+            </div>
+            <button type="button" onclick="updateUserData()">Salva</button>
+        </form>
+    </div>
 </main>
 </body>
 </html>
