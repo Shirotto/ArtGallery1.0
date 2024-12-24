@@ -49,7 +49,6 @@ public class LoginController {
 
     // Gestione evento di login
     public void handleLoginButtonClick(String email, String password) {
-
         if (gestioneUtente.verificaCredenziali(email, password)) {
             currentUser = gestioneUtente.getUserByEmail(email);
             apriMenuPrincipale();
@@ -61,12 +60,9 @@ public class LoginController {
 
     // Gestione evento registrazione
     public void handleSignUpButtonClick(String name, String email, String password) {
-
         if (gestioneUtente.registraUtente(name, email, password)) {
             closeCurrentWindow();
             riapriFinestraLogin();
-
-
         }
     }
 
