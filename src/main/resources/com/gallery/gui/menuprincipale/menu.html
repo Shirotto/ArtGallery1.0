@@ -273,7 +273,6 @@
         .inp input::placeholder {
             color: #9098A9;
         }
-
         @keyframes elasticInput {
             33% {
                 d: path("M0,12 L226,12 C220,12 220.666667,12 228,12 C239,12 245,1 253,1 C261,1 268,12 278,12 C284.666667,12 285.333333,12 280,12");
@@ -281,6 +280,59 @@
             66% {
                 d: path("M0,12 L226,12 C220,12 220.666667,12 228,12 C239,12 245,17 253,17 C261,17 268,12 278,12 C284.666667,12 285.333333,12 280,12");
             }
+        }
+        #gallery-section {
+            width: 100%;
+            text-align: left;
+        }
+        #gallery-section h1 {
+            margin-bottom: 1em;
+            font-size: 2em;
+            color: #323232;
+        }
+
+        .gallery-category {
+            margin-bottom: 2em;
+        }
+        .gallery-category h2 {
+            margin: 0 0 0.5em 0;
+            font-size: 1.4em;
+            color: #666;
+            padding-left: 10px;
+        }
+
+        .gallery-row-container {
+            position: relative;
+            width: 80%;
+            margin-left: 5px;
+            overflow-x: auto;
+            min-height: 120px;
+        }
+
+        .gallery-row {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            margin-left: 10px;
+        }
+        .gallery-row::-webkit-scrollbar {
+            height: 8px;
+        }
+        .gallery-row::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 4px;
+        }
+        .gallery-item {
+            min-width: 160px;
+            height: 100px;
+            background-color: #ccc;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #666;
+            border-radius: 4px;
         }
     </style>
 
@@ -343,10 +395,9 @@
             }
         }
 
+
         function goToGallery() {
-            if (window.javafxController) {
-                window.javafxController.goToGallery();
-            }
+            showSection('gallery-section');
         }
 
         function goToAuctions() {
@@ -470,11 +521,75 @@
             <span id="role" style="font-size: 1.1em; color: #323232; margin-left: 10px;">Inserisci Ruolo</span>
         </div>
     </div>
+
     <!-- Sezione Notifiche -->
     <div id="notifications-section" class="hidden">
         <h1>Notifiche</h1>
         <div class="info">Non hai nuove notifiche.</div>
     </div>
+
+    <!-- sezione galleria -->
+    <div id="gallery-section" class="hidden">
+        <h1>Galleria</h1>
+
+        <!-- Categoria 1 -->
+        <div class="gallery-category">
+            <h2>Categoria 1</h2>
+            <div class="gallery-row-container">
+                <div class="gallery-row" id="row-cat1">
+                    <div class="gallery-item">Opera 1</div>
+                    <div class="gallery-item">Opera 2</div>
+                    <div class="gallery-item">Opera 3</div>
+                    <div class="gallery-item">Opera 4</div>
+                    <div class="gallery-item">Opera 5</div>
+                    <div class="gallery-item">Opera 6</div>
+                    <div class="gallery-item">Opera 7</div>
+                    <div class="gallery-item">Opera 8</div>
+                    <div class="gallery-item">Opera 9</div>
+                    <div class="gallery-item">Opera 10</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categoria 2 -->
+        <div class="gallery-category">
+            <h2>Categoria 2</h2>
+            <div class="gallery-row-container">
+                <div class="gallery-row" id="row-cat2">
+                    <div class="gallery-item">Opera A</div>
+                    <div class="gallery-item">Opera B</div>
+                    <div class="gallery-item">Opera C</div>
+                    <div class="gallery-item">Opera D</div>
+                    <div class="gallery-item">Opera E</div>
+                    <div class="gallery-item">Opera F</div>
+                    <div class="gallery-item">Opera G</div>
+                    <div class="gallery-item">Opera H</div>
+                    <div class="gallery-item">Opera I</div>
+                    <div class="gallery-item">Opera J</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categoria 3 -->
+        <div class="gallery-category">
+            <h2>Categoria 3</h2>
+            <div class="gallery-row-container">
+                <div class="gallery-row" id="row-cat3">
+                    <div class="gallery-item">Opera X</div>
+                    <div class="gallery-item">Opera Y</div>
+                    <div class="gallery-item">Opera Z</div>
+                    <div class="gallery-item">Opera W</div>
+                    <div class="gallery-item">Opera K</div>
+                    <div class="gallery-item">Opera L</div>
+                    <div class="gallery-item">Opera M</div>
+                    <div class="gallery-item">Opera N</div>
+                    <div class="gallery-item">Opera O</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Sezione Impostazioni -->
     <div id="settings-section" class="hidden" style="position: relative;">
         <h1 style="text-align: left; margin-left: 8px;">Impostazioni</h1>
@@ -482,7 +597,6 @@
             <button class="btn" onclick="toggleSettingsForm()">Cambia i tuoi dati</button>
             <button class="btn" onclick="logout()">Logout</button>
         </div>
-        <!-- Form di modifica dati, inizialmente nascosto -->
         <form id="settings-form" class="hidden settings-form" style="
               border: 1px solid #323232;
               padding: 10px;
