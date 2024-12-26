@@ -1,8 +1,10 @@
 package com.gallery.gui;
 
+import com.GestioneDB.GestioneOpere;
 import com.entity.User;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -27,6 +29,17 @@ public class MenuPrincipaleController {
     public void initialize() {
         WebEngine webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
+
+        //mi fa visualizzare gli alert definiti nel html
+        webEngine.setOnAlert(event -> {
+            String message = event.getData();
+            System.out.println("Alert JavaScript: " + message);
+            // Oltre alla console, puoi visualizzare l'alert con una finestra JavaFX
+           showAlert(message);
+        });
+
+
+
         String htmlFilePath = getClass().getResource("/com/gallery/gui/menuprincipale/menu.html").toExternalForm();
         if (htmlFilePath == null) {
             System.err.println("File HTML non trovato.");
@@ -68,5 +81,22 @@ public class MenuPrincipaleController {
         if (profilo != null) {
             profilo.setUserData(user, webView);
         }
+    }
+
+    // Metodo per gestire il salvataggio dell'opera
+    public void salvaOpera(String titolo, String descrizione, String imageDataBase64) {
+        // Converte i dati base64 dell'immagine in byte[]
+        byte[] immagine = java.util.Base64.getDecoder().decode(imageDataBase64.split(",")[1]);
+
+        // Salva l'opera nel database
+        GestioneOpere.salvaOpera(titolo, descrizione, immagine);
+        System.out.println("Opera salvata con successo.");
+    }
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Messaggio");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

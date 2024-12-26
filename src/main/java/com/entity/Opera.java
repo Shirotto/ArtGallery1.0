@@ -13,9 +13,11 @@ public class Opera {
     @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+   /* @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idUser", nullable = false)
     private User user;
+
+    */
 
     @Column(name = "descrizione", length = 500)
     private String descrizione;
@@ -29,9 +31,9 @@ public class Opera {
     }
 
     // Costruttore con parametri
-    public Opera(String nome, User user, String descrizione, byte[] immagine) {
+    public Opera(String nome, String descrizione, byte[] immagine) {
         this.nome = nome;
-        this.user = user;
+      //  this.user = user;
         this.descrizione = descrizione;
         this.immagine = immagine;
     }
@@ -53,13 +55,17 @@ public class Opera {
         this.nome = nome;
     }
 
-    public User getUser() {
+  /*  public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+   */
+
+   /* public void setUser(User user) {
         this.user = user;
     }
+
+    */
 
     public String getDescrizione() {
         return descrizione;
@@ -82,7 +88,7 @@ public class Opera {
         return "Opera{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
-                ", user=" + user +
+              //  ", user=" + user +
                 ", descrizione='" + descrizione + '\'' +
                 '}';
     }

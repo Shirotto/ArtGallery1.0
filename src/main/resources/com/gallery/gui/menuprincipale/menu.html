@@ -334,10 +334,64 @@
             color: #666;
             border-radius: 4px;
         }
+        <!-- Stile per il popup -->
+         .popup {
+             display: none;
+             position: fixed;
+             top: 0;
+             left: 0;
+             width: 100%;
+             height: 100%;
+             background-color: rgba(0, 0, 0, 0.5);
+             justify-content: center;
+             align-items: center;
+         }
+
+        .popup-content {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            width: 300px;
+        }
+
+        .popup-content input, .popup-content textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        .carica-opera-btn {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .carica-opera-btn:hover {
+            background-color: #45a049;
+        }
+        
+
     </style>
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+
+    <script>
+        document.getElementById('annullaBtn').addEventListener('click', function() {
+            // Resetta il form, svuotando i campi
+            document.getElementById('titolo').value = '';
+            document.getElementById('descrizione').value = '';
+            document.getElementById('fileInput').value = ''; // Svuota il file input
+
+            // Se vuoi nascondere il popup dopo l'annullamento
+            document.getElementById('caricaOperaPopup').classList.add('hidden');
+        });
+    </script>
 
     <!-- Script funzioni -->
     <script>
@@ -366,6 +420,7 @@
                 window.javafxController.logout();
             }
         }
+
 
         function updateUserData() {
             const newUsername = document.getElementById('new-username').value;
@@ -406,9 +461,54 @@
             }
         }
 
+        document.addEventListener('DOMContentLoaded', function () {
+            var salvaOperaBtn = document.getElementById('salvaOperaBtn');
+            salvaOperaBtn.addEventListener('click', salvaOpera);
+
+        });
+
+
+        function salvaOpera() {
+
+            console.log("Funzione salvaOpera chiamata!");  // Verifica se la funzione è invocata
+
+            // Ottieni i dati dal form
+            var titolo = document.getElementById("titolo").value;
+            var descrizione = document.getElementById("descrizione").value;
+            var fileInput = document.getElementById("fileInput");
+            var file = fileInput.files[0];
+
+
+
+            if (!titolo || !descrizione || !file) {
+                alert("Compila tutti i campi e/o carica il File");
+                console.log("Campi mancanti");
+                return;
+            }
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var imageData = e.target.result; // I dati dell'immagine in base64
+
+                // Verifica che javafxController sia disponibile
+                if (window.javafxController) {
+                    console.log("Chiamata al metodo salvaOpera in JavaFX");
+                    window.javafxController.salvaOpera(titolo, descrizione, imageData);
+                    alert("L'Opera è stata salvata crrettamente!");  // Questo alert dovrebbe apparire
+                } else {
+                    console.error("javafxController non trovato!");
+                    alert("Errore nel salvataggio dell'opera.");
+                }
+            };
+            reader.readAsDataURL(file); // Converte il file in base64
+        }
+
+
         document.addEventListener('DOMContentLoaded', () => {
             showSection('home-section');
         });
+
+
     </script>
 </head>
 
@@ -586,7 +686,19 @@
                     <div class="gallery-item">Opera O</div>
                 </div>
             </div>
+            <!-- Popup per caricare l'opera -->
+            <div id="caricaOperaPopup" class="popup">
+                <div class="popup-content">
+                    <h3>Carica una nuova opera</h3>
+                    <input type="file" id="fileInput" accept="image/*">
+                    <input type="text" id="titolo" placeholder="Inserisci il titolo" required>
+                    <textarea id="descrizione" placeholder="Inserisci la descrizione" required></textarea>
+                    <button id="salvaOperaBtn">Salva Opera</button>
+                    <button id="annullaBtn">Annulla</button>
+                </div>
+            </div>
         </div>
+
     </div>
 
 
