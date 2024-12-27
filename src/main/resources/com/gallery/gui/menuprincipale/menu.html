@@ -9,6 +9,7 @@
             height: 100%;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
         }
 
         body {
@@ -24,7 +25,7 @@
         }
 
         #navbar {
-            z-index: 10;
+            z-index: 1000;
             top: 0;
             padding: 0;
             width: 5em;
@@ -114,15 +115,22 @@
         #main {
             position: relative;
             z-index: 1;
-            margin: 0 0 0 5em;
+            margin-left: 5em;
+            transition: margin-left 0.3s ease;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             justify-content: flex-start;
-            text-align: center;
-            padding-top: 5em;
+            text-align: left;
             padding: 2em;
+            width: 100%;
+            max-width: calc(100% - 5em);
+        }
+
+        #navbar:hover + #main {
+            margin-left: 16em;
+            max-width: calc(100% - 16em);
         }
 
         #main > h2 {
@@ -148,7 +156,7 @@
             color: #323232;
             font-size: 1.1em;
             padding: 10px 18px 8px 18px;
-            margin: 8px;
+            margin: 8px 0;
             transition: background 100ms ease, color 100ms ease;
             border: none;
             cursor: pointer;
@@ -273,6 +281,7 @@
         .inp input::placeholder {
             color: #9098A9;
         }
+
         @keyframes elasticInput {
             33% {
                 d: path("M0,12 L226,12 C220,12 220.666667,12 228,12 C239,12 245,1 253,1 C261,1 268,12 278,12 C284.666667,12 285.333333,12 280,12");
@@ -281,10 +290,15 @@
                 d: path("M0,12 L226,12 C220,12 220.666667,12 228,12 C239,12 245,17 253,17 C261,17 268,12 278,12 C284.666667,12 285.333333,12 280,12");
             }
         }
+
         #gallery-section {
             width: 100%;
             text-align: left;
+            max-width: 100%;
+            position: relative;
+            z-index: 1;
         }
+
         #gallery-section h1 {
             margin-bottom: 1em;
             font-size: 2em;
@@ -294,6 +308,7 @@
         .gallery-category {
             margin-bottom: 2em;
         }
+
         .gallery-category h2 {
             margin: 0 0 0.5em 0;
             font-size: 1.4em;
@@ -303,213 +318,130 @@
 
         .gallery-row-container {
             position: relative;
-            width: 80%;
-            margin-left: 5px;
+            width: 100%;
+            max-width: 100%;
+            margin-left: 0;
             overflow-x: auto;
-            min-height: 120px;
+            white-space: nowrap;
+            padding-bottom: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: #606060 #e0e0e0;
         }
 
         .gallery-row {
             display: flex;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            margin-left: 10px;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            margin-left: 0;
         }
-        .gallery-row::-webkit-scrollbar {
-            height: 8px;
-        }
-        .gallery-row::-webkit-scrollbar-thumb {
-            background-color: #888;
-            border-radius: 4px;
-        }
+
         .gallery-item {
             min-width: 160px;
             height: 100px;
             background-color: #ccc;
-            margin-right: 10px;
+            margin: 0 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
             color: #666;
             border-radius: 4px;
+            flex: 0 0 auto;
+            max-width: 200px;
         }
-        <!-- Stile per il popup -->
-         .popup {
-             display: none;
-             position: fixed;
-             top: 0;
-             left: 0;
-             width: 100%;
-             height: 100%;
-             background-color: rgba(0, 0, 0, 0.5);
-             justify-content: center;
-             align-items: center;
-         }
 
-        .popup-content {
-            background: white;
+        #carica-opera-form {
+            border: 1px solid #323232;
             padding: 20px;
-            border-radius: 5px;
-            text-align: center;
-            width: 300px;
-        }
-
-        .popup-content input, .popup-content textarea {
+            margin-top: 20px;
             width: 100%;
-            margin-bottom: 10px;
+            max-width: 400px;
+            text-align: left;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+
+        #carica-opera-form h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            color: #323232;
+        }
+
+        #carica-opera-form .form-group {
+            margin-bottom: 15px;
+        }
+
+        #carica-opera-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #666;
+        }
+
+        #carica-opera-form input[type="file"],
+        #carica-opera-form input[type="text"],
+        #carica-opera-form textarea {
+            width: 100%;
             padding: 8px;
-            font-size: 16px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
 
-        .carica-opera-btn {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
+        #carica-opera-form textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        #carica-opera-form .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        #carica-opera-form button {
+            padding: 10px 20px;
+            font-size: 1em;
             border: none;
+            border-radius: 4px;
             cursor: pointer;
+            margin-left: 10px;
+            background-color: #808080;
+            color: white;
+            transition: background-color 0.3s ease;
         }
 
-        .carica-opera-btn:hover {
-            background-color: #45a049;
+        #carica-opera-form button:hover {
+            background-color: #606060;
         }
-        
 
+        .gallery-row-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .gallery-row-container::-webkit-scrollbar-track {
+            background: #e0e0e0;
+            border-radius: 4px;
+        }
+
+        .gallery-row-container::-webkit-scrollbar-thumb {
+            background-color: #606060;
+            border-radius: 4px;
+            border: none;
+        }
+
+        .gallery-row-container::-webkit-scrollbar-button {
+            display: none;
+        }
+        @supports (scrollbar-color: darkgrey lightgrey) {
+            .gallery-row-container {
+                scrollbar-color: #606060 #e0e0e0;
+                scrollbar-width: thin;
+            }
+        }
     </style>
-
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
-
-    <script>
-        document.getElementById('annullaBtn').addEventListener('click', function() {
-            // Resetta il form, svuotando i campi
-            document.getElementById('titolo').value = '';
-            document.getElementById('descrizione').value = '';
-            document.getElementById('fileInput').value = ''; // Svuota il file input
-
-            // Se vuoi nascondere il popup dopo l'annullamento
-            document.getElementById('caricaOperaPopup').classList.add('hidden');
-        });
-    </script>
-
-    <!-- Script funzioni -->
-    <script>
-        function showSection(sectionId) {
-            const sections = document.querySelectorAll('main > div');
-            sections.forEach(section => section.classList.add('hidden'));
-            document.getElementById(sectionId).classList.remove('hidden');
-
-            const menuItems = document.querySelectorAll('.navbar-item');
-            menuItems.forEach(item => item.classList.remove('active'));
-
-            const clickedItem = document.querySelector('.navbar-item a[onclick="showSection(\'' + sectionId + '\')"]');
-            if (clickedItem) {
-                clickedItem.parentElement.classList.add('active');
-            }
-        }
-
-        function exitApp() {
-            if (window.javafxController) {
-                window.javafxController.exitApp();
-            }
-        }
-
-        function logout() {
-            if (window.javafxController) {
-                window.javafxController.logout();
-            }
-        }
-
-
-        function updateUserData() {
-            const newUsername = document.getElementById('new-username').value;
-            const newEmail = document.getElementById('new-email').value;
-            const newPassword = document.getElementById('new-password').value;
-
-            // Svuota i campi dopo aver salvato
-            document.getElementById('new-username').value = '';
-            document.getElementById('new-email').value = '';
-            document.getElementById('new-password').value = '';
-
-            // Se il controller JavaFX è presente, invia i dati
-            if (window.javafxController) {
-                window.javafxController.updateProfilo(newUsername, newEmail, newPassword);
-            } else {
-                console.error("Controller JavaFX non trovato.");
-            }
-            document.getElementById('settings-form').classList.add('hidden');
-        }
-
-        function toggleSettingsForm() {
-            const settingsForm = document.getElementById('settings-form');
-            if (settingsForm.classList.contains('hidden')) {
-                settingsForm.classList.remove('hidden');
-            } else {
-                settingsForm.classList.add('hidden');
-            }
-        }
-
-
-        function goToGallery() {
-            showSection('gallery-section');
-        }
-
-        function goToAuctions() {
-            if (window.javafxController) {
-                window.javafxController.goToAuctions();
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            var salvaOperaBtn = document.getElementById('salvaOperaBtn');
-            salvaOperaBtn.addEventListener('click', salvaOpera);
-
-        });
-
-
-        function salvaOpera() {
-
-            console.log("Funzione salvaOpera chiamata!");  // Verifica se la funzione è invocata
-
-            // Ottieni i dati dal form
-            var titolo = document.getElementById("titolo").value;
-            var descrizione = document.getElementById("descrizione").value;
-            var fileInput = document.getElementById("fileInput");
-            var file = fileInput.files[0];
-
-
-
-            if (!titolo || !descrizione || !file) {
-                alert("Compila tutti i campi e/o carica il File");
-                console.log("Campi mancanti");
-                return;
-            }
-
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                var imageData = e.target.result; // I dati dell'immagine in base64
-
-                // Verifica che javafxController sia disponibile
-                if (window.javafxController) {
-                    console.log("Chiamata al metodo salvaOpera in JavaFX");
-                    window.javafxController.salvaOpera(titolo, descrizione, imageData);
-                    alert("L'Opera è stata salvata crrettamente!");  // Questo alert dovrebbe apparire
-                } else {
-                    console.error("javafxController non trovato!");
-                    alert("Errore nel salvataggio dell'opera.");
-                }
-            };
-            reader.readAsDataURL(file); // Converte il file in base64
-        }
-
-
-        document.addEventListener('DOMContentLoaded', () => {
-            showSection('home-section');
-        });
-
-
-    </script>
 </head>
 
 <body>
@@ -594,13 +526,13 @@
         </li>
     </ul>
 </nav>
-<!-- Contenuto principale -->
 <main id="main">
     <!-- Sezione Home -->
     <div id="home-section">
         <h1>Benvenuto!</h1>
         <p>Questa è la pagina principale.</p>
     </div>
+
     <!-- Sezione Profilo -->
     <div id="profile-section" class="hidden" style="text-align: left; padding: 20px;">
         <h1 style="font-size: 2em; font-weight: bold; color: #323232; margin-bottom: 1em;">Informazioni Profilo</h1>
@@ -620,6 +552,32 @@
             <strong style="font-size: 1.2em; color: #666;">Ruolo:</strong>
             <span id="role" style="font-size: 1.1em; color: #323232; margin-left: 10px;">Inserisci Ruolo</span>
         </div>
+
+        <!-- Bottone per caricare l'opera -->
+        <div class="c4">
+            <button class="btn" onclick="toggleCaricaOperaForm()">Carica Opera</button>
+        </div>
+
+        <!-- Form "Carica Opera" con i bottoni in grigio -->
+        <div id="carica-opera-form" class="hidden settings-form">
+            <h3>Carica una nuova opera</h3>
+            <div class="form-group">
+                <label for="fileInput">Scegli File:</label>
+                <input type="file" id="fileInput" accept="image/*" required>
+            </div>
+            <div class="form-group">
+                <label for="titolo">Inserisci Titolo:</label>
+                <input type="text" id="titolo" placeholder="Inserisci il titolo" required>
+            </div>
+            <div class="form-group">
+                <label for="descrizione">Inserisci Descrizione:</label>
+                <textarea id="descrizione" placeholder="Inserisci la descrizione" required></textarea>
+            </div>
+            <div class="form-buttons">
+                <button id="salvaOperaBtn">Salva Opera</button>
+                <button id="annullaBtn">Annulla</button>
+            </div>
+        </div>
     </div>
 
     <!-- Sezione Notifiche -->
@@ -628,7 +586,7 @@
         <div class="info">Non hai nuove notifiche.</div>
     </div>
 
-    <!-- sezione galleria -->
+    <!-- Sezione Galleria -->
     <div id="gallery-section" class="hidden">
         <h1>Galleria</h1>
 
@@ -686,21 +644,8 @@
                     <div class="gallery-item">Opera O</div>
                 </div>
             </div>
-            <!-- Popup per caricare l'opera -->
-            <div id="caricaOperaPopup" class="popup">
-                <div class="popup-content">
-                    <h3>Carica una nuova opera</h3>
-                    <input type="file" id="fileInput" accept="image/*">
-                    <input type="text" id="titolo" placeholder="Inserisci il titolo" required>
-                    <textarea id="descrizione" placeholder="Inserisci la descrizione" required></textarea>
-                    <button id="salvaOperaBtn">Salva Opera</button>
-                    <button id="annullaBtn">Annulla</button>
-                </div>
-            </div>
         </div>
-
     </div>
-
 
     <!-- Sezione Impostazioni -->
     <div id="settings-section" class="hidden" style="position: relative;">
@@ -764,5 +709,123 @@
         </form>
     </div>
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // Funzione per mostra/nascondere sezioni
+        window.showSection = function(sectionId) {
+            const sections = document.querySelectorAll('main > div');
+            sections.forEach(section => section.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+            const menuItems = document.querySelectorAll('.navbar-item');
+            menuItems.forEach(item => item.classList.remove('active'));
+            const clickedItem = document.querySelector('.navbar-item a[onclick="showSection(\'' + sectionId + '\')"]');
+            if (clickedItem) {
+                clickedItem.parentElement.classList.add('active');
+            }
+        }
+
+        // Funzione per uscire dall'app
+        window.exitApp = function() {
+            if (window.javafxController) {
+                window.javafxController.exitApp();
+            }
+        }
+
+        // Funzione per logout
+        window.logout = function() {
+            if (window.javafxController) {
+                window.javafxController.logout();
+            }
+        }
+
+        // Funzione per salvare dati utente
+        window.updateUserData = function() {
+            const newUsername = document.getElementById('new-username').value;
+            const newEmail = document.getElementById('new-email').value;
+            const newPassword = document.getElementById('new-password').value;
+            document.getElementById('new-username').value = '';
+            document.getElementById('new-email').value = '';
+            document.getElementById('new-password').value = '';
+            if (window.javafxController) {
+                window.javafxController.updateProfilo(newUsername, newEmail, newPassword);
+            } else {
+                console.error("Controller JavaFX non trovato.");
+            }
+            document.getElementById('settings-form').classList.add('hidden');
+        }
+        window.toggleSettingsForm = function() {
+            const settingsForm = document.getElementById('settings-form');
+            if (settingsForm.classList.contains('hidden')) {
+                settingsForm.classList.remove('hidden');
+            } else {
+                settingsForm.classList.add('hidden');
+            }
+        }
+        window.toggleCaricaOperaForm = function() {
+            const caricaOperaForm = document.getElementById('carica-opera-form');
+            if (caricaOperaForm.classList.contains('hidden')) {
+                caricaOperaForm.classList.remove('hidden');
+            } else {
+                caricaOperaForm.classList.add('hidden');
+            }
+        }
+        const annullaBtn = document.getElementById('annullaBtn');
+        if (annullaBtn) {
+            annullaBtn.addEventListener('click', function() {
+                document.getElementById('titolo').value = '';
+                document.getElementById('descrizione').value = '';
+                document.getElementById('fileInput').value = '';
+                document.getElementById('carica-opera-form').classList.add('hidden');
+            });
+        }
+
+        // Funzione per salvare l'opera
+        function salvaOpera() {
+            console.log("Funzione salvaOpera chiamata!");
+            var titolo = document.getElementById("titolo").value;
+            var descrizione = document.getElementById("descrizione").value;
+            var fileInput = document.getElementById("fileInput");
+            var file = fileInput.files[0];
+
+            if (!titolo || !descrizione || !file) {
+                alert("Compila tutti i campi e/o carica il File");
+                console.log("Campi mancanti");
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var imageData = e.target.result;
+                if (window.javafxController) {
+                    console.log("Chiamata al metodo salvaOpera in JavaFX");
+                    window.javafxController.salvaOpera(titolo, descrizione, imageData);
+                    alert("L'Opera è stata salvata correttamente!");
+                } else {
+                    console.error("javafxController non trovato!");
+                    alert("Errore nel salvataggio dell'opera.");
+                }
+                document.getElementById('titolo').value = '';
+                document.getElementById('descrizione').value = '';
+                document.getElementById('fileInput').value = '';
+                document.getElementById('carica-opera-form').classList.add('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+        const salvaOperaBtn = document.getElementById('salvaOperaBtn');
+        if (salvaOperaBtn) {
+            salvaOperaBtn.addEventListener('click', salvaOpera);
+        }
+        window.goToGallery = function() {
+            showSection('gallery-section');
+        }
+        window.goToAuctions = function() {
+            if (window.javafxController) {
+                window.javafxController.goToAuctions();
+            }
+        }
+        showSection('home-section');
+    });
+</script>
 </body>
 </html>
