@@ -75,7 +75,7 @@ public class LoginController {
     private void apriMenuPrincipale() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/gallery/gui/menuprincipale/menu-view.fxml"));
-            Scene scene = new Scene(loader.load(), 850, 700);
+            Scene scene = new Scene(loader.load(), 900, 700);
             Stage menuStage = new Stage();
             menuStage.setScene(scene);
             MenuPrincipaleController menuController = loader.getController();
