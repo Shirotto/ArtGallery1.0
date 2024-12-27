@@ -17,7 +17,7 @@ public class Opera {
     private String autore;
 
     @Column(name = "anno", nullable = true)
-    private Integer anno;
+    private int anno;
 
     @Column(name = "tecnica", nullable = true, length = 100)
     private String tecnica;
@@ -38,7 +38,7 @@ public class Opera {
     }
 
     // Costruttore con parametri
-    public Opera(String nome, String autore, Integer anno, String tecnica, User user, String descrizione, byte[] immagine) {
+    public Opera(String nome, String autore, int anno, String tecnica, User user, String descrizione, byte[] immagine) {
         this.nome = nome;
         this.autore = autore;
         this.anno = anno;
@@ -73,11 +73,11 @@ public class Opera {
         this.autore = autore;
     }
 
-    public Integer getAnno() {
+    public int getAnno() {
         return anno;
     }
 
-    public void setAnno(Integer anno) {
+    public void setAnno(int anno) {
         this.anno = anno;
     }
 
@@ -125,5 +125,4 @@ public class Opera {
                 ", descrizione='" + descrizione + '\'' +
                 '}';
     }
-}
 }

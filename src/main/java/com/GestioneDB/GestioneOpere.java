@@ -1,6 +1,7 @@
 package com.GestioneDB;
 
 import com.entity.Opera;
+import com.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -19,7 +20,7 @@ public class GestioneOpere {
     }
 
     // Metodo per salvare l'opera nel database
-    public static void salvaOpera(String nome, String descrizione, byte[] immagine) {
+    public static void salvaOpera(String nome, String autore, int anno, String movimento, User user, String descrizione, byte[] immagine) {
         System.out.println("salvaOpera invocato!");
         Session session = null;
 
@@ -28,7 +29,7 @@ public class GestioneOpere {
             session.beginTransaction();
 
             // Crea una nuova opera
-            Opera opera = new Opera(nome, descrizione, immagine);
+            Opera opera = new Opera(nome, "Meme", 2469, "Memismo", user, descrizione, immagine);
 
             // Salva l'opera nel database
             session.save(opera);
