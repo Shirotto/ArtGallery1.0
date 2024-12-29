@@ -13,11 +13,18 @@ public class Opera {
     @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
-   /* @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @Column(name = "autore", nullable = false, length = 100)
+    private String autore;
+
+    @Column(name = "anno", nullable = true)
+    private int anno;
+
+    @Column(name = "tecnica", nullable = true, length = 100)
+    private String tecnica;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idUser", nullable = false)
     private User user;
-
-    */
 
     @Column(name = "descrizione", length = 500)
     private String descrizione;
@@ -31,9 +38,12 @@ public class Opera {
     }
 
     // Costruttore con parametri
-    public Opera(String nome, String descrizione, byte[] immagine) {
+    public Opera(String nome, String autore, int anno, String tecnica, User user, String descrizione, byte[] immagine) {
         this.nome = nome;
-      //  this.user = user;
+        this.autore = autore;
+        this.anno = anno;
+        this.tecnica = tecnica;
+        this.user = user;
         this.descrizione = descrizione;
         this.immagine = immagine;
     }
@@ -55,17 +65,37 @@ public class Opera {
         this.nome = nome;
     }
 
+    public String getAutore() {
+        return autore;
+    }
+
+    public void setAutore(String autore) {
+        this.autore = autore;
+    }
+
+    public int getAnno() {
+        return anno;
+    }
+
+    public void setAnno(int anno) {
+        this.anno = anno;
+    }
+
+    public String getTecnica() {
+        return tecnica;
+    }
+
+    public void setTecnica(String tecnica) {
+        this.tecnica = tecnica;
+    }
+
   /*  public User getUser() {
         return user;
     }
 
-   */
-
-   /* public void setUser(User user) {
+    public void setUser(User user) {
         this.user = user;
-    }
-
-    */
+    }*/
 
     public String getDescrizione() {
         return descrizione;
@@ -88,9 +118,11 @@ public class Opera {
         return "Opera{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
-              //  ", user=" + user +
+                ", autore='" + autore + '\'' +
+                ", anno=" + anno +
+                ", tecnica='" + tecnica + '\'' +
+                ", user=" + user +
                 ", descrizione='" + descrizione + '\'' +
                 '}';
     }
 }
-
