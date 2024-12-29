@@ -20,8 +20,8 @@ public class GestioneOpere {
     }
 
     // Metodo per salvare l'opera nel database
-    public static void salvaOpera(String nome, String autore, int anno, String movimento, User user, String descrizione, byte[] immagine) {
-        System.out.println("salvaOpera invocato!");
+    public static void salvaOperaDb(String nome, String autore, int anno, String tecnica, User user, String descrizione, byte[] immagine) {
+        System.out.println("salvaOperaDb invocato!");
         Session session = null;
 
         try {
@@ -29,7 +29,7 @@ public class GestioneOpere {
             session.beginTransaction();
 
             // Crea una nuova opera
-            Opera opera = new Opera(nome, "Meme", 2469, "Memismo", user, descrizione, immagine);
+            Opera opera = new Opera(nome, autore, anno, tecnica, user, descrizione, immagine);
 
             // Salva l'opera nel database
             session.save(opera);

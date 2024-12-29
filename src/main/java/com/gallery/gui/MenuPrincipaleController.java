@@ -84,12 +84,12 @@ public class MenuPrincipaleController {
     }
 
     // Metodo per gestire il salvataggio dell'opera
-    public void salvaOpera(String titolo, String autore, int anno, String tecnica, User currentUser, String descrizione, String imageDataBase64) {
+    public void salvaOpera(String titolo, String autore, int anno, String tecnica, String descrizione, String imageDataBase64) {
         // Converte i dati base64 dell'immagine in byte[]
         byte[] immagine = java.util.Base64.getDecoder().decode(imageDataBase64.split(",")[1]);
 
         // Salva l'opera nel database
-        GestioneOpere.salvaOpera(titolo, autore, anno, tecnica, currentUser, descrizione, immagine);
+        GestioneOpere.salvaOperaDb(titolo, autore, anno, tecnica, currentUser, descrizione, immagine);
         System.out.println("Opera salvata con successo.");
     }
     private void showAlert(String message) {

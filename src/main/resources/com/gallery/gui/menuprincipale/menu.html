@@ -650,16 +650,28 @@
         <div id="carica-opera-form" class="hidden settings-form">
             <h3>Carica una nuova opera</h3>
             <div class="form-group">
-                <label for="fileInput">Scegli File:</label>
+                <label for="fileInput">Immagine:</label>
                 <input type="file" id="fileInput" accept="image/*" required>
             </div>
             <div class="form-group">
-                <label for="titolo">Inserisci Titolo:</label>
-                <input type="text" id="titolo" placeholder="Inserisci il titolo" required>
+                <label for="titolo">Titolo:</label>
+                <input type="text" id="titolo" placeholder="Inserisci il titolo." required>
             </div>
             <div class="form-group">
-                <label for="descrizione">Inserisci Descrizione:</label>
-                <textarea id="descrizione" placeholder="Inserisci la descrizione" required></textarea>
+                <label for="autore">Autore:</label>
+                <input type="text" id="autore" placeholder="Inserisci l'autore." required>
+            </div>
+            <div class="form-group">
+                <label for="anno">Anno:</label>
+                <input type="number" id="anno" placeholder="Inserisci l'anno." required>
+            </div>
+            <div class="form-group">
+                <label for="tecnica">Tecnica:</label>
+                <input type="text" id="tecnica" placeholder="Inserisci la tecnica." required>
+            </div>
+            <div class="form-group">
+                <label for="descrizione">Descrizione:</label>
+                <textarea id="descrizione" placeholder="Inserisci la descrizione." required></textarea>
             </div>
             <div class="form-buttons">
                 <button id="salvaOperaBtn">Salva Opera</button>
@@ -1023,6 +1035,9 @@
         if (annullaBtn) {
             annullaBtn.addEventListener('click', function() {
                 document.getElementById('titolo').value = '';
+                document.getElementById('autore').value = '';
+                document.getElementById('anno').value = '';
+                document.getElementById('tecnica').value = '';
                 document.getElementById('descrizione').value = '';
                 document.getElementById('fileInput').value = '';
                 document.getElementById('carica-opera-form').classList.add('hidden');
@@ -1033,11 +1048,14 @@
         function salvaOpera() {
             console.log("Funzione salvaOpera chiamata!");
             var titolo = document.getElementById("titolo").value;
+            var autore = document.getElementById("autore").value;
+            var anno = document.getElementById("anno").value;
+            var tecnica = document.getElementById("tecnica").value;
             var descrizione = document.getElementById("descrizione").value;
             var fileInput = document.getElementById("fileInput");
             var file = fileInput.files[0];
 
-            if (!titolo || !descrizione || !file) {
+            if (!titolo || !autore || !anno || !tecnica || !descrizione || !file) {
                 alert("Compila tutti i campi e/o carica il File");
                 console.log("Campi mancanti");
                 return;
@@ -1048,13 +1066,16 @@
                 var imageData = e.target.result; // Base64 dell'immagine
                 if (window.javafxController) {
                     console.log("Chiamata al metodo salvaOpera in JavaFX");
-                    window.javafxController.salvaOpera(titolo, descrizione, imageData);
+                    window.javafxController.salvaOpera(titolo, autore, anno, tecnica, descrizione, imageData);
                     alert("L'Opera è stata salvata correttamente!");
                 } else {
                     console.error("javafxController non trovato!");
                     alert("Errore nel salvataggio dell'opera.");
                 }
-                document.getElementById('titolo').value = '';
+                document.getElementById('titolo').value = ''
+                document.getElementById('autore').value = '';
+                document.getElementById('anno').value = '';
+                document.getElementById('tecnica').value = '';
                 document.getElementById('descrizione').value = '';
                 document.getElementById('fileInput').value = '';
                 document.getElementById('carica-opera-form').classList.add('hidden');
