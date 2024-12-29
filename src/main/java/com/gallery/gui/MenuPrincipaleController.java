@@ -89,9 +89,11 @@ public class MenuPrincipaleController {
         byte[] immagine = java.util.Base64.getDecoder().decode(imageDataBase64.split(",")[1]);
 
         // Salva l'opera nel database
-        GestioneOpere.salvaOpera(titolo, descrizione, immagine);
+        GestioneOpere.salvaOperaDb(titolo, descrizione, immagine);
         System.out.println("Opera salvata con successo.");
     }
+
+
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Messaggio");

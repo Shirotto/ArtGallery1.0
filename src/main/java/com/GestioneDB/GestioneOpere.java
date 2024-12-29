@@ -19,7 +19,7 @@ public class GestioneOpere {
     }
 
     // Metodo per salvare l'opera nel database
-    public static void salvaOpera(String nome, String descrizione, byte[] immagine) {
+    public static void salvaOperaDb(String nome, String descrizione, byte[] immagine) {
         System.out.println("salvaOpera invocato!");
         Session session = null;
 
