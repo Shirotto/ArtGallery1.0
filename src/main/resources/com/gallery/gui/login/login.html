@@ -105,7 +105,7 @@
         .flip-card__inner {
             width: 100%;
             height: 100%;
-            transition: transform 0.8s ease-in-out;
+            transition: transform 0.3s ease-in-out;
             transform-style: preserve-3d;
             position: relative;
             transform: rotateY(0);
@@ -134,7 +134,7 @@
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
             -moz-backface-visibility: hidden;
-            transition: opacity 0.8s ease-in-out;
+            transition: opacity 0.3s ease-in-out;
         }
 
         .flip-card__back {
@@ -207,7 +207,7 @@
             color: var(--bg-color);
             border: none;
             cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 1s, color 1s;
         }
 
         .flip-card__btn:hover {
@@ -216,23 +216,23 @@
         }
 
         .login-btn {
-            background-color: #1877F2;
+            background-color: #1877F2; /* Colore per il pulsante di login */
             border: none;
             color: white;
         }
 
         .login-btn:hover {
-            background-color: #166FE5;
+            background-color: #166FE5; /* Colore più scuro quando il mouse è sopra al pulsante di login */
         }
 
         .signup-btn {
-            background-color: #42b72a;
+            background-color: #42b72a; /* Colore per il pulsante di registrazione */
             border: none;
             color: white;
         }
 
         .signup-btn:hover {
-            background-color: #36a420;
+            background-color: #36a420; /* Colore più scuro quando il mouse è sopra al pulsante di registrazione */
         }
     </style>
 </head>
@@ -274,6 +274,7 @@
     const toggleCheckbox = document.getElementById('toggle-checkbox');
     const flipCardInner = document.getElementById('flip-card');
 
+    // Gestione della visualizzazione del form (login/signup)
     toggleCheckbox.addEventListener('change', () => {
         if (toggleCheckbox.checked) {
             flipCardInner.classList.add('toggle-active');
@@ -283,7 +284,7 @@
     });
 
     function handleLogin(event) {
-        event.preventDefault();
+        event.preventDefault(); // Impedisce l'invio del form
         var email = document.getElementById("email");
         var password = document.getElementById("password");
         if (typeof javafxController !== "undefined") {
