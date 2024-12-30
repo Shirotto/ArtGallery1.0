@@ -22,9 +22,6 @@
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
             height: 100vh;
-            flex-direction: column; /* Gli elementi sono impilati verticalmente */
-            gap: 20px; /* Distanza tra la switch e la flip card */
-            overflow: hidden; /* Impedisce il traboccamento durante l'animazione */
         }
 
         .wrapper {
@@ -32,33 +29,32 @@
             width: 300px;
             height: 400px;
             perspective: 1000px;
-            display: flex;
-            justify-content: center; /* Centra orizzontalmente */
-            align-items: center; /* Centra verticalmente */
+            transform: translateY(-50px); /* Traslazione verso l'alto */
         }
 
         .switch {
             display: flex;
-            justify-content: center; /* Centra gli elementi orizzontalmente */
+            justify-content: center; /* Centra gli elementi */
             align-items: center;
-            gap: 5px; /* Spaziatura ridotta tra gli elementi */
-            margin-bottom: 30px; /* Distanza tra la switch e la flip card */
+            gap: 5px; /* Spazio ridotto tra gli elementi */
+            margin-bottom: 20px;
+            /* width: 300px; */ /* Rimosso per permettere agli elementi di adattarsi al contenuto */
         }
 
         .switch .label-login,
         .switch .label-signup {
-            margin: 0; /* Rimuove i margini */
+            margin: 0; /* Rimuove tutti i margini */
             font-size: 14px;
             font-weight: bold;
             color: var(--main-color);
         }
 
         .switch .label-login {
-            margin-right: 5px; /* Distanza minima a destra */
+            margin-right: 5px; /* Spazio minimo a destra */
         }
 
         .switch .label-signup {
-            margin-left: 5px; /* Distanza minima a sinistra */
+            margin-left: 5px; /* Spazio minimo a sinistra */
         }
 
         .toggle {
@@ -109,9 +105,6 @@
             transform-style: preserve-3d;
             position: relative;
             transform: rotateY(0);
-            display: flex;
-            justify-content: center; /* Centra il contenuto */
-            align-items: center;
         }
 
         .flip-card__inner.toggle-active {
@@ -201,59 +194,37 @@
             background-color: var(--main-color);
             color: var(--bg-color);
         }
-
-        /* Stile personalizzato per il pulsante di login */
-        .login-btn {
-            background-color: #1877F2; /* Colore blu per il pulsante */
-            border: none;
-            color: white;
-        }
-
-        .login-btn:hover {
-            background-color: #166FE5; /* Colore più scuro quando il mouse è sopra */
-        }
-
-        /* Stile personalizzato per il pulsante di registrazione */
-        .signup-btn {
-            background-color: #42b72a; /* Colore verde per il pulsante */
-            border: none;
-            color: white;
-        }
-
-        .signup-btn:hover {
-            background-color: #36a420; /* Colore più scuro quando il mouse è sopra */
-        }
     </style>
 </head>
 <body>
 
-<div class="switch">
-    <span class="label-login">Accesso</span>
-    <label>
-        <input type="checkbox" id="toggle-checkbox" class="toggle">
-        <span class="slider"></span>
-    </label>
-    <span class="label-signup">Registrazione</span>
-</div>
-
 <div class="wrapper">
+    <div class="switch">
+        <span class="label-login">Log In</span>
+        <label>
+            <input type="checkbox" id="toggle-checkbox" class="toggle">
+            <span class="slider"></span>
+        </label>
+        <span class="label-signup">Sign Up</span>
+    </div>
+
     <div class="flip-card__inner" id="flip-card">
         <div class="flip-card__front">
-            <div class="title">Accesso</div>
+            <div class="title">Log in</div>
             <form class="flip-card__form" action="#" method="POST" onsubmit="return false;">
                 <input id="email" class="flip-card__input" name="email" placeholder="Email" type="email" required>
                 <input id="password" class="flip-card__input" name="password" placeholder="Password" type="password" required>
-                <button type="button" id="login-btn" class="flip-card__btn login-btn" onclick="handleLogin(event)">Accedi</button>
+                <button type="button" id="login-btn" class="flip-card__btn" onclick="handleLogin(event)">Login</button>
             </form>
         </div>
 
         <div class="flip-card__back">
-            <div class="title">Registrazione</div>
+            <div class="title">Sign up</div>
             <form class="flip-card__form" action="#" method="POST" onsubmit="return false;">
-                <input id="signup-name" class="flip-card__input" name="name" placeholder="Nome" type="text" required>
+                <input id="signup-name" class="flip-card__input" name="name" placeholder="Name" type="text" required>
                 <input id="signup-email" class="flip-card__input" name="email" placeholder="Email" type="email" required>
                 <input id="signup-password" class="flip-card__input" name="password" placeholder="Password" type="password" required>
-                <button type="button" id="signup-btn" class="flip-card__btn signup-btn" onclick="handleSignUp(event)">Registrati</button>
+                <button type="button" id="signup-btn" class="flip-card__btn" onclick="handleSignUp(event)">Sign Up</button>
             </form>
         </div>
     </div>
@@ -263,6 +234,7 @@
     const toggleCheckbox = document.getElementById('toggle-checkbox');
     const flipCardInner = document.getElementById('flip-card');
 
+    // Gestione della visualizzazione del form (login/signup)
     toggleCheckbox.addEventListener('change', () => {
         if (toggleCheckbox.checked) {
             flipCardInner.classList.add('toggle-active');
@@ -287,7 +259,7 @@
     }
 
     function handleSignUp(event) {
-        event.preventDefault();
+        event.preventDefault(); // Impedisce l'invio del form
 
         var name = document.getElementById("signup-name");
         var email = document.getElementById("signup-email");
@@ -302,6 +274,5 @@
         }
     }
 </script>
-
 </body>
 </html>
