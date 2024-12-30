@@ -22,9 +22,9 @@
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
             height: 100vh;
-            flex-direction: column; /* Gli elementi sono impilati verticalmente */
-            gap: 20px; /* Distanza tra la switch e la flip card */
-            overflow: hidden; /* Impedisce il traboccamento durante l'animazione */
+            flex-direction: column;
+            gap: 20px;
+            overflow: hidden;
         }
 
         .wrapper {
@@ -33,32 +33,32 @@
             height: 400px;
             perspective: 1000px;
             display: flex;
-            justify-content: center; /* Centra orizzontalmente */
-            align-items: center; /* Centra verticalmente */
+            justify-content: center;
+            align-items: center;
         }
 
         .switch {
             display: flex;
-            justify-content: center; /* Centra gli elementi orizzontalmente */
+            justify-content: center;
             align-items: center;
-            gap: 5px; /* Spaziatura ridotta tra gli elementi */
-            margin-bottom: 15px; /* Distanza tra la switch e la flip card */
+            gap: 5px;
+            margin-bottom: 15px;
         }
 
         .switch .label-login,
         .switch .label-signup {
-            margin: 0; /* Rimuove i margini */
+            margin: 0;
             font-size: 14px;
             font-weight: bold;
             color: var(--main-color);
         }
 
         .switch .label-login {
-            margin-right: 5px; /* Distanza minima a destra */
+            margin-right: 5px;
         }
 
         .switch .label-signup {
-            margin-left: 5px; /* Distanza minima a sinistra */
+            margin-left: 5px;
         }
 
         .toggle {
@@ -110,7 +110,7 @@
             position: relative;
             transform: rotateY(0);
             display: flex;
-            justify-content: center; /* Centra il contenuto */
+            justify-content: center;
             align-items: center;
         }
 
@@ -134,22 +134,35 @@
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
             -moz-backface-visibility: hidden;
+            transition: opacity 0.8s ease-in-out;
         }
 
         .flip-card__back {
             transform: rotateY(180deg);
-            visibility: hidden;
+            opacity: 0;
             z-index: -1;
         }
 
         .flip-card__inner.toggle-active .flip-card__back {
-            visibility: visible;
+            opacity: 1;
             z-index: 1;
         }
 
         .flip-card__inner.toggle-active .flip-card__front {
-            visibility: hidden;
+            opacity: 0;
             z-index: -1;
+        }
+
+        .flip-card__front, .flip-card__back {
+            pointer-events: auto;
+        }
+
+        .flip-card__inner.toggle-active .flip-card__front {
+            pointer-events: none;
+        }
+
+        .flip-card__inner.toggle-active .flip-card__back {
+            pointer-events: auto;
         }
 
         .title {
@@ -202,26 +215,24 @@
             color: var(--bg-color);
         }
 
-        /* Stile personalizzato per il pulsante di login */
         .login-btn {
-            background-color: #1877F2; /* Colore blu per il pulsante */
+            background-color: #1877F2;
             border: none;
             color: white;
         }
 
         .login-btn:hover {
-            background-color: #166FE5; /* Colore più scuro quando il mouse è sopra */
+            background-color: #166FE5;
         }
 
-        /* Stile personalizzato per il pulsante di registrazione */
         .signup-btn {
-            background-color: #42b72a; /* Colore verde per il pulsante */
+            background-color: #42b72a;
             border: none;
             color: white;
         }
 
         .signup-btn:hover {
-            background-color: #36a420; /* Colore più scuro quando il mouse è sopra */
+            background-color: #36a420;
         }
     </style>
 </head>
@@ -266,19 +277,15 @@
     toggleCheckbox.addEventListener('change', () => {
         if (toggleCheckbox.checked) {
             flipCardInner.classList.add('toggle-active');
-            console.log("Switching to Sign Up");
         } else {
             flipCardInner.classList.remove('toggle-active');
-            console.log("Switching to Log In");
         }
     });
 
     function handleLogin(event) {
         event.preventDefault();
-
         var email = document.getElementById("email");
         var password = document.getElementById("password");
-
         if (typeof javafxController !== "undefined") {
             javafxController.handleLoginButtonClick(email.value, password.value);
         } else {
@@ -288,13 +295,9 @@
 
     function handleSignUp(event) {
         event.preventDefault();
-
         var name = document.getElementById("signup-name");
         var email = document.getElementById("signup-email");
         var password = document.getElementById("signup-password");
-
-        console.log("Sign Up: Name: " + name.value + ", Email: " + email.value + ", Password: " + password.value);
-
         if (typeof javafxController !== "undefined") {
             javafxController.handleSignUpButtonClick(name.value, email.value, password.value);
         } else {
@@ -302,6 +305,5 @@
         }
     }
 </script>
-
 </body>
 </html>
