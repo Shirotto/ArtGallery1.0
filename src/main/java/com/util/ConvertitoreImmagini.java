@@ -1,4 +1,4 @@
-package com.util;
+/*package com.util;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -19,3 +19,5 @@ public class ConvertitoreImmagini {
         Files.write(path, immagineBytes);
     }
 }
+
+ */

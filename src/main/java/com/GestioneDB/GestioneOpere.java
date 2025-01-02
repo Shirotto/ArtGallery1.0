@@ -2,12 +2,21 @@ package com.GestioneDB;
 
 import com.entity.Opera;
 import com.entity.User;
+import com.gallery.gui.AlertInfo;
+import com.gallery.gui.MenuPrincipaleController;
+import javafx.scene.web.WebView;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class GestioneOpere {
+
+
+    static AlertInfo alertInfo = new AlertInfo();
 
     private static SessionFactory sessionFactory;
 
@@ -20,7 +29,7 @@ public class GestioneOpere {
     }
 
     // Metodo per salvare l'opera nel database
-    public static void salvaOperaDb(String nome, String autore, int anno, String tecnica, User user, String descrizione, byte[] immagine) {
+    public static void  salvaOperaDb(String nome, String autore, int anno, String tecnica, User user, String descrizione, byte[] immagine) {
         System.out.println("salvaOperaDb invocato!");
         Session session = null;
 
@@ -36,6 +45,9 @@ public class GestioneOpere {
 
             // Commit della transazione
             session.getTransaction().commit();
+
+            alertInfo.showAlertInfo("Successo!", "Opera Salvata Correttamente! Corri A Guardarla!");
+
         } catch (Exception e) {
             if (session != null) session.getTransaction().rollback();
             e.printStackTrace();
@@ -43,4 +55,37 @@ public class GestioneOpere {
             if (session != null) session.close();
         }
     }
+
+
+
+
+    //metodo che mi prende le opere dal db
+    public static List<Opera> getAllOpere() {
+        Session session = null;
+        List<Opera> opere = null;
+
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+
+
+            // Esegue una query per ottenere tutte le opere
+            opere = session.createQuery("from Opera", Opera.class).getResultList();
+
+
+            session.getTransaction().commit();
+
+        } catch (Exception e) {
+            if (session != null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            if (session != null) session.close();
+
+        }
+        // Log per verificare se le opere sono recuperate correttamente
+        System.out.println("Opere recuperate dal database: " + (opere != null ? opere.size() : 0));
+        return opere;
+    }
+
+
 }

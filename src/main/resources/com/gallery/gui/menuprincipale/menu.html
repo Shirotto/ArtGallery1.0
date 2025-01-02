@@ -526,6 +526,7 @@
             margin: 0;
         }
 
+
     </style>
 
     <!-- Ionicons per le icone nel menu -->
@@ -697,7 +698,7 @@
                 <div class="gallery-row" id="row-cat1">
 
                     <div class="gallery-item" data-description="La celebre opera di Leonardo da Vinci, la Mona Lisa, conosciuta per il suo enigmatico sorriso.">
-                        <img src="images/monalisa.jpg" alt="Mona Lisa">
+                     <!--   <img src="images/monalisa.jpg" alt="Mona Lisa">-->
                     </div>
 
                     <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera 2">
@@ -892,6 +893,8 @@
         </div>
     </div>
 
+
+
     <!-- Sezione Impostazioni -->
     <div id="settings-section" class="hidden" style="position: relative;">
         <h1 style="text-align: left; margin-left: 8px;">Impostazioni</h1>
@@ -983,7 +986,9 @@
 
             if (sectionId === 'gallery-section') {
                 attachGalleryItemListeners();
+
             }
+
         }
 
         // Funzione per uscire dall'app
@@ -1067,7 +1072,10 @@
                 if (window.javafxController) {
                     console.log("Chiamata al metodo salvaOpera in JavaFX");
                     window.javafxController.salvaOpera(titolo, autore, anno, tecnica, descrizione, imageData);
-                    alert("L'Opera è stata salvata correttamente!");
+                    // Dopo aver salvato l'opera, aggiorna la galleria nel WebView
+                    window.javafxController.aggiornaGalleria();
+
+
                 } else {
                     console.error("javafxController non trovato!");
                     alert("Errore nel salvataggio dell'opera.");
@@ -1079,13 +1087,17 @@
                 document.getElementById('descrizione').value = '';
                 document.getElementById('fileInput').value = '';
                 document.getElementById('carica-opera-form').classList.add('hidden');
+
             };
             reader.readAsDataURL(file);
         }
+
+
         const salvaOperaBtn = document.getElementById('salvaOperaBtn');
         if (salvaOperaBtn) {
             salvaOperaBtn.addEventListener('click', salvaOpera);
         }
+
         window.goToGallery = function() {
             showSection('gallery-section');
         }
@@ -1127,6 +1139,7 @@
             });
         }
 
+
         // Funzione per attaccare gli event listeners alle gallery-item
         function attachGalleryItemListeners() {
             const galleryItems = document.querySelectorAll('.gallery-item');
@@ -1147,13 +1160,19 @@
                 });
             });
             console.log("Event listeners attaccati alle gallery-item");
+
+
         }
+
         showSection('home-section');
         const visibleSections = document.querySelectorAll('main > div:not(.hidden)');
         visibleSections.forEach(section => {
             console.log(`Sezione visibile: ${section.id}`);
         });
     });
+
+
 </script>
+
 </body>
 </html>
