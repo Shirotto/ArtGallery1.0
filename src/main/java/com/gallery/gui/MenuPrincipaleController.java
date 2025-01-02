@@ -10,6 +10,7 @@ import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
+
 import java.util.Base64;
 import java.util.List;
 
@@ -38,9 +39,8 @@ public class MenuPrincipaleController {
             String message = event.getData();
             System.out.println("Alert JavaScript: " + message);
             // Oltre alla console, puoi visualizzare l'alert con una finestra JavaFX
-           showAlert(message);
+            showAlert(message);
         });
-
 
 
         String htmlFilePath = getClass().getResource("/com/gallery/gui/menuprincipale/menu.html").toExternalForm();
@@ -51,7 +51,6 @@ public class MenuPrincipaleController {
         webEngine.load(htmlFilePath);
         webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
-
 
 
                 JSObject window = (JSObject) webEngine.executeScript("window");
@@ -92,23 +91,12 @@ public class MenuPrincipaleController {
     }
 
 
-   public void aggiornaGalleria() {
-        System.out.println("co dioooooooooooooooooooooooooooooooooo");
-
-
-        // Recupera tutte le opere dal database
+    public void aggiornaGalleria() {
         List<Opera> opere = GestioneOpere.getAllOpere();
-
-        // Genera il codice JavaScript per aggiornare la galleria
         StringBuilder script = new StringBuilder("const galleryRow = document.getElementById('row-cat1');");
-        script.append("galleryRow.innerHTML = '';"); // Svuota la galleria esistente
-
-
+        script.append("galleryRow.innerHTML = '';");
         for (Opera opera : opere) {
-            // Codifica l'immagine in base64
             String base64Image = "data:image/png;base64," + Base64.getEncoder().encodeToString(opera.getImmagine());
-
-            // Aggiungi un nuovo elemento alla galleria
             script.append("galleryRow.innerHTML += `")
                     .append("<div class='gallery-item' data-description='")
                     .append(opera.getDescrizione())
@@ -117,33 +105,21 @@ public class MenuPrincipaleController {
                     .append("' alt='")
                     .append(opera.getNome())
                     .append("'></div>`;");
-
-
         }
-       System.out.println("Script generato: " + script.toString());
-        // Esegui lo script nel WebView
-
+        System.out.println("Script generato: " + script.toString());
         webView.getEngine().executeScript(script.toString());
-        
-
     }
 
 
-
     public void salvaOpera(String titolo, String autore, int anno, String tecnica, String descrizione, String imageDataBase64) {
-     // Converte i dati base64 dell'immagine in byte[]
-     byte[] immagine = java.util.Base64.getDecoder().decode(imageDataBase64.split(",")[1]);
-
-     // Salva l'opera nel database
-      GestioneOpere.salvaOperaDb(titolo, autore, anno, tecnica, currentUser, descrizione, immagine);
-
-
-     // Subito dopo il salvataggio, aggiorna la galleria senza ricaricare la pagina
-   //  aggiornaGalleria();
-
-
-
- }
+        // Converte i dati base64 dell'immagine in byte[]
+        byte[] immagine = java.util.Base64.getDecoder().decode(imageDataBase64.split(",")[1]);
+        // Salva l'opera nel database
+        GestioneOpere.salvaOperaDb(titolo, autore, anno, tecnica, currentUser, descrizione, immagine);
+        webView.getEngine().reload();
+        // Subito dopo il salvataggio, aggiorna la galleria senza ricaricare la pagina
+        aggiornaGalleria();
+    }
 
 
     private void showAlert(String message) {
