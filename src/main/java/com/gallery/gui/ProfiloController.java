@@ -1,5 +1,7 @@
 package com.gallery.gui;
 
+import com.GestioneDB.GestioneOpere;
+import com.entity.Opera;
 import com.entity.User;
 import com.util.HibernateUtil;
 import javafx.concurrent.Worker;
@@ -11,6 +13,9 @@ import javafx.stage.Stage;
 import netscape.javascript.JSObject;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
+import java.util.Base64;
+import java.util.List;
 
 public class ProfiloController {
 
@@ -52,23 +57,17 @@ public class ProfiloController {
 
     public void updateProfileData(String usernameValue, String emailValue, String passwordValue, WebView webView) {
         System.out.println("updateProfileData chiamato con: " + usernameValue + ", " + emailValue + ", " + passwordValue);
-
-        // Verifica che tutti i campi siano non nulli e non vuoti
         if (usernameValue == null || usernameValue.trim().isEmpty() ||
                 emailValue == null || emailValue.trim().isEmpty() ||
                 passwordValue == null || passwordValue.trim().isEmpty()) {
             alert.showAlertInfo("Errore", "Tutti i campi devono essere compilati.");
             return;
         }
-
-        // Controllo email con una regex di base
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
         if (!emailValue.matches(emailRegex)) {
             alert.showAlertInfo("Errore", "Inserire un indirizzo email valido.");
             return;
         }
-
-        // Verifica che username e password non siano uguali ai precedenti
         if (usernameValue.equals(currentUser.getUsername())) {
             alert.showAlertInfo("Errore", "Il nuovo nome utente deve essere diverso dal precedente.");
             return;
@@ -77,24 +76,16 @@ public class ProfiloController {
             alert.showAlertInfo("Errore", "La nuova password deve essere diversa dalla precedente.");
             return;
         }
-
-        // Validazione della password (almeno 8 caratteri, una maiuscola, un numero e un carattere speciale)
         String passwordRegex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?\":{}|<>]).{8,}$";
         if (!passwordValue.matches(passwordRegex)) {
             alert.showAlertInfo("Errore", "La password deve contenere almeno 8 caratteri, " +
                     "una lettera maiuscola, un numero e un carattere speciale.");
             return;
         }
-
-        // Aggiorno i dati utente
         currentUser.setUsername(usernameValue);
         currentUser.setEmail(emailValue);
         currentUser.setPassword(passwordValue);
-
-        // Salvataggio su DB
         saveUserDataToDatabase(currentUser);
-
-        // Aggiorno l'interfaccia
         WebEngine webEngine = webView.getEngine();
         try {
             webEngine.executeScript("document.getElementById('username').innerText = '" + usernameValue + "';");
@@ -103,10 +94,40 @@ public class ProfiloController {
         } catch (Exception e) {
             System.err.println("Errore durante l'aggiornamento dei dati nella WebView: " + e.getMessage());
         }
-
         alert.showAlertInfo("Successo", "Credenziali aggiornate correttamente");
     }
 
+
+    public void mostraOpereUtente(User currentUser, WebView webView) {
+        List<Opera> opere = GestioneOpere.getOpereByUser(currentUser);
+        System.out.println("Numero di opere caricate dall'utente: " + (opere != null ? opere.size() : 0));
+        StringBuilder scriptBuilder = new StringBuilder();
+        scriptBuilder.append("const opereCaricateRow = document.getElementById('opere-caricate-row');")
+                .append("if (opereCaricateRow) { opereCaricateRow.innerHTML = ''; }")
+                .append("else { console.error('Elemento opere-caricate-row non trovato.'); }");
+
+        for (Opera opera : opere) {
+            String base64Image = "data:image/png;base64,"
+                    + Base64.getEncoder().encodeToString(opera.getImmagine());
+            String descrizione = opera.getDescrizione().replace("'", "\\'");
+            String nome = opera.getNome().replace("'", "\\'");
+            scriptBuilder.append("opereCaricateRow.innerHTML += `")
+                    .append("<div class='gallery-item' data-description='")
+                    .append(descrizione)
+                    .append("'><img src='")
+                    .append(base64Image)
+                    .append("' alt='")
+                    .append(nome)
+                    .append("'></div>`;");
+        }
+        scriptBuilder.append("attachGalleryItemListeners();");
+        String script = scriptBuilder.toString();
+        try {
+            webView.getEngine().executeScript(script);
+        } catch (Exception e) {
+            System.err.println("Errore durante l'iniezione dello script nella WebView: " + e.getMessage());
+        }
+    }
 
 
     private void saveUserDataToDatabase(User user) {

@@ -161,58 +161,38 @@
         }
 
         .gallery-row-container {
-            position: relative;
             width: 100%;
-            overflow-x: auto;
-            white-space: nowrap;
+            overflow: visible;
+            white-space: normal;
             padding-bottom: 10px;
-            scrollbar-width: thin;
-            scrollbar-color: #606060 #e0e0e0;
-        }
-
-        .gallery-row-container::-webkit-scrollbar {
-            height: 8px;
-        }
-
-        .gallery-row-container::-webkit-scrollbar-track {
-            background: #e0e0e0;
-            border-radius: 4px;
-        }
-
-        .gallery-row-container::-webkit-scrollbar-thumb {
-            background-color: #606060;
-            border-radius: 4px;
-            border: none;
         }
 
         .gallery-row {
-            display: flex;
-            flex-wrap: nowrap;
-            justify-content: flex-start;
-            margin-left: 0;
+            display: grid;
+            grid-template-columns: repeat(3, 200px);
+            grid-gap: 1rem;
+            justify-content: center;
+        }
+
+        @media (max-width: 800px) {
+            .gallery-row {
+                grid-template-columns: repeat(2, 200px);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .gallery-row {
+                grid-template-columns: repeat(1, 200px);
+            }
         }
 
         .gallery-item {
-            position: relative;
-            min-width: 160px;
-            height: 120px;
+            box-sizing: border-box;
             background-color: #ccc;
-            margin: 0 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #666;
             border-radius: 4px;
-            flex: 0 0 auto;
-            max-width: 200px;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
             overflow: hidden;
-            text-align: center;
-            flex-direction: column;
-            display: flex;
         }
+
 
         .gallery-item img {
             width: 100%;
@@ -232,7 +212,6 @@
             z-index: 2;
         }
 
-        /* Modal Styles */
         #modal-overlay {
             display: none;
             position: fixed;
@@ -567,7 +546,7 @@
             </a>
         </li>
         <li class="navbar-item">
-            <a class="navbar-item-inner" onclick="showSection('profile-section')">
+            <a class="navbar-item-inner" onclick="window.javafxController.showProfileSection()">
                 <div class="navbar-item-inner-icon-wrapper">
                     <ion-icon name="people-outline"></ion-icon>
                 </div>
@@ -646,6 +625,8 @@
 
         <div class="c4">
             <button class="btn" onclick="toggleCaricaOperaForm()">Carica Opera</button>
+            <button class="btn" onclick="eliminaOpera()">Elimina Opera</button>
+            <button class="btn" onclick="modificaOpera()">Modifica Opera</button>
         </div>
 
         <div id="carica-opera-form" class="hidden settings-form">
@@ -679,6 +660,15 @@
                 <button id="annullaBtn">Annulla</button>
             </div>
         </div>
+
+        <!-- Nuova sezione Opere Caricate -->
+        <h2 style="margin-top: 20px; font-size: 1.8em; color: #323232;">Opere Caricate</h2>
+        <div id="opere-caricate" class="gallery-row-container">
+            <div class="gallery-row" id="opere-caricate-row">
+                <!-- Le opere caricate saranno aggiunte qui dinamicamente -->
+            </div>
+        </div>
+
     </div>
 
     <!-- Sezione Notifiche -->
@@ -721,46 +711,6 @@
 
                     </div>
 
-
-                    <!-- Opera 6: Commentata -->
-                    <!--
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera 6">
-                        <img src="https://via.placeholder.com/200x150?text=Opera+6" alt="Opera 6">
-
-                    </div>
-                    -->
-
-                    <!-- Opera 7: Commentata -->
-                    <!--
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera 7">
-                        <img src="https://via.placeholder.com/200x150?text=Opera+7" alt="Opera 7">
-
-                    </div>
-                    -->
-
-                    <!-- Opera 8: Commentata -->
-                    <!--
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera 8">
-                        <img src="https://via.placeholder.com/200x150?text=Opera+8" alt="Opera 8">
-
-                    </div>
-                    -->
-
-                    <!-- Opera 9: Commentata -->
-                    <!--
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera 9">
-                        <img src="https://via.placeholder.com/200x150?text=Opera+9" alt="Opera 9">
-
-                    </div>
-                    -->
-
-                    <!-- Opera 10: Commentata -->
-                    <!--
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera 10">
-                        <img src="https://via.placeholder.com/200x150?text=Opera+10" alt="Opera 10">
-
-                    </div>
-                    -->
                 </div>
             </div>
         </div>
@@ -791,40 +741,6 @@
                         <!--    <img src="https://via.placeholder.com/200x150?text=Opera+E" alt="Opera E">-->
                     </div>
 
-                    <!-- Opera F: Commentata -->
-                    <!--
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera F">
-                        <img src="https://via.placeholder.com/200x150?text=Opera+F" alt="Opera F">
-                    </div>
-                    -->
-
-                    <!-- Opera G: Commentata -->
-                    <!--
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera G">
-                        <img src="https://via.placeholder.com/200x150?text=Opera+G" alt="Opera G">
-                    </div>
-                    -->
-
-                    <!-- Opera H: Commentata -->
-                    <!--
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera H">
-                        <img src="https://via.placeholder.com/200x150?text=Opera+H" alt="Opera H">
-                    </div>
-                    -->
-
-                    <!-- Opera I: Commentata -->
-                    <!--
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera I">
-                        <img src="https://via.placeholder.com/200x150?text=Opera+I" alt="Opera I">
-                    </div>
-                    -->
-
-                    <!-- Opera J: Commentata -->
-                    <!--
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera J">
-                        <img src="https://via.placeholder.com/200x150?text=Opera+J" alt="Opera J">
-                    </div>
-                    -->
                 </div>
             </div>
         </div>
@@ -836,58 +752,17 @@
                 <div class="gallery-row" id="row-cat3">
 
                     <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera X">
-                        <!--     <img src="https://via.placeholder.com/200x150?text=Opera+X" alt="Opera X">-->
                     </div>
 
                     <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera Y">
-                        <!--  <img src="https://via.placeholder.com/200x150?text=Opera+Y" alt="Opera Y">-->
                     </div>
 
                     <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera Z">
-                        <!--   <img src="https://via.placeholder.com/200x150?text=Opera+Z" alt="Opera Z">-->
                     </div>
 
                     <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera W">
-                        <!--  <img src="https://via.placeholder.com/200x150?text=Opera+W" alt="Opera W">-->
                     </div>
 
-                    <!-- Opera K: Commentata -->
-                    <!--
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera K">
-                        <img src="https://via.placeholder.com/200x150?text=Opera+K" alt="Opera K">
-                    </div>
-                    -->
-
-                    <!-- Opera L: Commentata -->
-                    <!--
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera L">
-                        <img src="https://via.placeholder.com/200x150?text=Opera+L" alt="Opera L">
-                    </div>
-                    -->
-
-                    <!-- Opera M: Commentata -->
-                    <!--
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera M">
-                        <img src="https://via.placeholder.com/200x150?text=Opera+M" alt="Opera M">
-
-                    </div>
-                    -->
-
-                    <!-- Opera N: Commentata -->
-                    <!--
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera N">
-                        <img src="https://via.placeholder.com/200x150?text=Opera+N" alt="Opera N">
-
-                    </div>
-                    -->
-
-                    <!-- Opera O: Commentata -->
-                    <!--
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera O">
-                        <img src="https://via.placeholder.com/200x150?text=Opera+O" alt="Opera O">
-
-                    </div>
-                    -->
                 </div>
             </div>
         </div>
@@ -966,16 +841,15 @@
         <p id="modal-description">Descrizione Opera</p>
     </div>
 </div>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
 
         // Funzione per mostra/nascondere sezioni
         window.showSection = function(sectionId) {
-            console.log(`Chiamata a showSection con l'ID: ${sectionId}`); // Log di debug
+            console.log(`Chiamata a showSection con l'ID: ${sectionId}`);
             const sections = document.querySelectorAll('main > div');
-            sections.forEach(section => section.classList.add('hidden')); // Nasconde tutte le sezioni
-            document.getElementById(sectionId).classList.remove('hidden'); // Mostra la sezione specificata
+            sections.forEach(section => section.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
             const menuItems = document.querySelectorAll('.navbar-item');
             menuItems.forEach(item => item.classList.remove('active'));
             const clickedItem = document.querySelector(`.navbar-item a[onclick="showSection('${sectionId}')"]`);
@@ -983,12 +857,9 @@
             if (clickedItem) {
                 clickedItem.parentElement.classList.add('active');
             }
-
             if (sectionId === 'gallery-section') {
                 attachGalleryItemListeners();
-
             }
-
         }
 
         // Funzione per uscire dall'app
@@ -1020,6 +891,7 @@
             }
             document.getElementById('settings-form').classList.add('hidden');
         }
+
         window.toggleSettingsForm = function() {
             const settingsForm = document.getElementById('settings-form');
             if (settingsForm.classList.contains('hidden')) {
@@ -1028,6 +900,7 @@
                 settingsForm.classList.add('hidden');
             }
         }
+
         window.toggleCaricaOperaForm = function() {
             const caricaOperaForm = document.getElementById('carica-opera-form');
             if (caricaOperaForm.classList.contains('hidden')) {
@@ -1036,6 +909,7 @@
                 caricaOperaForm.classList.add('hidden');
             }
         }
+
         const annullaBtn = document.getElementById('annullaBtn');
         if (annullaBtn) {
             annullaBtn.addEventListener('click', function() {
@@ -1049,7 +923,6 @@
             });
         }
 
-        // Funzione per salvare l'opera
         function salvaOpera() {
             console.log("Funzione salvaOpera chiamata!");
             var titolo = document.getElementById("titolo").value;
@@ -1068,30 +941,24 @@
 
             var reader = new FileReader();
             reader.onload = function(e) {
-                var imageData = e.target.result; // Base64 dell'immagine
+                var imageData = e.target.result;
                 if (window.javafxController) {
                     console.log("Chiamata al metodo salvaOpera in JavaFX");
                     window.javafxController.salvaOpera(titolo, autore, anno, tecnica, descrizione, imageData);
-                    // Dopo aver salvato l'opera, aggiorna la galleria nel WebView
-                    //window.javafxController.aggiornaGalleria();
-
-
                 } else {
                     console.error("javafxController non trovato!");
                     alert("Errore nel salvataggio dell'opera.");
                 }
-                document.getElementById('titolo').value = ''
+                document.getElementById('titolo').value = '';
                 document.getElementById('autore').value = '';
                 document.getElementById('anno').value = '';
                 document.getElementById('tecnica').value = '';
                 document.getElementById('descrizione').value = '';
                 document.getElementById('fileInput').value = '';
                 document.getElementById('carica-opera-form').classList.add('hidden');
-
             };
             reader.readAsDataURL(file);
         }
-
 
         const salvaOperaBtn = document.getElementById('salvaOperaBtn');
         if (salvaOperaBtn) {
@@ -1101,6 +968,7 @@
         window.goToGallery = function() {
             showSection('gallery-section');
         }
+
         window.goToAuctions = function() {
             if (window.javafxController) {
                 window.javafxController.goToAuctions();
@@ -1112,6 +980,7 @@
         const modalImage = document.getElementById('modal-image');
         const modalTitle = document.getElementById('modal-title');
         const modalDescription = document.getElementById('modal-description');
+
         window.openModal = function(imageSrc, title, description) {
             console.log(`Apertura modale per: ${title}`);
             modalImage.src = imageSrc || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
@@ -1119,6 +988,7 @@
             modalDescription.textContent = description || 'Descrizione Opera';
             modalOverlay.classList.add('active');
         }
+
         window.closeModal = function() {
             console.log("Chiusura modale");
             modalOverlay.classList.remove('active');
@@ -1138,10 +1008,7 @@
                 }
             });
         }
-
-
-        // Funzione per attaccare gli event listeners alle gallery-item
-        function attachGalleryItemListeners() {
+        window.attachGalleryItemListeners = function() {
             const galleryItems = document.querySelectorAll('.gallery-item');
             galleryItems.forEach(function(item) {
                 item.addEventListener('click', function() {
@@ -1151,7 +1018,6 @@
                     if (img) {
                         imgSrc = img.src;
                     } else {
-                        // Usa un'immagine di placeholder
                         imgSrc = 'https://via.placeholder.com/600x400?text=Opera+Immagine';
                     }
                     const title = img ? img.alt : item.textContent.trim();
@@ -1160,10 +1026,9 @@
                 });
             });
             console.log("Event listeners attaccati alle gallery-item");
-
-
         }
 
+        // Imposto la sezione di default
         showSection('home-section');
         const visibleSections = document.querySelectorAll('main > div:not(.hidden)');
         visibleSections.forEach(section => {
@@ -1171,8 +1036,18 @@
         });
     });
 
+    function eliminaOpera() {
+        // Qui la logica per eliminare l'opera.
+        alert("Funzione 'Elimina Opera' da implementare!");
+    }
+
+    function modificaOpera() {
+        // Qui la logica per modificare i dettagli dell'opera.
+        alert("Funzione 'Modifica Opera' da implementare!");
+    }
 
 </script>
+
 
 </body>
 </html>
