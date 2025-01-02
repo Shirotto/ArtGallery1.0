@@ -16,8 +16,6 @@ import java.util.List;
 
 public class MenuPrincipaleController {
 
-    private AlertInfo alert = new AlertInfo();
-
     @FXML
     private WebView webView;
 
@@ -42,7 +40,6 @@ public class MenuPrincipaleController {
             showAlert(message);
         });
 
-
         String htmlFilePath = getClass().getResource("/com/gallery/gui/menuprincipale/menu.html").toExternalForm();
         if (htmlFilePath == null) {
             System.err.println("File HTML non trovato.");
@@ -51,8 +48,6 @@ public class MenuPrincipaleController {
         webEngine.load(htmlFilePath);
         webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
-
-
                 JSObject window = (JSObject) webEngine.executeScript("window");
                 window.setMember("javafxController", this);
                 aggiornaGalleria();// fa in modo che le opere restino salvate alla riapertura
