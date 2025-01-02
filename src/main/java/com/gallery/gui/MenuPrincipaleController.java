@@ -92,7 +92,7 @@ public class MenuPrincipaleController {
     }
 
 
-   /* public void aggiornaGalleria() {
+   public void aggiornaGalleria() {
         System.out.println("co dioooooooooooooooooooooooooooooooooo");
 
 
@@ -120,66 +120,13 @@ public class MenuPrincipaleController {
 
 
         }
-     /*  System.out.println("Script generato: " + script.toString());
+       System.out.println("Script generato: " + script.toString());
         // Esegui lo script nel WebView
 
         webView.getEngine().executeScript(script.toString());
-
-
-
-        String finalScript = script.toString();
-        System.out.println("Script generato: " + finalScript);
-
-        // Esegui direttamente lo script nel thread UI
-        webView.getEngine().executeScript(finalScript);
-
+        
 
     }
-
-    */
-   public void aggiornaGalleria() {
-       System.out.println("Aggiornamento della galleria...");
-
-       // Recupera tutte le opere dal database
-       List<Opera> opere = GestioneOpere.getAllOpere();
-
-       // Genera il codice JavaScript per aggiornare la galleria
-       StringBuilder script = new StringBuilder("const galleryRow = document.getElementById('row-cat1');");
-       script.append("galleryRow.innerHTML = '';"); // Svuota la galleria esistente
-
-       for (Opera opera : opere) {
-           // Codifica l'immagine in base64
-           String base64Image = "data:image/png;base64," + Base64.getEncoder().encodeToString(opera.getImmagine());
-
-           // Aggiungi un nuovo elemento alla galleria
-           script.append("galleryRow.innerHTML += `")
-                   .append("<div class='gallery-item' data-description='")
-                   .append(opera.getDescrizione())
-                   .append("'><img src='")
-                   .append(base64Image)
-                   .append("' alt='")
-                   .append(opera.getNome())
-                   .append("'></div>`;");
-       }
-
-       String finalScript = script.toString();
-       System.out.println("Script generato: " + finalScript);
-
-       // Assicurati che il WebView sia pronto prima di eseguire lo script
-       if (webView.getEngine().getLoadWorker().getState() == Worker.State.SUCCEEDED) {
-           webView.getEngine().executeScript(finalScript); // Esegui lo script immediatamente
-       } else {
-           // Se il WebView non è ancora pronto, aggiungi un listener per quando è pronto
-           webView.getEngine().getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
-               if (newState == Worker.State.SUCCEEDED) {
-                   webView.getEngine().executeScript(finalScript); // Esegui lo script quando il WebView è pronto
-               }
-           });
-       }
-   }
-
-
-
 
 
 
