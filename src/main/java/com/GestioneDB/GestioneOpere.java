@@ -29,7 +29,7 @@ public class GestioneOpere {
     }
 
     // Metodo per salvare l'opera nel database
-    public static void  salvaOperaDb(String nome, String autore, int anno, String tecnica, User user, String descrizione, byte[] immagine) {
+    public static void salvaOperaDb(String nome, String autore, int anno, String tecnica, User user, String descrizione, byte[] immagine) {
         System.out.println("salvaOperaDb invocato!");
         Session session = null;
 
@@ -46,7 +46,7 @@ public class GestioneOpere {
             // Commit della transazione
             session.getTransaction().commit();
 
-            alertInfo.showAlertInfo("Successo!", "Opera Salvata Correttamente! Corri A Guardarla!");
+            alertInfo.showAlertInfo("Successo!", "Opera Salvata Correttamente!");
 
         } catch (Exception e) {
             if (session != null) session.getTransaction().rollback();
@@ -57,6 +57,36 @@ public class GestioneOpere {
     }
 
 
+    //metodo per recuperare le opere di uno specifico user
+    public static List<Opera> getOpereByUser(User user) {
+        if (user == null) {
+            System.err.println("Errore: l'utente corrente è null!");
+            return new ArrayList<>();
+        }
+
+        Session session = null;
+        List<Opera> opere = null;
+
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+
+            // Query per recuperare le opere dell'utente specifico
+            opere = session.createQuery("FROM Opera WHERE user = :user", Opera.class)
+                    .setParameter("user", user)
+                    .getResultList();
+
+            session.getTransaction().commit();
+            System.out.println("Numero di opere recuperate: " + (opere != null ? opere.size() : 0));
+        } catch (Exception e) {
+            if (session != null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            if (session != null) session.close();
+        }
+
+        return opere;
+    }
 
 
     //metodo che mi prende le opere dal db

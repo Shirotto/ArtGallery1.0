@@ -11,8 +11,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
 
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 
 public class MenuPrincipaleController {
 
@@ -85,10 +84,20 @@ public class MenuPrincipaleController {
 
     public void setUser(User user) {
         this.currentUser = user;
+
+        if (currentUser == null) {
+            System.err.println("Errore: Utente corrente è null!");
+            return;
+        }
+
+        System.out.println("Utente impostato: " + currentUser.getUsername());
+
         if (profilo != null) {
-            profilo.setUserData(user, webView);
+            profilo.setUserData(currentUser, webView);
+            profilo.mostraOpereUtente(currentUser, webView); // Aggiunge le opere caricate dall'utente
         }
     }
+
 
 
     public void aggiornaGalleria() {
@@ -106,7 +115,6 @@ public class MenuPrincipaleController {
                     .append(opera.getNome())
                     .append("'></div>`;");
         }
-        System.out.println("Script generato: " + script.toString());
         webView.getEngine().executeScript(script.toString());
     }
 
@@ -119,6 +127,20 @@ public class MenuPrincipaleController {
         webView.getEngine().reload();
         // Subito dopo il salvataggio, aggiorna la galleria senza ricaricare la pagina
         aggiornaGalleria();
+    }
+
+    public void showProfileSection() {
+        // 1) “mostra” la sezione nel WebView (chiamando la tua showSection('profile-section') lato JS)
+        webView.getEngine().executeScript("showSection('profile-section')");
+
+        // 2) e poi reinietti le opere in ‘opere-caricate-row’
+        profilo.mostraOpereUtente(currentUser, webView);
+    }
+
+
+
+    public void getOpereCaricate() {
+        profilo.mostraOpereUtente(currentUser,webView);
     }
 
 
