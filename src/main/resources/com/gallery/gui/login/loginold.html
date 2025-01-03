@@ -22,9 +22,6 @@
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
             height: 100vh;
-            flex-direction: column;
-            gap: 20px;
-            overflow: hidden;
         }
 
         .wrapper {
@@ -32,33 +29,32 @@
             width: 300px;
             height: 400px;
             perspective: 1000px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            transform: translateY(-50px); /* Traslazione verso l'alto */
         }
 
         .switch {
             display: flex;
-            justify-content: center;
+            justify-content: center; /* Centra gli elementi */
             align-items: center;
-            gap: 5px;
-            margin-bottom: 15px;
+            gap: 5px; /* Spazio ridotto tra gli elementi */
+            margin-bottom: 20px;
+            /* width: 300px; */ /* Rimosso per permettere agli elementi di adattarsi al contenuto */
         }
 
         .switch .label-login,
         .switch .label-signup {
-            margin: 0;
+            margin: 0; /* Rimuove tutti i margini */
             font-size: 14px;
             font-weight: bold;
             color: var(--main-color);
         }
 
         .switch .label-login {
-            margin-right: 5px;
+            margin-right: 5px; /* Spazio minimo a destra */
         }
 
         .switch .label-signup {
-            margin-left: 5px;
+            margin-left: 5px; /* Spazio minimo a sinistra */
         }
 
         .toggle {
@@ -105,13 +101,10 @@
         .flip-card__inner {
             width: 100%;
             height: 100%;
-            transition: transform 0.3s ease-in-out;
+            transition: transform 0.8s ease-in-out;
             transform-style: preserve-3d;
             position: relative;
             transform: rotateY(0);
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .flip-card__inner.toggle-active {
@@ -134,35 +127,22 @@
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
             -moz-backface-visibility: hidden;
-            transition: opacity 0.3s ease-in-out;
         }
 
         .flip-card__back {
             transform: rotateY(180deg);
-            opacity: 0;
+            visibility: hidden;
             z-index: -1;
         }
 
         .flip-card__inner.toggle-active .flip-card__back {
-            opacity: 1;
+            visibility: visible;
             z-index: 1;
         }
 
         .flip-card__inner.toggle-active .flip-card__front {
-            opacity: 0;
+            visibility: hidden;
             z-index: -1;
-        }
-
-        .flip-card__front, .flip-card__back {
-            pointer-events: auto;
-        }
-
-        .flip-card__inner.toggle-active .flip-card__front {
-            pointer-events: none;
-        }
-
-        .flip-card__inner.toggle-active .flip-card__back {
-            pointer-events: auto;
         }
 
         .title {
@@ -214,59 +194,37 @@
             background-color: var(--main-color);
             color: var(--bg-color);
         }
-
-        .login-btn {
-            background-color: #1F5A9E; /* Colore per il pulsante di login */
-            border: none;
-            color: white;
-        }
-
-        .login-btn:hover {
-            background-color: #004999; /* Colore più intenso quando il mouse è sopra al pulsante di login */
-            transform: scale(1.02);
-        }
-
-        .signup-btn {
-            background-color: #4C8C2A; /* Colore per il pulsante di registrazione */
-            border: none;
-            color: white;
-        }
-
-        .signup-btn:hover {
-            background-color: #318700; /* Colore più intenso quando il mouse è sopra al pulsante di registrazione */
-            transform: scale(1.02);
-        }
     </style>
 </head>
 <body>
 
-<div class="switch">
-    <span class="label-login">Accesso</span>
-    <label>
-        <input type="checkbox" id="toggle-checkbox" class="toggle">
-        <span class="slider"></span>
-    </label>
-    <span class="label-signup">Registrazione</span>
-</div>
-
 <div class="wrapper">
+    <div class="switch">
+        <span class="label-login">Log In</span>
+        <label>
+            <input type="checkbox" id="toggle-checkbox" class="toggle">
+            <span class="slider"></span>
+        </label>
+        <span class="label-signup">Sign Up</span>
+    </div>
+
     <div class="flip-card__inner" id="flip-card">
         <div class="flip-card__front">
-            <div class="title">Accesso</div>
+            <div class="title">Log in</div>
             <form class="flip-card__form" action="#" method="POST" onsubmit="return false;">
                 <input id="email" class="flip-card__input" name="email" placeholder="Email" type="email" required>
                 <input id="password" class="flip-card__input" name="password" placeholder="Password" type="password" required>
-                <button type="button" id="login-btn" class="flip-card__btn login-btn" onclick="handleLogin(event)">Accedi</button>
+                <button type="button" id="login-btn" class="flip-card__btn" onclick="handleLogin(event)">Login</button>
             </form>
         </div>
 
         <div class="flip-card__back">
-            <div class="title">Registrazione</div>
+            <div class="title">Sign up</div>
             <form class="flip-card__form" action="#" method="POST" onsubmit="return false;">
-                <input id="signup-name" class="flip-card__input" name="name" placeholder="Nome" type="text" required>
+                <input id="signup-name" class="flip-card__input" name="name" placeholder="Name" type="text" required>
                 <input id="signup-email" class="flip-card__input" name="email" placeholder="Email" type="email" required>
                 <input id="signup-password" class="flip-card__input" name="password" placeholder="Password" type="password" required>
-                <button type="button" id="signup-btn" class="flip-card__btn signup-btn" onclick="handleSignUp(event)">Registrati</button>
+                <button type="button" id="signup-btn" class="flip-card__btn" onclick="handleSignUp(event)">Sign Up</button>
             </form>
         </div>
     </div>
@@ -280,15 +238,19 @@
     toggleCheckbox.addEventListener('change', () => {
         if (toggleCheckbox.checked) {
             flipCardInner.classList.add('toggle-active');
+            console.log("Switching to Sign Up");
         } else {
             flipCardInner.classList.remove('toggle-active');
+            console.log("Switching to Log In");
         }
     });
 
     function handleLogin(event) {
-        event.preventDefault(); // Impedisce l'invio del form
+        event.preventDefault();
+
         var email = document.getElementById("email");
         var password = document.getElementById("password");
+
         if (typeof javafxController !== "undefined") {
             javafxController.handleLoginButtonClick(email.value, password.value);
         } else {
@@ -297,10 +259,14 @@
     }
 
     function handleSignUp(event) {
-        event.preventDefault();
+        event.preventDefault(); // Impedisce l'invio del form
+
         var name = document.getElementById("signup-name");
         var email = document.getElementById("signup-email");
         var password = document.getElementById("signup-password");
+
+        console.log("Sign Up: Name: " + name.value + ", Email: " + email.value + ", Password: " + password.value);
+
         if (typeof javafxController !== "undefined") {
             javafxController.handleSignUpButtonClick(name.value, email.value, password.value);
         } else {
