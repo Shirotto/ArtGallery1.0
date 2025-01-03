@@ -106,13 +106,17 @@ public class ProfiloController {
                 .append("if (opereCaricateRow) { opereCaricateRow.innerHTML = ''; }")
                 .append("else { console.error('Elemento opere-caricate-row non trovato.'); }");
 
-        for (Opera opera : opere) {098
-            String base64Image = "data:image/png;base64,"
-                    + Base64.getEncoder().encodeToString(opera.getImmagine());
+        String id = null;
+        for (Opera opera : opere) {
+            String base64Image = "data:image/png;base64," + Base64.getEncoder().encodeToString(opera.getImmagine());
             String descrizione = opera.getDescrizione().replace("'", "\\'");
             String nome = opera.getNome().replace("'", "\\'");
+            id = String.valueOf(opera.getId());
+
             scriptBuilder.append("opereCaricateRow.innerHTML += `")
-                    .append("<div class='gallery-item' data-description='")
+                    .append("<div class='gallery-item' data-id='")
+                    .append(id)
+                    .append("' data-description='")
                     .append(descrizione)
                     .append("'><img src='")
                     .append(base64Image)
@@ -120,7 +124,7 @@ public class ProfiloController {
                     .append(nome)
                     .append("'></div>`;");
         }
-        scriptBuilder.append("attachGalleryItemListeners(true);"); // "true" necessario per attivare il pulsante Cancella Opera
+        scriptBuilder.append("attachGalleryItemListeners(true, '").append(id).append("');"); // Pass the id to the function
         String script = scriptBuilder.toString();
         try {
             webView.getEngine().executeScript(script);

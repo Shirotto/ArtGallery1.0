@@ -839,7 +839,7 @@
         <img id="modal-image" src="" alt="Opera">
         <h2 id="modal-title">Titolo Opera</h2>
         <p id="modal-description">Descrizione Opera</p>
-        <button id="modal-delete-btn" style="display: none; position: absolute; bottom: 10px; right: 10px;" onclick="eliminaOpera()">Cancella Opera</button>
+        <button id="modal-delete-btn" style="display: none; position: absolute; bottom: 10px; right: 10px;" onclick="eliminaOpera(this.dataset.id)">Cancella Opera</button>
     </div>
 </div>
 <script>
@@ -989,6 +989,7 @@
 
             const deleteButton = document.getElementById('modal-delete-btn');
             if (showDeleteButton) {
+                deleteButton.dataset.id = id;
                 deleteButton.style.display = 'block';
             } else {
                 deleteButton.style.display = 'none';
@@ -1016,7 +1017,7 @@
                 }
             });
         }
-        window.attachGalleryItemListeners = function(showDeleteButton = false) {
+        window.attachGalleryItemListeners = function(showDeleteButton = false, id) {
             const galleryItems = document.querySelectorAll('.gallery-item');
             galleryItems.forEach(function(item) {
                 item.addEventListener('click', function() {
@@ -1045,9 +1046,18 @@
         });
     });
 
-    function eliminaOpera() {
-        // Qui la logica per eliminare l'opera.
-        alert("Funzione 'Elimina Opera' da implementare!");
+    function eliminaOpera(id) {
+        if (confirm("Sei sicuro di voler eliminare questa opera?")) {
+            rimuoviOperaDbByID(id)
+                .then(() => {
+                    alert("Opera eliminata con successo.");
+                    // Optionally refresh the page or update the UI
+                })
+                .catch(error => {
+                    console.error("Errore durante l'eliminazione dell'opera:", error);
+                    alert("Si è verificato un errore durante l'eliminazione.");
+                });
+        }
     }
 
     function modificaOpera() {
