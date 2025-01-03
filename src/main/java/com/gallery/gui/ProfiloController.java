@@ -106,7 +106,7 @@ public class ProfiloController {
                 .append("if (opereCaricateRow) { opereCaricateRow.innerHTML = ''; }")
                 .append("else { console.error('Elemento opere-caricate-row non trovato.'); }");
 
-        for (Opera opera : opere) {
+        for (Opera opera : opere) {098
             String base64Image = "data:image/png;base64,"
                     + Base64.getEncoder().encodeToString(opera.getImmagine());
             String descrizione = opera.getDescrizione().replace("'", "\\'");
@@ -120,7 +120,7 @@ public class ProfiloController {
                     .append(nome)
                     .append("'></div>`;");
         }
-        scriptBuilder.append("attachGalleryItemListeners();");
+        scriptBuilder.append("attachGalleryItemListeners(true);"); // "true" necessario per attivare il pulsante Cancella Opera
         String script = scriptBuilder.toString();
         try {
             webView.getEngine().executeScript(script);

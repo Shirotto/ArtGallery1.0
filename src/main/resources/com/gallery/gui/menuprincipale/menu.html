@@ -839,6 +839,7 @@
         <img id="modal-image" src="" alt="Opera">
         <h2 id="modal-title">Titolo Opera</h2>
         <p id="modal-description">Descrizione Opera</p>
+        <button id="modal-delete-btn" style="display: none; position: absolute; bottom: 10px; right: 10px;" onclick="eliminaOpera()">Cancella Opera</button>
     </div>
 </div>
 <script>
@@ -981,11 +982,18 @@
         const modalTitle = document.getElementById('modal-title');
         const modalDescription = document.getElementById('modal-description');
 
-        window.openModal = function(imageSrc, title, description) {
-            console.log(`Apertura modale per: ${title}`);
+        window.openModal = function(imageSrc, id, title, description, showDeleteButton) {
             modalImage.src = imageSrc || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
             modalTitle.textContent = title || 'Titolo Opera';
             modalDescription.textContent = description || 'Descrizione Opera';
+
+            const deleteButton = document.getElementById('modal-delete-btn');
+            if (showDeleteButton) {
+                deleteButton.style.display = 'block';
+            } else {
+                deleteButton.style.display = 'none';
+            }
+
             modalOverlay.classList.add('active');
         }
 
@@ -1008,7 +1016,7 @@
                 }
             });
         }
-        window.attachGalleryItemListeners = function() {
+        window.attachGalleryItemListeners = function(showDeleteButton = false) {
             const galleryItems = document.querySelectorAll('.gallery-item');
             galleryItems.forEach(function(item) {
                 item.addEventListener('click', function() {
@@ -1022,11 +1030,12 @@
                     }
                     const title = img ? img.alt : item.textContent.trim();
                     const description = item.getAttribute('data-description') || 'Descrizione dell\'opera';
-                    openModal(imgSrc, title, description);
+                    openModal(imgSrc, id, title, description, showDeleteButton);
                 });
             });
             console.log("Event listeners attaccati alle gallery-item");
         }
+
 
         // Imposto la sezione di default
         showSection('home-section');

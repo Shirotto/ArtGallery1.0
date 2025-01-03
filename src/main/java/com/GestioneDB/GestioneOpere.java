@@ -57,6 +57,38 @@ public class GestioneOpere {
     }
 
 
+    // Metodo per rimuovere un'opera dal database passando l'ID dell'opera da cancellare
+    public static void rimuoviOperaDbByID(Long id) {
+        System.out.println("rimuoviOperaDbByID invocato!");
+        Session session = null;
+
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+
+            // Trova l'opera nel database usando l'ID
+            Opera opera = session.get(Opera.class, id);
+
+            if (opera != null) {
+                // Rimuove l'opera dal database
+                session.delete(opera);
+
+                // Commit della transazione
+                session.getTransaction().commit();
+                alertInfo.showAlertInfo("Successo!", "Opera Rimossa Correttamente!");
+            } else {
+                alertInfo.showAlertInfo("Errore!", "Opera con ID " + id + " non trovata!");
+            }
+
+        } catch (Exception e) {
+            if (session != null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            if (session != null) session.close();
+        }
+    }
+
+
     //metodo per recuperare le opere di uno specifico user
     public static List<Opera> getOpereByUser(User user) {
         if (user == null) {
