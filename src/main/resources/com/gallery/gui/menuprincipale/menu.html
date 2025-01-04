@@ -992,6 +992,7 @@
                 deleteButton.dataset.id = id;
                 deleteButton.style.display = 'block';
             } else {
+                deleteButton.dataset.id = '';
                 deleteButton.style.display = 'none';
             }
 
@@ -1048,7 +1049,7 @@
 
     function eliminaOpera(id) {
         if (confirm("Sei sicuro di voler eliminare questa opera?")) {
-            rimuoviOperaDbByID(id)
+            GestioneOpere.rimuoviOperaDbByID(id)
                 .then(() => {
                     alert("Opera eliminata con successo.");
                     // Optionally refresh the page or update the UI
