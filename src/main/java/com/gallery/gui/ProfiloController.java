@@ -106,12 +106,11 @@ public class ProfiloController {
                 .append("if (opereCaricateRow) { opereCaricateRow.innerHTML = ''; }")
                 .append("else { console.error('Elemento opere-caricate-row non trovato.'); }");
 
-        String id = null;
         for (Opera opera : opere) {
             String base64Image = "data:image/png;base64," + Base64.getEncoder().encodeToString(opera.getImmagine());
             String descrizione = opera.getDescrizione().replace("'", "\\'");
             String nome = opera.getNome().replace("'", "\\'");
-            id = String.valueOf(opera.getId());
+            String id = String.valueOf(opera.getId()); // Move id declaration inside the loop
 
             scriptBuilder.append("opereCaricateRow.innerHTML += `")
                     .append("<div class='gallery-item' data-id='")
@@ -123,8 +122,10 @@ public class ProfiloController {
                     .append("' alt='")
                     .append(nome)
                     .append("'></div>`;");
+
+            // Call attachGalleryItemListeners for each opera inside the loop
+            scriptBuilder.append("attachGalleryItemListeners(true, '").append(id).append("');");
         }
-        scriptBuilder.append("attachGalleryItemListeners(true, '").append(id).append("');"); // Pass the id to the function
         String script = scriptBuilder.toString();
         try {
             webView.getEngine().executeScript(script);

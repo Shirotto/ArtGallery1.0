@@ -990,6 +990,7 @@
             if (showDeleteButton) {
                 deleteButton.dataset.id = id;
                 deleteButton.style.display = 'block';
+                deleteButton.innerText = `Cancella Opera (ID: ${id})`;
             } else {
                 deleteButton.dataset.id = '';
                 deleteButton.style.display = 'none';
@@ -1017,7 +1018,7 @@
                 }
             });
         }
-        window.attachGalleryItemListeners = function(showDeleteButton = false, id) {
+        window.attachGalleryItemListeners = function(showDeleteButton = false) {
             const galleryItems = document.querySelectorAll('.gallery-item');
             galleryItems.forEach(function(item) {
                 item.addEventListener('click', function() {
@@ -1031,6 +1032,7 @@
                     }
                     const title = img ? img.alt : item.textContent.trim();
                     const description = item.getAttribute('data-description') || 'Descrizione dell\'opera';
+                    const id = item.getAttribute('data-id')
                     openModal(imgSrc, id, title, description, showDeleteButton);
                 });
             });
@@ -1066,7 +1068,5 @@
     }
 
 </script>
-
-
 </body>
 </html>
