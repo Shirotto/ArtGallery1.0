@@ -981,13 +981,12 @@
         const modalImage = document.getElementById('modal-image');
         const modalTitle = document.getElementById('modal-title');
         const modalDescription = document.getElementById('modal-description');
+        const deleteButton = document.getElementById('modal-delete-btn');
 
         window.openModal = function(imageSrc, id, title, description, showDeleteButton) {
             modalImage.src = imageSrc || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
             modalTitle.textContent = title || 'Titolo Opera';
             modalDescription.textContent = description || 'Descrizione Opera';
-
-            const deleteButton = document.getElementById('modal-delete-btn');
             if (showDeleteButton) {
                 deleteButton.dataset.id = id;
                 deleteButton.style.display = 'block';
