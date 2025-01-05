@@ -124,7 +124,7 @@ public class ProfiloController {
                     .append("'></div>`;");
 
             // Call attachGalleryItemListeners for each opera inside the loop
-            scriptBuilder.append("attachGalleryItemListeners(true, '").append(id).append("');");
+            scriptBuilder.append("attachGalleryItemListeners('").append(id).append("');");
         }
         String script = scriptBuilder.toString();
         try {

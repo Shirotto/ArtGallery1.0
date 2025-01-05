@@ -1018,7 +1018,7 @@
                 }
             });
         }
-        window.attachGalleryItemListeners = function(showDeleteButton = false) {
+        window.attachGalleryItemListeners = function() {
             const galleryItems = document.querySelectorAll('.gallery-item');
             galleryItems.forEach(function(item) {
                 item.addEventListener('click', function() {
@@ -1033,6 +1033,7 @@
                     const title = img ? img.alt : item.textContent.trim();
                     const description = item.getAttribute('data-description') || 'Descrizione dell\'opera';
                     const id = item.getAttribute('data-id')
+                    const showDeleteButton = id !== null && id !== '' ? true : false; //Se non ricevo il campo id allora non mostro il pulsante Cancella Opera, sennò si
                     openModal(imgSrc, id, title, description, showDeleteButton);
                 });
             });
