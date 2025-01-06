@@ -487,6 +487,85 @@
             color: #9098A9;
         }
 
+        .custom-btn {
+            position: relative;
+            background: #e0e0e0;
+            color: #323232;
+            font-size: 1.1em;
+            padding: 10px 18px 8px 18px;
+            margin: 8px 0;
+            transition: background 100ms ease, color 100ms ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .custom-btn:hover {
+            background: white;
+            color: black;
+            transition: background 150ms linear, color 150ms linear;
+        }
+
+        .custom-btn:before {
+            position: absolute;
+            content: "";
+            inset: 0;
+            background: rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+            clip-path: polygon(-10% -10%, -10% 110%, 10% 90%, 6% 10%, 94% 10%, 91% 90%, 10% 90%, -10% 110%, 110% 110%, 110% -10%);
+        }
+
+        .custom-btn:after {
+            position: absolute;
+            content: "";
+            inset: 0;
+            border: 0px solid white;
+        }
+
+        .custom-btn:hover:after {
+            animation: 300ms ease c4border;
+            animation-fill-mode: forwards;
+        }
+
+        .custom-btn-small {
+            position: relative;
+            background: #e0e0e0;
+            color: #323232;
+            font-size: 0.9em; /* Smaller font size */
+            padding: 6px 12px 5px 12px; /* Smaller padding */
+            margin: 4px 0; /* Reduced margin */
+            transition: background 100ms ease, color 100ms ease;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px; /* Added for better appearance */
+        }
+
+        .custom-btn-small:hover {
+            background: white;
+            color: black;
+            transition: background 150ms linear, color 150ms linear;
+        }
+
+        .custom-btn-small:before {
+            position: absolute;
+            content: "";
+            inset: 0;
+            background: rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+            clip-path: polygon(-10% -10%, -10% 110%, 10% 90%, 6% 10%, 94% 10%, 91% 90%, 10% 90%, -10% 110%, 110% 110%, 110% -10%);
+        }
+
+        .custom-btn-small:after {
+            position: absolute;
+            content: "";
+            inset: 0;
+            border: 0px solid white;
+        }
+
+        .custom-btn-small:hover:after {
+            animation: 300ms ease c4border;
+            animation-fill-mode: forwards;
+        }
+
         @keyframes elasticInput {
             33% {
                 d: path("M0,12 L226,12 C220,12 220.666667,12 228,12 C239,12 245,1 253,1 C261,1 268,12 278,12 C284.666667,12 285.333333,12 280,12");
@@ -624,9 +703,9 @@
         </div>
 
         <div class="c4">
-            <button class="btn" onclick="toggleCaricaOperaForm()">Carica Opera</button>
-            <button class="btn" onclick="eliminaOpera()">Elimina Opera</button>
-            <button class="btn" onclick="modificaOpera()">Modifica Opera</button>
+            <button class="btn" class="custom-btn" onclick="toggleCaricaOperaForm()">Carica Opera</button>
+            <button class="btn" class="custom-btn" onclick="eliminaOpera()">Elimina Opera</button>
+            <button class="btn" class="custom-btn" onclick="modificaOpera()">Modifica Opera</button>
         </div>
 
         <div id="carica-opera-form" class="hidden settings-form">
@@ -839,7 +918,7 @@
         <img id="modal-image" src="" alt="Opera">
         <h2 id="modal-title">Titolo Opera</h2>
         <p id="modal-description">Descrizione Opera</p>
-        <button id="modal-delete-btn" style="display: none; position: absolute; bottom: 10px; right: 10px;">Cancella Opera</button>
+        <button id="modal-delete-btn" class="custom-btn-small" style="display: none; position: absolute; bottom: 10px; right: 10px;">Cancella Opera</button>
     </div>
 </div>
 <script>
