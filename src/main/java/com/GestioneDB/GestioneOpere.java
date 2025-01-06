@@ -58,7 +58,7 @@ public class GestioneOpere {
 
 
     // Metodo per rimuovere un'opera dal database passando l'ID dell'opera da cancellare
-    public static void rimuoviOperaDbByID(Long id) {
+    public static void rimuoviOperaDbByID(long id) {
         System.out.println("rimuoviOperaDbByID invocato!");
         Session session = null;
 

@@ -124,6 +124,13 @@ public class MenuPrincipaleController {
         aggiornaGalleria();
     }
 
+    public void eliminaOpera(long id) {
+        GestioneOpere.rimuoviOperaDbByID(id);
+        webView.getEngine().reload();
+        // Subito dopo la rimozione, aggiorna la galleria senza ricaricare la pagina
+        aggiornaGalleria();
+    }
+
     public void showProfileSection() {
         // 1) “mostra” la sezione nel WebView (chiamando la tua showSection('profile-section') lato JS)
         webView.getEngine().executeScript("showSection('profile-section')");

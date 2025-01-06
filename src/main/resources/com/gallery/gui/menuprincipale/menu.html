@@ -839,7 +839,7 @@
         <img id="modal-image" src="" alt="Opera">
         <h2 id="modal-title">Titolo Opera</h2>
         <p id="modal-description">Descrizione Opera</p>
-        <button id="modal-delete-btn" style="display: none; position: absolute; bottom: 10px; right: 10px;" onclick="eliminaOpera(this.dataset.id)">Cancella Opera</button>
+        <button id="modal-delete-btn" style="display: none; position: absolute; bottom: 10px; right: 10px;">Cancella Opera</button>
     </div>
 </div>
 <script>
@@ -987,12 +987,15 @@
             modalImage.src = imageSrc || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
             modalTitle.textContent = title || 'Titolo Opera';
             modalDescription.textContent = description || 'Descrizione Opera';
+            // Ovvero quando stiamo nella Galleria del Profilo poichè il pulsante CancellaOpera è mostrato solo in questo caso
             if (showDeleteButton) {
-                deleteButton.dataset.id = id;
+                //deleteButton.dataset.id = id;
                 deleteButton.style.display = 'block';
                 deleteButton.innerText = `Cancella Opera (ID: ${id})`;
+                deleteButton.onclick = function() { eliminaOpera(id); };
+            // Quando stiamo nella Galleria
             } else {
-                deleteButton.dataset.id = '';
+                //deleteButton.dataset.id = '';
                 deleteButton.style.display = 'none';
             }
 
@@ -1050,16 +1053,30 @@
     });
 
     function eliminaOpera(id) {
+        if (!id || isNaN(id)) {
+            alert("ID non valido.");
+            return;
+        }
+
+        const longId = Number(id);
+        if (!Number.isSafeInteger(longId)) {
+            alert("ID troppo grande per essere gestito.");
+            return;
+        }
+
         if (confirm("Sei sicuro di voler eliminare questa opera?")) {
-            GestioneOpere.rimuoviOperaDbByID(id)
-                .then(() => {
+            if (window.javafxController) {
+                try {
+                    window.javafxController.eliminaOpera(longId);
                     alert("Opera eliminata con successo.");
-                    // Optionally refresh the page or update the UI
-                })
-                .catch(error => {
+                } catch (error) {
                     console.error("Errore durante l'eliminazione dell'opera:", error);
                     alert("Si è verificato un errore durante l'eliminazione.");
-                });
+                }
+            } else {
+                console.error("Controller JavaFX non trovato.");
+                alert("Impossibile completare l'operazione. Controller JavaFX non disponibile.");
+            }
         }
     }
 
