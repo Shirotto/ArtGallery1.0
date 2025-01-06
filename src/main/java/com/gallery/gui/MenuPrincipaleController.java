@@ -124,7 +124,7 @@ public class MenuPrincipaleController {
         aggiornaGalleria();
     }
 
-    public void eliminaOpera(long id) {
+    public void rimuoviOpera(long id) {
         try {
             // Prova a rimuovere l'opera dal database
             GestioneOpere.rimuoviOperaDbByID(id);
