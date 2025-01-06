@@ -66,25 +66,29 @@ public class GestioneOpere {
             session = sessionFactory.openSession();
             session.beginTransaction();
 
-            // Trova l'opera nel database usando l'ID
-            Opera opera = session.get(Opera.class, id);
+            // Esegui una query HQL per eliminare direttamente l'opera dal database
+            int rowsAffected = session.createQuery("DELETE FROM Opera WHERE id = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
 
-            if (opera != null) {
-                // Rimuove l'opera dal database
-                session.delete(opera);
-
+            if (rowsAffected > 0) {
                 // Commit della transazione
                 session.getTransaction().commit();
-                alertInfo.showAlertInfo("Successo!", "Opera Rimossa Correttamente!");
+                alertInfo.showAlertInfo("Successo!", "Opera rimossa correttamente!");
             } else {
                 alertInfo.showAlertInfo("Errore!", "Opera con ID " + id + " non trovata!");
             }
 
         } catch (Exception e) {
-            if (session != null) session.getTransaction().rollback();
-            e.printStackTrace();
+            if (session != null && session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            // Usa un logger invece di e.printStackTrace()
+            System.err.println("Errore durante la rimozione dell'opera: " + e.getMessage());
         } finally {
-            if (session != null) session.close();
+            if (session != null) {
+                session.close();
+            }
         }
     }
 
