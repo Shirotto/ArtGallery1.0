@@ -105,20 +105,25 @@ public class ProfiloController {
         scriptBuilder.append("const opereCaricateRow = document.getElementById('opere-caricate-row');")
                 .append("if (opereCaricateRow) { opereCaricateRow.innerHTML = ''; }")
                 .append("else { console.error('Elemento opere-caricate-row non trovato.'); }");
-
         for (Opera opera : opere) {
-            String base64Image = "data:image/png;base64,"
-                    + Base64.getEncoder().encodeToString(opera.getImmagine());
+            String base64Image = "data:image/png;base64," + Base64.getEncoder().encodeToString(opera.getImmagine());
             String descrizione = opera.getDescrizione().replace("'", "\\'");
             String nome = opera.getNome().replace("'", "\\'");
+            String autore = opera.getAutore().replace("'", "\\'");
+            String tecnica = opera.getTecnica().replace("'", "\\'");
+            String dimensione = opera.getDimensione() != null ? opera.getDimensione().replace("'", "\\'") : "N/A";
+            int anno = opera.getAnno();
+
             scriptBuilder.append("opereCaricateRow.innerHTML += `")
-                    .append("<div class='gallery-item' data-description='")
-                    .append(descrizione)
-                    .append("'><img src='")
-                    .append(base64Image)
-                    .append("' alt='")
-                    .append(nome)
-                    .append("'></div>`;");
+                    .append("<div class='gallery-item' ")
+                    .append("data-description='").append(descrizione).append("' ")
+                    .append("data-author='").append(autore).append("' ")
+                    .append("data-technique='").append(tecnica).append("' ")
+                    .append("data-year='").append(anno).append("' ")
+                    .append("data-dimension='").append(dimensione).append("' ")
+                    .append("data-user='").append(currentUser.getUsername().replace("'", "\\'")).append("'>")
+                    .append("<img src='").append(base64Image).append("' alt='").append(nome).append("'>")
+                    .append("</div>`;");
         }
         scriptBuilder.append("attachGalleryItemListeners();");
         String script = scriptBuilder.toString();
@@ -128,6 +133,7 @@ public class ProfiloController {
             System.err.println("Errore durante l'iniezione dello script nella WebView: " + e.getMessage());
         }
     }
+
 
 
     private void saveUserDataToDatabase(User user) {

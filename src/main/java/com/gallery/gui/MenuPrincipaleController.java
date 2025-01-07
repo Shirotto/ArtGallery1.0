@@ -91,23 +91,49 @@ public class MenuPrincipaleController {
 
 
     public void aggiornaGalleria() {
+        // Recupera tutte le opere dal database
         List<Opera> opere = GestioneOpere.getAllOpere();
-        StringBuilder script = new StringBuilder("const galleryRow = document.getElementById('row-cat1');");
-        script.append("galleryRow.innerHTML = '';");
+        StringBuilder scriptBuilder = new StringBuilder();
+
+        // Inizializza il contenitore della galleria
+        scriptBuilder.append("const galleryRow = document.getElementById('row-cat1');")
+                .append("if (galleryRow) { galleryRow.innerHTML = ''; }")
+                .append("else { console.error('Elemento row-cat1 non trovato.'); }");
+
+        // Genera gli elementi HTML per ogni opera
         for (Opera opera : opere) {
             String base64Image = "data:image/png;base64," + Base64.getEncoder().encodeToString(opera.getImmagine());
+            String descrizione = opera.getDescrizione().replace("'", "\\'");
+            String nome = opera.getNome().replace("'", "\\'");
+            String autore = opera.getAutore().replace("'", "\\'");
+            String tecnica = opera.getTecnica().replace("'", "\\'");
+            String dimensione = opera.getDimensione() != null ? opera.getDimensione().replace("'", "\\'") : "N/A";
+            int anno = opera.getAnno();
 
-            script.append("galleryRow.innerHTML += `")
-                    .append("<div class='gallery-item' data-description='")
-                    .append(opera.getDescrizione())
-                    .append("'><img src='")
-                    .append(base64Image)
-                    .append("' alt='")
-                    .append(opera.getNome())
-                    .append("'></div>`;");
+            scriptBuilder.append("galleryRow.innerHTML += `")
+                    .append("<div class='gallery-item' ")
+                    .append("data-description='").append(descrizione).append("' ")
+                    .append("data-author='").append(autore).append("' ")
+                    .append("data-technique='").append(tecnica).append("' ")
+                    .append("data-year='").append(anno).append("' ")
+                    .append("data-dimension='").append(dimensione).append("' ")
+                    .append("data-user='").append(currentUser.getUsername().replace("'", "\\'")).append("'>")
+                    .append("<img src='").append(base64Image).append("' alt='").append(nome).append("'>")
+                    .append("</div>`;");
         }
-        webView.getEngine().executeScript(script.toString());
+
+        // Attacca i listener agli elementi generati
+        scriptBuilder.append("attachGalleryItemListeners();");
+
+        // Inietta lo script nella WebView
+        String script = scriptBuilder.toString();
+        try {
+            webView.getEngine().executeScript(script);
+        } catch (Exception e) {
+            System.err.println("Errore durante l'iniezione dello script nella WebView: " + e.getMessage());
+        }
     }
+
 
     public void salvaOpera(String titolo, String autore, int anno, String tecnica, String descrizione, String imageDataBase64,String dimensione) {
         byte[] immagine = java.util.Base64.getDecoder().decode(imageDataBase64.split(",")[1]);
