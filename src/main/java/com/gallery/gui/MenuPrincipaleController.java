@@ -25,7 +25,6 @@ public class MenuPrincipaleController {
 
     private User currentUser;
 
-
     @FXML
     public void initialize() {
         WebEngine webEngine = webView.getEngine();
@@ -79,20 +78,16 @@ public class MenuPrincipaleController {
 
     public void setUser(User user) {
         this.currentUser = user;
-
         if (currentUser == null) {
             System.err.println("Errore: Utente corrente è null!");
             return;
         }
-
         System.out.println("Utente impostato: " + currentUser.getUsername());
-
         if (profilo != null) {
             profilo.setUserData(currentUser, webView);
-            profilo.mostraOpereUtente(currentUser, webView); // Aggiunge le opere caricate dall'utente
+            profilo.mostraOpereUtente(currentUser, webView);
         }
     }
-
 
 
     public void aggiornaGalleria() {
@@ -113,31 +108,21 @@ public class MenuPrincipaleController {
         webView.getEngine().executeScript(script.toString());
     }
 
-
     public void salvaOpera(String titolo, String autore, int anno, String tecnica, String descrizione, String imageDataBase64) {
-        // Converte i dati base64 dell'immagine in byte[]
         byte[] immagine = java.util.Base64.getDecoder().decode(imageDataBase64.split(",")[1]);
-        // Salva l'opera nel database
         GestioneOpere.salvaOperaDb(titolo, autore, anno, tecnica, currentUser, descrizione, immagine);
         webView.getEngine().reload();
-        // Subito dopo il salvataggio, aggiorna la galleria senza ricaricare la pagina
         aggiornaGalleria();
     }
 
     public void showProfileSection() {
-        // 1) “mostra” la sezione nel WebView (chiamando la tua showSection('profile-section') lato JS)
         webView.getEngine().executeScript("showSection('profile-section')");
-
-        // 2) e poi reinietti le opere in ‘opere-caricate-row’
         profilo.mostraOpereUtente(currentUser, webView);
     }
-
-
 
     public void getOpereCaricate() {
         profilo.mostraOpereUtente(currentUser,webView);
     }
-
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

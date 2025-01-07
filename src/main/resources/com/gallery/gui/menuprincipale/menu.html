@@ -144,7 +144,7 @@
         }
 
         #gallery-section h1 {
-            margin-bottom: 1em;
+            margin: 0 0 8px;
             font-size: 2em;
             color: #323232;
         }
@@ -506,6 +506,95 @@
         }
 
 
+        .searchBox {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            background: #666;
+            overflow: hidden;
+            transition: width 0.4s;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .searchButton {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #666;
+            color: #fff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.4s, background 0.4s, color 0.4s;
+            flex-shrink: 0;
+        }
+        .searchInput {
+            width: 0;
+            border: none;
+            outline: none;
+            background: none;
+            color: #fff;
+            font-size: 16px;
+            transition: width 0.4s, padding 0.4s;
+        }
+        .searchBox:hover {
+            width: 240px;
+        }
+        .searchBox:hover .searchButton {
+            transform: translateX(200px);
+        }
+        .searchBox:hover .searchInput {
+            width: calc(100% - 40px);
+            padding: 0 8px;
+            transform: translateX(-40px);
+        }
+        .searchBox:focus-within {
+            width: 240px;
+        }
+        .searchBox:focus-within .searchButton {
+            transform: translateX(200px);
+        }
+        .searchBox:focus-within .searchInput {
+            width: calc(100% - 40px);
+            padding: 0 8px;
+            transform: translateX(-40px);
+        }
+
+        .searchBox:hover .searchButton,
+        .searchBox:focus-within .searchButton {
+            background: #fff;
+            color: #666;
+        }
+
+        @media (max-width: 620px) {
+            .searchBox:hover,
+            .searchBox:focus-within {
+                width: 180px;
+            }
+            .searchBox:hover .searchButton,
+            .searchBox:focus-within .searchButton {
+                transform: translateX(100px);
+            }
+            .searchBox:hover .searchInput,
+            .searchBox:focus-within .searchInput {
+                width: calc(100% - 40px);
+                transform: translateX(-40px);
+            }
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background-color: #ccc;
+            margin: 10px 0;
+        }
+
     </style>
 
     <!-- Ionicons per le icone nel menu -->
@@ -670,42 +759,27 @@
     <!-- Sezione Galleria -->
     <div id="gallery-section" class="hidden">
 
+        <h1>Galleria</h1>
 
-        <div style="margin-bottom: 1em;">
-            <input
-                    type="text"
-                    id="search-input"
-                    placeholder="Cerca opera per nome..."
-                    style="padding: 8px; width: 200px;"
-            />
-
-
-            <button
-                    type="button"
-                    id="filter-btn"
-                    style="padding: 8px; cursor: pointer;"
-            >
-                Filtra
+        <div class="searchBox">
+            <button class="searchButton">
+                <ion-icon name="search-outline"></ion-icon>
             </button>
-
-            <button
-                    type="button"
-                    id="search-btn"
-                    style="padding: 8px; cursor: pointer;"
-            >
-                Cerca
-            </button>
+            <input type="text" class="searchInput" placeholder="Cerca opera...">
         </div>
 
+        <div class="divider"></div>
 
-        <h1>Galleria</h1>
         <div class="gallery-category">
             <div class="gallery-row-container">
                 <div class="gallery-row" id="row-cat1">
+                    <!-- Le opere -->
                 </div>
             </div>
         </div>
     </div>
+
+
 
     <!-- Sezione Impostazioni -->
     <div id="settings-section" class="hidden" style="position: relative;">
