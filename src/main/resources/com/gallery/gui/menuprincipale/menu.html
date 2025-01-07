@@ -737,6 +737,81 @@
         }
 
 
+        /* Stile per il pulsante di ordinamento */
+        .orderButton {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #666;
+            color: #fff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.4s, background 0.4s, color 0.4s;
+            flex-shrink: 0;
+        }
+
+        .orderButton:hover {
+            background: #fff;
+            color: #666;
+        }
+
+        /* Pannello di ordinamento */
+        #order-pane {
+            position: fixed;
+            top: 30%;
+            right: 5%;
+            width: 300px;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            display: none;
+            z-index: 1000;
+        }
+
+        #order-pane.hidden {
+            display: none;
+        }
+
+        #order-pane h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        #order-pane ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #order-pane ul li {
+            margin-bottom: 10px;
+        }
+
+        #order-pane ul li label {
+            font-size: 14px;
+            color: #555;
+            cursor: pointer;
+        }
+
+        #order-pane button {
+            background-color: #666;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #order-pane button:hover {
+            background-color: #444;
+        }
+
+
         .divider {
             width: 100%;
             height: 1px;
@@ -924,70 +999,46 @@
 
         <h1>Galleria</h1>
 
-            <div class="search-container">
-                <!-- Barra di ricerca -->
-                <div class="searchBox">
-                    <button class="searchButton">
-                        <ion-icon name="search-outline"></ion-icon>
-                    </button>
-                    <input type="text" class="searchInput" placeholder="Cerca opera...">
-                </div>
-
-                <!-- Icona filtro accanto alla barra di ricerca -->
-                <button id="filter-button" class="filterButton" onclick="toggleFilterPane()">
-                    <ion-icon name="filter-outline"></ion-icon>
+        <div class="search-container">
+            <div class="searchBox">
+                <button class="searchButton">
+                    <ion-icon name="search-outline"></ion-icon>
                 </button>
+                <input type="text" class="searchInput" placeholder="Cerca opera...">
             </div>
-
-        <!-- Pane dei filtri -->
-        <div id="filter-pane" class="hidden">
-            <h3>Filtra per Tecnica</h3>
-            <ul>
-                <li>
-                    <label>
-                        <input type="checkbox" class="filter-checkbox" value="Olio-su-tela">
-                        Olio su tela
-                    </label>
-                </li>
-                <li>
-                    <label>
-                        <input type="checkbox" class="filter-checkbox" value="Acrilico">
-                        Acrilico
-                    </label>
-                </li>
-                <li>
-                    <label>
-                        <input type="checkbox" class="filter-checkbox" value="Acquerello">
-                        Acquerello
-                    </label>
-                </li>
-                <li>
-                    <label>
-                        <input type="checkbox" class="filter-checkbox" value="Pastello">
-                        Pastello
-                    </label>
-                </li>
-                <li>
-                    <label>
-                        <input type="checkbox" class="filter-checkbox" value="Scultura">
-                        Scultura
-                    </label>
-                </li>
-                <li>
-                    <label>
-                        <input type="checkbox" class="filter-checkbox" value="Mista">
-                        Tecnica mista
-                    </label>
-                </li>
-                <li>
-                    <label>
-                        <input type="checkbox" class="filter-checkbox" value="Personale">
-                        Tecnica Personale
-                    </label>
-                </li>
-            </ul>
-            <button onclick="applyFilters()">Applica Filtro</button>
+            <button class="filterButton" onclick="toggleFilterPane()">
+                <ion-icon name="filter-outline"></ion-icon>
+            </button>
+            <button class="orderButton" onclick="toggleOrderPane()">
+                <ion-icon name="reorder-four-outline"></ion-icon>
+            </button>
         </div>
+
+        <!-- Pannello dei filtri -->
+        <div id="filter-pane" class="hidden">
+            <h3>Filtri</h3>
+            <ul>
+                <li><label><input type="checkbox" value="Olio-su-tela"> Olio su tela</label></li>
+                <li><label><input type="checkbox" value="Acrilico"> Acrilico</label></li>
+                <li><label><input type="checkbox" value="Acquerello"> Acquerello</label></li>
+                <li><label><input type="checkbox" value="Pastello"> Pastello</label></li>
+                <li><label><input type="checkbox" value="Scultura"> Scultura</label></li>
+                <li><label><input type="checkbox" value="Mista"> Tecnica mista</label></li>
+            </ul>
+            <button onclick="applyFilters()">Applica</button>
+        </div>
+
+        <!-- Pannello di ordinamento -->
+        <div id="order-pane" class="hidden">
+            <h3>Ordinamento</h3>
+            <ul>
+                <li><label><input type="radio" name="order" value="name"> Nome (A-Z)</label></li>
+                <li><label><input type="radio" name="order" value="year"> Anno</label></li>
+                <li><label><input type="radio" name="order" value="author"> Autore</label></li>
+            </ul>
+            <button onclick="applyOrder()">Applica</button>
+        </div>
+
 
         <div class="divider"></div>
 
@@ -1448,6 +1499,72 @@
         // Nascondi il pannello dei filtri dopo l'applicazione
         toggleFilterPane();
     }
+
+    // Mostra/nasconde il pannello di ordinamento
+    function toggleOrderPane() {
+        const orderPane = document.getElementById('order-pane');
+        if (orderPane) {
+            orderPane.classList.toggle('hidden'); // Alterna la classe 'hidden'
+            if (orderPane.classList.contains('hidden')) {
+                orderPane.style.display = 'none';
+            } else {
+                orderPane.style.display = 'block';
+            }
+        } else {
+            console.error("Il pannello di ordinamento non è stato trovato.");
+        }
+    }
+
+    // Applica l'ordinamento
+    function applyOrder() {
+        const selectedOrder = document.querySelector('input[name="order"]:checked');
+        if (selectedOrder) {
+            const orderCriteria = selectedOrder.value;
+            console.log(`Applico l'ordinamento per: ${orderCriteria}`);
+            sortGallery(orderCriteria);
+            toggleOrderPane(); // Nasconde il pannello dopo l'applicazione
+        } else {
+            alert("Seleziona un criterio di ordinamento.");
+        }
+    }
+
+    // Funzione per ordinare la galleria
+    function sortGallery(criteria) {
+        const galleryRow = document.getElementById('row-cat1');
+        const items = Array.from(galleryRow.children);
+
+        items.sort((a, b) => {
+            // Ottieni il valore dell'attributo in base al criterio
+            const getValue = (item, attr) => item.getAttribute(`data-${attr}`) || '';
+
+            let aValue, bValue;
+
+            // Specifica il criterio di ordinamento
+            if (criteria === 'name') {
+                aValue = a.querySelector('img')?.alt.toLowerCase() || '';
+                bValue = b.querySelector('img')?.alt.toLowerCase() || '';
+            } else if (criteria === 'year') {
+                aValue = parseInt(getValue(a, 'year')) || 0; // Converte in numero per l'anno
+                bValue = parseInt(getValue(b, 'year')) || 0;
+            } else if (criteria === 'author') {
+                aValue = getValue(a, 'author').toLowerCase();
+                bValue = getValue(b, 'author').toLowerCase();
+            } else {
+                return; // Nessuna azione se il criterio non è valido
+            }
+
+            // Ordinamento A-Z o crescente per anno
+            if (aValue < bValue) return -1;
+            if (aValue > bValue) return 1;
+            return 0;
+        });
+
+        // Riordina gli elementi nella galleria
+        galleryRow.innerHTML = '';
+        items.forEach(item => galleryRow.appendChild(item));
+    }
+
+
 
 </script>
 </body>
