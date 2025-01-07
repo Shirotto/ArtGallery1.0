@@ -1477,8 +1477,9 @@
     }
 
     function applyFilters() {
-        const selectedTechniques = Array.from(document.querySelectorAll('.filter-checkbox:checked'))
-            .map(checkbox => checkbox.value);
+        const selectedTechniques = Array.from(
+            document.querySelectorAll('#filter-pane input[type="checkbox"]:checked')
+        ).map(checkbox => checkbox.value);
         const galleryItems = document.querySelectorAll('.gallery-item');
         galleryItems.forEach(item => {
             const technique = item.getAttribute('data-technique');
@@ -1490,6 +1491,7 @@
         });
         toggleFilterPane();
     }
+
 
     // Mostra/nasconde il pannello di ordinamento
     function toggleOrderPane() {
