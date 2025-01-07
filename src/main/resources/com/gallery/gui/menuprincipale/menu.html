@@ -1454,12 +1454,10 @@
     });
 
     function eliminaOpera() {
-        // Qui la logica per eliminare l'opera.
         alert("Funzione 'Elimina Opera' da implementare!");
     }
 
     function modificaOpera() {
-        // Qui la logica per modificare i dettagli dell'opera.
         alert("Funzione 'Modifica Opera' da implementare!");
     }
 
@@ -1467,10 +1465,7 @@
     function toggleFilterPane() {
         const filterPane = document.getElementById('filter-pane');
         if (filterPane) {
-            // Aggiungi o rimuovi la classe "hidden" per mostrare/nascondere il pannello
             filterPane.classList.toggle('hidden');
-
-            // Cambia il display per mostrare il pannello
             if (filterPane.classList.contains('hidden')) {
                 filterPane.style.display = 'none';
             } else {
@@ -1484,9 +1479,7 @@
     function applyFilters() {
         const selectedTechniques = Array.from(document.querySelectorAll('.filter-checkbox:checked'))
             .map(checkbox => checkbox.value);
-
         const galleryItems = document.querySelectorAll('.gallery-item');
-
         galleryItems.forEach(item => {
             const technique = item.getAttribute('data-technique');
             if (selectedTechniques.length === 0 || selectedTechniques.includes(technique)) {
@@ -1495,8 +1488,6 @@
                 item.style.display = 'none';
             }
         });
-
-        // Nascondi il pannello dei filtri dopo l'applicazione
         toggleFilterPane();
     }
 
@@ -1504,7 +1495,7 @@
     function toggleOrderPane() {
         const orderPane = document.getElementById('order-pane');
         if (orderPane) {
-            orderPane.classList.toggle('hidden'); // Alterna la classe 'hidden'
+            orderPane.classList.toggle('hidden');
             if (orderPane.classList.contains('hidden')) {
                 orderPane.style.display = 'none';
             } else {
@@ -1522,7 +1513,7 @@
             const orderCriteria = selectedOrder.value;
             console.log(`Applico l'ordinamento per: ${orderCriteria}`);
             sortGallery(orderCriteria);
-            toggleOrderPane(); // Nasconde il pannello dopo l'applicazione
+            toggleOrderPane();
         } else {
             alert("Seleziona un criterio di ordinamento.");
         }
@@ -1532,40 +1523,28 @@
     function sortGallery(criteria) {
         const galleryRow = document.getElementById('row-cat1');
         const items = Array.from(galleryRow.children);
-
         items.sort((a, b) => {
-            // Ottieni il valore dell'attributo in base al criterio
             const getValue = (item, attr) => item.getAttribute(`data-${attr}`) || '';
-
             let aValue, bValue;
-
-            // Specifica il criterio di ordinamento
             if (criteria === 'name') {
                 aValue = a.querySelector('img')?.alt.toLowerCase() || '';
                 bValue = b.querySelector('img')?.alt.toLowerCase() || '';
             } else if (criteria === 'year') {
-                aValue = parseInt(getValue(a, 'year')) || 0; // Converte in numero per l'anno
+                aValue = parseInt(getValue(a, 'year')) || 0;
                 bValue = parseInt(getValue(b, 'year')) || 0;
             } else if (criteria === 'author') {
                 aValue = getValue(a, 'author').toLowerCase();
                 bValue = getValue(b, 'author').toLowerCase();
             } else {
-                return; // Nessuna azione se il criterio non è valido
+                return;
             }
-
-            // Ordinamento A-Z o crescente per anno
             if (aValue < bValue) return -1;
             if (aValue > bValue) return 1;
             return 0;
         });
-
-        // Riordina gli elementi nella galleria
         galleryRow.innerHTML = '';
         items.forEach(item => galleryRow.appendChild(item));
     }
-
-
-
 </script>
 </body>
 </html>
