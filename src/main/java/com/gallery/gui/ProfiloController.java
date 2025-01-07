@@ -87,13 +87,7 @@ public class ProfiloController {
         currentUser.setPassword(passwordValue);
         saveUserDataToDatabase(currentUser);
         WebEngine webEngine = webView.getEngine();
-        try {
-            webEngine.executeScript("document.getElementById('username').innerText = '" + usernameValue + "';");
-            webEngine.executeScript("document.getElementById('email').innerText = '" + emailValue + "';");
-            webEngine.executeScript("document.getElementById('password').innerText = '" + passwordValue + "';");
-        } catch (Exception e) {
-            System.err.println("Errore durante l'aggiornamento dei dati nella WebView: " + e.getMessage());
-        }
+        updateHTML(currentUser, webView);
         alert.showAlertInfo("Successo", "Credenziali aggiornate correttamente");
     }
 
@@ -133,7 +127,6 @@ public class ProfiloController {
             System.err.println("Errore durante l'iniezione dello script nella WebView: " + e.getMessage());
         }
     }
-
 
 
     private void saveUserDataToDatabase(User user) {

@@ -29,31 +29,23 @@ public class MenuPrincipaleController {
     public void initialize() {
         WebEngine webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
-
-        //mi fa visualizzare gli alert definiti nel html
         webEngine.setOnAlert(event -> {
             String message = event.getData();
             System.out.println("Alert JavaScript: " + message);
-            // Oltre alla console, puoi visualizzare l'alert con una finestra JavaFX
             showAlert(message);
         });
-
         String htmlFilePath = getClass().getResource("/com/gallery/gui/menuprincipale/menu.html").toExternalForm();
         if (htmlFilePath == null) {
             System.err.println("File HTML non trovato.");
-            return;
-        }
+            return;}
         webEngine.load(htmlFilePath);
         webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
                 JSObject window = (JSObject) webEngine.executeScript("window");
                 window.setMember("javafxController", this);
-                aggiornaGalleria();// fa in modo che le opere restino salvate alla riapertura
-            }
+                aggiornaGalleria();}
             if (currentUser != null) {
-                profilo.updateHTML(currentUser, webView);
-
-            }
+                profilo.updateHTML(currentUser, webView);}
         });
     }
 
@@ -91,16 +83,11 @@ public class MenuPrincipaleController {
 
 
     public void aggiornaGalleria() {
-        // Recupera tutte le opere dal database
         List<Opera> opere = GestioneOpere.getAllOpere();
         StringBuilder scriptBuilder = new StringBuilder();
-
-        // Inizializza il contenitore della galleria
         scriptBuilder.append("const galleryRow = document.getElementById('row-cat1');")
                 .append("if (galleryRow) { galleryRow.innerHTML = ''; }")
                 .append("else { console.error('Elemento row-cat1 non trovato.'); }");
-
-        // Genera gli elementi HTML per ogni opera
         for (Opera opera : opere) {
             String base64Image = "data:image/png;base64," + Base64.getEncoder().encodeToString(opera.getImmagine());
             String descrizione = opera.getDescrizione().replace("'", "\\'");
@@ -109,7 +96,6 @@ public class MenuPrincipaleController {
             String tecnica = opera.getTecnica().replace("'", "\\'");
             String dimensione = opera.getDimensione() != null ? opera.getDimensione().replace("'", "\\'") : "N/A";
             int anno = opera.getAnno();
-
             scriptBuilder.append("galleryRow.innerHTML += `")
                     .append("<div class='gallery-item' ")
                     .append("data-description='").append(descrizione).append("' ")
@@ -121,11 +107,7 @@ public class MenuPrincipaleController {
                     .append("<img src='").append(base64Image).append("' alt='").append(nome).append("'>")
                     .append("</div>`;");
         }
-
-        // Attacca i listener agli elementi generati
         scriptBuilder.append("attachGalleryItemListeners();");
-
-        // Inietta lo script nella WebView
         String script = scriptBuilder.toString();
         try {
             webView.getEngine().executeScript(script);

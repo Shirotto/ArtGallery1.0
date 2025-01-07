@@ -583,7 +583,6 @@
             margin: 0;
         }
 
-
         .searchBox {
             position: relative;
             width: 40px;
@@ -592,7 +591,7 @@
             background: #666;
             overflow: hidden;
             transition: width 0.4s;
-            margin-bottom: 15px;
+            margin-bottom: 0; /* Rimosso il margine inferiore per allineamento */
             display: flex;
             align-items: center;
             justify-content: flex-start;
@@ -612,6 +611,7 @@
             transition: transform 0.4s, background 0.4s, color 0.4s;
             flex-shrink: 0;
         }
+
         .searchInput {
             width: 0;
             border: none;
@@ -621,23 +621,29 @@
             font-size: 16px;
             transition: width 0.4s, padding 0.4s;
         }
+
         .searchBox:hover {
             width: 240px;
         }
+
         .searchBox:hover .searchButton {
             transform: translateX(200px);
         }
+
         .searchBox:hover .searchInput {
             width: calc(100% - 40px);
             padding: 0 8px;
             transform: translateX(-40px);
         }
+
         .searchBox:focus-within {
             width: 240px;
         }
+
         .searchBox:focus-within .searchButton {
             transform: translateX(200px);
         }
+
         .searchBox:focus-within .searchInput {
             width: calc(100% - 40px);
             padding: 0 8px;
@@ -650,21 +656,86 @@
             color: #666;
         }
 
-        @media (max-width: 620px) {
-            .searchBox:hover,
-            .searchBox:focus-within {
-                width: 180px;
-            }
-            .searchBox:hover .searchButton,
-            .searchBox:focus-within .searchButton {
-                transform: translateX(100px);
-            }
-            .searchBox:hover .searchInput,
-            .searchBox:focus-within .searchInput {
-                width: calc(100% - 40px);
-                transform: translateX(-40px);
-            }
+        .filterButton {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #666;
+            color: #fff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.4s, background 0.4s, color 0.4s;
+            flex-shrink: 0;
         }
+
+        .filterButton:hover {
+            background: #fff;
+            color: #666;
+        }
+
+        /* Contenitore per la barra di ricerca e il pulsante filtro */
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Spaziatura uniforme tra gli elementi */
+            justify-content: flex-start;
+        }
+
+        #filter-pane {
+            position: fixed;
+            top: 20%;
+            right: 5%;
+            width: 300px;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            display: none;
+            z-index: 1000;
+        }
+
+        #filter-pane.hidden {
+            display: none;
+        }
+
+        #filter-pane h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        #filter-pane ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #filter-pane ul li {
+            margin-bottom: 10px;
+        }
+
+        #filter-pane ul li label {
+            font-size: 14px;
+            color: #555;
+            cursor: pointer;
+        }
+
+        #filter-pane button {
+            background-color: #666;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #filter-pane button:hover {
+            background-color: #444;
+        }
+
 
         .divider {
             width: 100%;
@@ -853,11 +924,69 @@
 
         <h1>Galleria</h1>
 
-        <div class="searchBox">
-            <button class="searchButton">
-                <ion-icon name="search-outline"></ion-icon>
-            </button>
-            <input type="text" class="searchInput" placeholder="Cerca opera...">
+            <div class="search-container">
+                <!-- Barra di ricerca -->
+                <div class="searchBox">
+                    <button class="searchButton">
+                        <ion-icon name="search-outline"></ion-icon>
+                    </button>
+                    <input type="text" class="searchInput" placeholder="Cerca opera...">
+                </div>
+
+                <!-- Icona filtro accanto alla barra di ricerca -->
+                <button id="filter-button" class="filterButton" onclick="toggleFilterPane()">
+                    <ion-icon name="filter-outline"></ion-icon>
+                </button>
+            </div>
+
+        <!-- Pane dei filtri -->
+        <div id="filter-pane" class="hidden">
+            <h3>Filtra per Tecnica</h3>
+            <ul>
+                <li>
+                    <label>
+                        <input type="checkbox" class="filter-checkbox" value="Olio-su-tela">
+                        Olio su tela
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" class="filter-checkbox" value="Acrilico">
+                        Acrilico
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" class="filter-checkbox" value="Acquerello">
+                        Acquerello
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" class="filter-checkbox" value="Pastello">
+                        Pastello
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" class="filter-checkbox" value="Scultura">
+                        Scultura
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" class="filter-checkbox" value="Mista">
+                        Tecnica mista
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" class="filter-checkbox" value="Personale">
+                        Tecnica Personale
+                    </label>
+                </li>
+            </ul>
+            <button onclick="applyFilters()">Applica Filtro</button>
         </div>
 
         <div class="divider"></div>
@@ -936,14 +1065,6 @@
     </div>
 </main>
 
-<!-- <div id="modal-overlay">
-    <div id="modal-content">
-        <span id="modal-close">&times;</span>
-        <img id="modal-image" src="" alt="Opera">
-        <h2 id="modal-title">Titolo Opera</h2>
-        <p id="modal-description">Descrizione Opera</p>
-    </div>
-</div> -->
 <div id="modal-overlay" class="modal-overlay">
     <div class="modal-content">
         <span class="close-button" onclick="modalOverlay.classList.remove('active')">×</span>
@@ -1199,7 +1320,6 @@
                     const anno = item.getAttribute('data-year') || 'Anno non disponibile';
                     const dimensione = item.getAttribute('data-dimension') || 'Dimensioni non disponibili';
                     const proprietario = item.getAttribute('data-user') || 'Proprietario anonimo';
-
                     openModal(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario);
                 });
             });
@@ -1293,8 +1413,41 @@
     }
 
 
+    function toggleFilterPane() {
+        const filterPane = document.getElementById('filter-pane');
+        if (filterPane) {
+            // Aggiungi o rimuovi la classe "hidden" per mostrare/nascondere il pannello
+            filterPane.classList.toggle('hidden');
 
+            // Cambia il display per mostrare il pannello
+            if (filterPane.classList.contains('hidden')) {
+                filterPane.style.display = 'none';
+            } else {
+                filterPane.style.display = 'block';
+            }
+        } else {
+            console.error("Il pannello dei filtri non è stato trovato.");
+        }
+    }
 
+    function applyFilters() {
+        const selectedTechniques = Array.from(document.querySelectorAll('.filter-checkbox:checked'))
+            .map(checkbox => checkbox.value);
+
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        galleryItems.forEach(item => {
+            const technique = item.getAttribute('data-technique');
+            if (selectedTechniques.length === 0 || selectedTechniques.includes(technique)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        // Nascondi il pannello dei filtri dopo l'applicazione
+        toggleFilterPane();
+    }
 
 </script>
 </body>
