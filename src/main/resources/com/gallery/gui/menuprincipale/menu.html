@@ -212,7 +212,7 @@
             z-index: 2;
         }
 
-        #modal-overlay {
+    /*   #modal-overlay {
             display: none;
             position: fixed;
             top: 0;
@@ -283,7 +283,85 @@
             font-size: 1.2em;
             color: #555;
             margin-top: 10px;
+        }*/
+        /* Sfondo e overlay */
+        .modal-overlay {
+            display: none; /* Nasconde la modale di default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Fondo scuro semitrasparente */
+            z-index: 1000; /* Posiziona l'overlay sopra il contenuto */
+            justify-content: center;
+            align-items: center;
         }
+
+        /* Mostra la modale quando ha la classe 'active' */
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        /* Contenuto della modale */
+        .modal-content {
+            background: linear-gradient(135deg, #f5f5f5, #dcdcdc); /* Sfondo in gradiente con tonalità grigie */
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 400px;
+            width: 90%;
+            text-align: left;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Immagine dell'opera */
+        .modal-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* Titolo dell'opera */
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        /* Dettagli dell'opera */
+        .modal-content p {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        /* Stile per le etichette e i valori */
+        .modal-content strong {
+            color: #444;
+            font-weight: 600;
+        }
+
+        /* Pulsante di chiusura */
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 30px;
+            color: #333;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.3s;
+        }
+
+        /* Cambia il colore del pulsante di chiusura quando ci si passa sopra */
+        .close-button:hover {
+            color: #999;
+        }
+
 
         #carica-opera-form {
             border: 1px solid #323232;
@@ -730,11 +808,25 @@
             </div>
             <div class="form-group">
                 <label for="tecnica">Tecnica:</label>
-                <input type="text" id="tecnica" placeholder="Inserisci la tecnica." required>
+                <select id="tecnica" required>
+                    <option value="" disabled selected>Seleziona la tecnica utilizzata</option>
+                    <option value="Olio-su-tela">Olio su tela</option>
+                    <option value="Acrilico">Acrilico</option>
+                    <option value="Acquerello">Acquerello</option>
+                    <option value="Pastello">Pastello</option>
+                    <option value="Scultura">Scultura</option>
+                    <option value="Mista">Tecnica mista</option>
+                    <option value="Personale">Tecnica Personale</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="descrizione">Descrizione:</label>
                 <textarea id="descrizione" placeholder="Inserisci la descrizione." required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="dimensione">Dimensione (L x H x P):</label>
+                <input type="text" id="dimensione" placeholder="Esempio: 50 x 70 x 30" pattern="^\d+\s*x\s*\d+\s*x\s*\d+$" required>
+                <small>Inserisci le dimensioni in millimetri (larghezza x altezza x profondità).</small>
             </div>
             <div class="form-buttons">
                 <button id="salvaOperaBtn">Salva Opera</button>
@@ -844,16 +936,31 @@
     </div>
 </main>
 
-<div id="modal-overlay">
+<!-- <div id="modal-overlay">
     <div id="modal-content">
         <span id="modal-close">&times;</span>
         <img id="modal-image" src="" alt="Opera">
         <h2 id="modal-title">Titolo Opera</h2>
         <p id="modal-description">Descrizione Opera</p>
     </div>
+</div> -->
+<div id="modal-overlay" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-button" onclick="modalOverlay.classList.remove('active')">×</span>
+        <img id="modal-image" src="" alt="Immagine Opera" class="modal-image">
+        <h2 id="modal-title"></h2>
+        <p><strong>Autore:</strong> <span id="modal-author"></span></p>
+        <p><strong>Tecnica:</strong> <span id="modal-technique"></span></p>
+        <p><strong>Anno:</strong> <span id="modal-year"></span></p>
+        <p><strong>Dimensione:</strong> <span id="modal-dimensions"></span></p>
+        <p><strong>Descrizione:</strong> <span id="modal-description"></span></p>
+        <p><strong>Utente:</strong> <span id="modal-users"></span></p>
+    </div>
 </div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+
 
         // Funzione per mostra/nascondere sezioni
         window.showSection = function(sectionId) {
@@ -941,6 +1048,7 @@
             var anno = document.getElementById("anno").value;
             var tecnica = document.getElementById("tecnica").value;
             var descrizione = document.getElementById("descrizione").value;
+            var dimensione = document.getElementById("dimensione").value;
             var fileInput = document.getElementById("fileInput");
             var file = fileInput.files[0];
 
@@ -955,7 +1063,7 @@
                 var imageData = e.target.result;
                 if (window.javafxController) {
                     console.log("Chiamata al metodo salvaOpera in JavaFX");
-                    window.javafxController.salvaOpera(titolo, autore, anno, tecnica, descrizione, imageData);
+                    window.javafxController.salvaOpera(titolo, autore, anno, tecnica, descrizione, imageData,dimensione);
                 } else {
                     console.error("javafxController non trovato!");
                     alert("Errore nel salvataggio dell'opera.");
@@ -965,6 +1073,8 @@
                 document.getElementById('anno').value = '';
                 document.getElementById('tecnica').value = '';
                 document.getElementById('descrizione').value = '';
+                document.getElementById('dimensione').value = '';
+
                 document.getElementById('fileInput').value = '';
                 document.getElementById('carica-opera-form').classList.add('hidden');
             };
@@ -991,21 +1101,123 @@
         const modalImage = document.getElementById('modal-image');
         const modalTitle = document.getElementById('modal-title');
         const modalDescription = document.getElementById('modal-description');
+        const modalAuthor = document.getElementById('modal-author');
+        const modalTechnique = document.getElementById('modal-technique');
+        const modalYear = document.getElementById('modal-year');
+        const modalDimensions = document.getElementById('modal-dimensions');
+        const modalUsers = document.getElementById('modal-users');
 
-        window.openModal = function(imageSrc, title, description) {
-            console.log(`Apertura modale per: ${title}`);
-            modalImage.src = imageSrc || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
-            modalTitle.textContent = title || 'Titolo Opera';
-            modalDescription.textContent = description || 'Descrizione Opera';
+        window.openModal = function(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario) {
+            console.log(`Apertura modale per: ${titolo}`);
+
+            // Imposta l'immagine
+            modalImage.src = imgSrc || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
+
+            // Imposta il contenuto della modale
+            modalTitle.textContent = titolo || 'Titolo Opera';
+            modalAuthor.textContent = autore || 'Autore sconosciuto';
+            modalTechnique.textContent = tecnica|| 'Tecnica non specificata';
+            modalYear.textContent = anno || 'Anno non disponibile';
+            modalDimensions.textContent = dimensione || 'Dimensioni non disponibili';
+            modalDescription.textContent = descrizione || 'Descrizione non disponibile';
+            modalUsers.textContent = proprietario || 'Proprietario anonimo';
+
+            // Mostra la modale
             modalOverlay.classList.add('active');
-        }
+        };
+    document.addEventListener('DOMContentLoaded', function() {
+        const modalOverlay = document.getElementById('modal-overlay');
+        const modalImage = document.getElementById('modal-image');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
+        const modalAuthor = document.getElementById('modal-author');
+        const modalTechnique = document.getElementById('modal-technique');
+        const modalYear = document.getElementById('modal-year');
+        const modalDimensions = document.getElementById('modal-dimensions');
+        const modalUsers = document.getElementById('modal-users');
 
-        window.closeModal = function() {
+        window.openModal = function(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario) {
+            console.log(`Apertura modale per: ${titolo}`);
+            modalImage.src = imgSrc || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
+            modalTitle.textContent = titolo || 'Titolo Opera';
+            modalAuthor.textContent = autore || 'Autore sconosciuto';
+            modalTechnique.textContent = tecnica || 'Tecnica non specificata';
+            modalYear.textContent = anno || 'Anno non disponibile';
+            modalDimensions.textContent = dimensione || 'Dimensioni non disponibili';
+            modalDescription.textContent = descrizione || 'Descrizione non disponibile';
+            modalUsers.textContent = proprietario || 'Proprietario anonimo';
+
+            modalOverlay.classList.add('active');
+        };
+
+        // Associazione event listeners
+        window.attachGalleryItemListeners = function() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    const imgSrc = item.querySelector('img')?.src || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
+                    const titolo = item.querySelector('img')?.alt || 'Titolo non disponibile';
+                    const descrizione = item.getAttribute('data-description') || 'Descrizione non disponibile';
+                    const tecnica = item.getAttribute('data-technique') || 'Tecnica non specificata';
+                    const autore = item.getAttribute('data-author') || 'Autore sconosciuto';
+                    const anno = item.getAttribute('data-year') || 'Anno non disponibile';
+                    const dimensione = item.getAttribute('data-dimension') || 'Dimensioni non disponibili';
+                    const proprietario = item.getAttribute('data-user') || 'Proprietario anonimo';
+
+                    openModal(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario);
+                });
+            });
+        };
+
+        attachGalleryItemListeners();
+
+        window.openModal = function(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario) {
+            console.log(`Apertura modale per: ${titolo}`);
+            modalImage.src = imgSrc || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
+            modalTitle.textContent = titolo || 'Titolo Opera';
+            modalAuthor.textContent = autore || 'Autore sconosciuto';
+            modalTechnique.textContent = tecnica || 'Tecnica non specificata';
+            modalYear.textContent = anno || 'Anno non disponibile';
+            modalDimensions.textContent = dimensione || 'Dimensioni non disponibili';
+            modalDescription.textContent = descrizione || 'Descrizione non disponibile';
+            modalUsers.textContent = proprietario || 'Proprietario anonimo';
+
+            modalOverlay.classList.add('active');
+        };
+
+        // Associazione event listeners
+        window.attachGalleryItemListeners = function() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    const imgSrc = item.querySelector('img')?.src || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
+                    const titolo = item.querySelector('img')?.alt || 'Titolo non disponibile';
+                    const descrizione = item.getAttribute('data-description') || 'Descrizione non disponibile';
+                    const tecnica = item.getAttribute('data-technique') || 'Tecnica non specificata';
+                    const autore = item.getAttribute('data-author') || 'Autore sconosciuto';
+                    const anno = item.getAttribute('data-year') || 'Anno non disponibile';
+                    const dimensione = item.getAttribute('data-dimension') || 'Dimensioni non disponibili';
+                    const proprietario = item.getAttribute('data-user') || 'Proprietario anonimo';
+
+                    openModal(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario);
+                });
+            });
+        };
+
+        attachGalleryItemListeners();
+    });
+
+
+    window.closeModal = function() {
             console.log("Chiusura modale");
             modalOverlay.classList.remove('active');
-            modalImage.src = '';
             modalTitle.textContent = '';
+            modalAuthor.textContent = '';
+            modalTechnique.textContent = '';
+            modalYear.textContent = '';
+            modalDimensions.textContent ='';
             modalDescription.textContent = '';
+            modalUsers.textContent = '';
         }
 
         if (modalClose) {
@@ -1031,13 +1243,35 @@
                     } else {
                         imgSrc = 'https://via.placeholder.com/600x400?text=Opera+Immagine';
                     }
-                    const title = img ? img.alt : item.textContent.trim();
-                    const description = item.getAttribute('data-description') || 'Descrizione dell\'opera';
-                    openModal(imgSrc, title, description);
+                    const titolo = img ? img.alt : item.textContent.trim();
+                    const descrizione = item.getAttribute('data-description') || 'Descrizione dell\'opera';
+                    const tecnica = item.getAttribute('data-technique') || 'Tecnica dell\'opera';
+                    const autore = item.getAttribute('data-author') || 'Autore dell\'opera';
+                    const anno = item.getAttribute('data-year') || 'Anno dell\'opera';
+                    const dimensione = item.getAttribute('data-dimension') || 'Dimensione dell\'opera';
+                    const proprietario = item.getAttribute('data-user') || 'Proprietario dell\'opera';
+                    openModal(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario);
                 });
             });
             console.log("Event listeners attaccati alle gallery-item");
         }
+        window.attachGalleryItemListeners = function() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    const imgSrc = item.querySelector('img')?.src || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
+                    const titolo = item.querySelector('img')?.alt || 'Titolo non disponibile';
+                    const descrizione = item.getAttribute('data-description') || 'Descrizione non disponibile';
+                    const tecnica = item.getAttribute('data-technique') || 'Tecnica non specificata';
+                    const autore = item.getAttribute('data-author') || 'Autore sconosciuto';
+                    const anno = item.getAttribute('data-year') || 'Anno non disponibile';
+                    const dimensione = item.getAttribute('data-dimension') || 'Dimensioni non disponibili';
+                    const proprietario = item.getAttribute('data-user') || 'Proprietario anonimo';
+
+                    openModal(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario);
+                });
+            });
+        };
 
         // Imposto la sezione di default
         showSection('home-section');
@@ -1056,6 +1290,10 @@
         // Qui la logica per modificare i dettagli dell'opera.
         alert("Funzione 'Modifica Opera' da implementare!");
     }
+
+
+
+
 
 </script>
 </body>

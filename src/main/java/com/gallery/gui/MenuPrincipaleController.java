@@ -96,6 +96,7 @@ public class MenuPrincipaleController {
         script.append("galleryRow.innerHTML = '';");
         for (Opera opera : opere) {
             String base64Image = "data:image/png;base64," + Base64.getEncoder().encodeToString(opera.getImmagine());
+
             script.append("galleryRow.innerHTML += `")
                     .append("<div class='gallery-item' data-description='")
                     .append(opera.getDescrizione())
@@ -108,9 +109,9 @@ public class MenuPrincipaleController {
         webView.getEngine().executeScript(script.toString());
     }
 
-    public void salvaOpera(String titolo, String autore, int anno, String tecnica, String descrizione, String imageDataBase64) {
+    public void salvaOpera(String titolo, String autore, int anno, String tecnica, String descrizione, String imageDataBase64,String dimensione) {
         byte[] immagine = java.util.Base64.getDecoder().decode(imageDataBase64.split(",")[1]);
-        GestioneOpere.salvaOperaDb(titolo, autore, anno, tecnica, currentUser, descrizione, immagine);
+        GestioneOpere.salvaOperaDb(titolo, autore, anno, tecnica, currentUser, descrizione, immagine,dimensione);
         webView.getEngine().reload();
         aggiornaGalleria();
     }

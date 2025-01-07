@@ -29,7 +29,7 @@ public class GestioneOpere {
     }
 
     // Metodo per salvare l'opera nel database
-    public static void salvaOperaDb(String nome, String autore, int anno, String tecnica, User user, String descrizione, byte[] immagine) {
+    public static void salvaOperaDb(String nome, String autore, int anno, String tecnica, User user, String descrizione, byte[] immagine,String dimensione) {
         System.out.println("salvaOperaDb invocato!");
         Session session = null;
 
@@ -38,7 +38,7 @@ public class GestioneOpere {
             session.beginTransaction();
 
             // Crea una nuova opera
-            Opera opera = new Opera(nome, autore, anno, tecnica, user, descrizione, immagine);
+            Opera opera = new Opera(nome, autore, anno, tecnica, user, descrizione, immagine,dimensione);
 
             // Salva l'opera nel database
             session.save(opera);
@@ -46,7 +46,7 @@ public class GestioneOpere {
             // Commit della transazione
             session.getTransaction().commit();
 
-            alertInfo.showAlertInfo("Successo!", "Opera Salvata Correttamente!");
+            alertInfo.showAlertInfo("Complimenti!", "La tua opera è stata aggiunta alla galleria!");
 
         } catch (Exception e) {
             if (session != null) session.getTransaction().rollback();
