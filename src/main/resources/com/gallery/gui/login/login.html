@@ -95,7 +95,7 @@
         }
 
         .toggle:checked + .slider {
-            background-color: var(--input-focus);
+            background-color: #808080;;
         }
 
         .toggle:checked + .slider:before {
@@ -216,37 +216,40 @@
         }
 
         .login-btn {
-            background-color: #1F5A9E; /* Colore per il pulsante di login */
+            background-color: #808080; /* Colore grigio per il pulsante di login */
             border: none;
-            color: white;
+            color: white; /* Se preferisci puoi usare #000 per il testo nero */
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         .login-btn:hover {
-            background-color: #004999; /* Colore più intenso quando il mouse è sopra al pulsante di login */
+            background-color: #666666; /* Grigio leggermente più scuro al passaggio del mouse */
             transform: scale(1.02);
         }
 
         .signup-btn {
-            background-color: #4C8C2A; /* Colore per il pulsante di registrazione */
+            background-color: #808080; /* Colore grigio per il pulsante di registrazione */
             border: none;
             color: white;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         .signup-btn:hover {
-            background-color: #318700; /* Colore più intenso quando il mouse è sopra al pulsante di registrazione */
+            background-color: #666666; /* Grigio leggermente più scuro al passaggio del mouse */
             transform: scale(1.02);
         }
+
     </style>
 </head>
 <body>
 
 <div class="switch">
-    <span class="label-login">Accesso</span>
+    <span class="label-login">Login</span>
     <label>
         <input type="checkbox" id="toggle-checkbox" class="toggle">
         <span class="slider"></span>
     </label>
-    <span class="label-signup">Registrazione</span>
+    <span class="label-signup">Sign Up</span>
 </div>
 
 <div class="wrapper">

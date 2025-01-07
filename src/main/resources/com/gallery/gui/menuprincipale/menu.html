@@ -171,7 +171,7 @@
             display: grid;
             grid-template-columns: repeat(3, 200px);
             grid-gap: 1rem;
-            justify-content: center;
+            justify-content: flex-start;
         }
 
         @media (max-width: 800px) {
@@ -538,14 +538,6 @@
             </a>
         </li>
         <li class="navbar-item">
-            <a class="navbar-item-inner" onclick="showSection('search-section')">
-                <div class="navbar-item-inner-icon-wrapper">
-                    <ion-icon name="search-outline"></ion-icon>
-                </div>
-                <span class="link-text">Cerca</span>
-            </a>
-        </li>
-        <li class="navbar-item">
             <a class="navbar-item-inner" onclick="window.javafxController.showProfileSection()">
                 <div class="navbar-item-inner-icon-wrapper">
                     <ion-icon name="people-outline"></ion-icon>
@@ -661,11 +653,9 @@
             </div>
         </div>
 
-        <!-- Nuova sezione Opere Caricate -->
         <h2 style="margin-top: 20px; font-size: 1.8em; color: #323232;">Opere Caricate</h2>
         <div id="opere-caricate" class="gallery-row-container">
             <div class="gallery-row" id="opere-caricate-row">
-                <!-- Le opere caricate saranno aggiunte qui dinamicamente -->
             </div>
         </div>
 
@@ -679,96 +669,43 @@
 
     <!-- Sezione Galleria -->
     <div id="gallery-section" class="hidden">
-        <h1>Galleria</h1>
 
-        <!-- Categoria 1 -->
+
+        <div style="margin-bottom: 1em;">
+            <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Cerca opera per nome..."
+                    style="padding: 8px; width: 200px;"
+            />
+
+
+            <button
+                    type="button"
+                    id="filter-btn"
+                    style="padding: 8px; cursor: pointer;"
+            >
+                Filtra
+            </button>
+
+            <button
+                    type="button"
+                    id="search-btn"
+                    style="padding: 8px; cursor: pointer;"
+            >
+                Cerca
+            </button>
+        </div>
+
+
+        <h1>Galleria</h1>
         <div class="gallery-category">
-            <h2>Categoria 1</h2>
             <div class="gallery-row-container">
                 <div class="gallery-row" id="row-cat1">
-
-                    <div class="gallery-item" data-description="La celebre opera di Leonardo da Vinci, la Mona Lisa, conosciuta per il suo enigmatico sorriso.">
-                     <!--   <img src="images/monalisa.jpg" alt="Mona Lisa">-->
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera 2">
-                        <!--  <img src="https://via.placeholder.com/200x150?text=Opera+2" alt="Opera 2">-->
-
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera 3">
-                        <!--  <img src="https://via.placeholder.com/200x150?text=Opera+3" alt="Opera 3">-->
-
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera 4">
-                        <!--  <img src="https://via.placeholder.com/200x150?text=Opera+4" alt="Opera 4">-->
-
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera 5">
-                        <!--  <img src="https://via.placeholder.com/200x150?text=Opera+5" alt="Opera 5">-->
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- Categoria 2 -->
-        <div class="gallery-category">
-            <h2>Categoria 2</h2>
-            <div class="gallery-row-container">
-                <div class="gallery-row" id="row-cat2">
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera A">
-                        <!--  <img src="https://via.placeholder.com/200x150?text=Opera+A" alt="Opera A">-->
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera B">
-                        <!--  <img src="https://via.placeholder.com/200x150?text=Opera+B" alt="Opera B">-->
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera C">
-                        <!--  <img src="https://via.placeholder.com/200x150?text=Opera+C" alt="Opera C">-->
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera D">
-                        <!--   <img src="https://via.placeholder.com/200x150?text=Opera+D" alt="Opera D">-->
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera E">
-                        <!--    <img src="https://via.placeholder.com/200x150?text=Opera+E" alt="Opera E">-->
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- Categoria 3 -->
-        <div class="gallery-category">
-            <h2>Categoria 3</h2>
-            <div class="gallery-row-container">
-                <div class="gallery-row" id="row-cat3">
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera X">
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera Y">
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera Z">
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera W">
-                    </div>
-
                 </div>
             </div>
         </div>
     </div>
-
-
 
     <!-- Sezione Impostazioni -->
     <div id="settings-section" class="hidden" style="position: relative;">
@@ -1047,7 +984,5 @@
     }
 
 </script>
-
-
 </body>
 </html>
