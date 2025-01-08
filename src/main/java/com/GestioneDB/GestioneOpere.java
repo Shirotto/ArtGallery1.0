@@ -33,7 +33,7 @@ public class GestioneOpere {
     }
 
     // Metodo per salvare l'opera nel database
-    public static void salvaOperaDb(String nome, String autore, int anno, String tecnica, User user, String descrizione, byte[] immagine) {
+    public static void salvaOperaDb(String nome, String autore, int anno, String tecnica, User user, String descrizione, byte[] immagine,String dimensione) {
         System.out.println("salvaOperaDb invocato!");
         Session session = null;
 
@@ -42,7 +42,7 @@ public class GestioneOpere {
             session.beginTransaction();
 
             // Crea una nuova opera
-            Opera opera = new Opera(nome, autore, anno, tecnica, user, descrizione, immagine);
+            Opera opera = new Opera(nome, autore, anno, tecnica, user, descrizione, immagine,dimensione);
 
             // Salva l'opera nel database
             session.save(opera);
@@ -50,7 +50,7 @@ public class GestioneOpere {
             // Commit della transazione
             session.getTransaction().commit();
 
-            alertInfo.showAlertInfo("Successo!", "Opera Salvata Correttamente!");
+            alertInfo.showAlertInfo("Complimenti!", "La tua opera è stata aggiunta alla galleria!");
 
         } catch (Exception e) {
             if (session != null) session.getTransaction().rollback();
@@ -59,7 +59,6 @@ public class GestioneOpere {
             if (session != null) session.close();
         }
     }
-
 
     //metodo per recuperare le opere di uno specifico user
     public static List<Opera> getOpereByUser(User user) {
@@ -123,6 +122,7 @@ public class GestioneOpere {
 
 
     public static boolean eliminaOperaData(int operaId) {
+
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
@@ -141,8 +141,6 @@ public class GestioneOpere {
             transaction.commit();
 
             alertInfo.showAlertInfo("Successo!", "Opera " + opera.getNome() + " Eliminata correttamente!");
-
-
 
             return true;
         } catch (Exception e) {
