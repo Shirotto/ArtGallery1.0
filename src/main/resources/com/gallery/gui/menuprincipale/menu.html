@@ -1415,61 +1415,9 @@
             modalOverlay.classList.add('active');
         };
 
-        // Associazione event listeners
-        window.attachGalleryItemListeners = function() {
-            const galleryItems = document.querySelectorAll('.gallery-item');
-            galleryItems.forEach(function(item) {
-                item.addEventListener('click', function() {
-                    const imgSrc = item.querySelector('img')?.src || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
-                    const titolo = item.querySelector('img')?.alt || 'Titolo non disponibile';
-                    const descrizione = item.getAttribute('data-description') || 'Descrizione non disponibile';
-                    const tecnica = item.getAttribute('data-technique') || 'Tecnica non specificata';
-                    const autore = item.getAttribute('data-author') || 'Autore sconosciuto';
-                    const anno = item.getAttribute('data-year') || 'Anno non disponibile';
-                    const dimensione = item.getAttribute('data-dimension') || 'Dimensioni non disponibili';
-                    const proprietario = item.getAttribute('data-user') || 'Proprietario anonimo';
 
-                    openModal(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario);
-                });
 
-            });
-        };
 
-        attachGalleryItemListeners();
-
-        window.openModal = function(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario) {
-            console.log(`Apertura modale per: ${titolo}`);
-            modalImage.src = imgSrc || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
-            modalTitle.textContent = titolo || 'Titolo Opera';
-            modalAuthor.textContent = autore || 'Autore sconosciuto';
-            modalTechnique.textContent = tecnica || 'Tecnica non specificata';
-            modalYear.textContent = anno || 'Anno non disponibile';
-            modalDimensions.textContent = dimensione || 'Dimensioni non disponibili';
-            modalDescription.textContent = descrizione || 'Descrizione non disponibile';
-            modalUsers.textContent = proprietario || 'Proprietario anonimo';
-
-            modalOverlay.classList.add('active');
-        };
-
-        // Associazione event listeners
-        window.attachGalleryItemListeners = function() {
-            const galleryItems = document.querySelectorAll('.gallery-item');
-            galleryItems.forEach(function(item) {
-                item.addEventListener('click', function() {
-                    const imgSrc = item.querySelector('img')?.src || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
-                    const titolo = item.querySelector('img')?.alt || 'Titolo non disponibile';
-                    const descrizione = item.getAttribute('data-description') || 'Descrizione non disponibile';
-                    const tecnica = item.getAttribute('data-technique') || 'Tecnica non specificata';
-                    const autore = item.getAttribute('data-author') || 'Autore sconosciuto';
-                    const anno = item.getAttribute('data-year') || 'Anno non disponibile';
-                    const dimensione = item.getAttribute('data-dimension') || 'Dimensioni non disponibili';
-                    const proprietario = item.getAttribute('data-user') || 'Proprietario anonimo';
-                    openModal(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario);
-                });
-            });
-        };
-
-        attachGalleryItemListeners();
     });
 
 
@@ -1496,30 +1444,7 @@
                 }
             });
         }
-        window.attachGalleryItemListeners = function() {
-            const galleryItems = document.querySelectorAll('.gallery-item');
-            galleryItems.forEach(function(item) {
-                item.addEventListener('click', function() {
-                    console.log("Gallery-item cliccato:", item);
-                    let imgSrc = '';
-                    const img = item.querySelector('img');
-                    if (img) {
-                        imgSrc = img.src;
-                    } else {
-                        imgSrc = 'https://via.placeholder.com/600x400?text=Opera+Immagine';
-                    }
-                    const titolo = img ? img.alt : item.textContent.trim();
-                    const descrizione = item.getAttribute('data-description') || 'Descrizione dell\'opera';
-                    const tecnica = item.getAttribute('data-technique') || 'Tecnica dell\'opera';
-                    const autore = item.getAttribute('data-author') || 'Autore dell\'opera';
-                    const anno = item.getAttribute('data-year') || 'Anno dell\'opera';
-                    const dimensione = item.getAttribute('data-dimension') || 'Dimensione dell\'opera';
-                    const proprietario = item.getAttribute('data-user') || 'Proprietario dell\'opera';
-                    openModal(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario);
-                });
-            });
-            console.log("Event listeners attaccati alle gallery-item");
-        }
+
         window.attachGalleryItemListeners = function() {
             const galleryItems = document.querySelectorAll('.gallery-item');
             galleryItems.forEach(function(item) {
