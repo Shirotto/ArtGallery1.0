@@ -1001,10 +1001,10 @@
 
         <div class="search-container">
             <div class="searchBox">
-                <button class="searchButton">
+                <button class="searchButton" onclick="onSearchInput()">
                     <ion-icon name="search-outline"></ion-icon>
                 </button>
-                <input type="text" class="searchInput" placeholder="Cerca opera...">
+                <input type="text" id="searchBar" class="searchInput" placeholder="Cerca opera...">
             </div>
             <button class="filterButton" onclick="toggleFilterPane()">
                 <ion-icon name="filter-outline"></ion-icon>
@@ -1547,6 +1547,26 @@
         galleryRow.innerHTML = '';
         items.forEach(item => galleryRow.appendChild(item));
     }
+    function onSearchInput() {
+        const searchValue = document.getElementById('searchBar').value;
+        filterGalleryByName(searchValue);
+    }
+
+    function filterGalleryByName(searchValue) {
+        const galleryRow = document.getElementById('row-cat1');
+        const items = Array.from(galleryRow.children);
+        const searchLower = searchValue.toLowerCase();
+
+        items.forEach(item => {
+            const itemName = item.querySelector('img')?.alt.toLowerCase() || '';
+            if (itemName.includes(searchLower)) {
+                item.style.display = '';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
 </script>
 </body>
 </html>
