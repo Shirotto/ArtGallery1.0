@@ -211,7 +211,7 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
             z-index: 2;
         }
-        .gallery-item.selectable {
+        /*.gallery-item.selectable {
             cursor: pointer;
             outline: 3px dashed #ff0000;
             transition: outline 0.2s ease-in-out;
@@ -222,6 +222,46 @@
         }
 
 
+
+         */
+
+        /* Elementi selezionabili */
+        .gallery-item.selectable {
+            cursor: pointer;
+            outline: none; /* Rimuoviamo il vecchio outline */
+            position: relative; /* Necessario per l'overlay */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); /* Effetto bagliore */
+            transform: scale(1); /* Stato normale */
+        }
+
+        /* Animazione al passaggio del mouse */
+        .gallery-item.selectable:hover {
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8); /* Bagliore più intenso */
+            transform: scale(1.05); /* Leggero ingrandimento */
+        }
+
+        /* Overlay traslucido per evidenziare */
+        .gallery-item.selectable::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 0, 0, 0.2); /* Sfondo rosso traslucido */
+            border-radius: 8px; /* Smussa gli angoli */
+            pointer-events: none; /* Non blocca i clic */
+            transition: background 0.3s ease;
+        }
+
+        /* Cambia colore al passaggio del mouse */
+        .gallery-item.selectable:hover::before {
+            background: rgba(255, 0, 0, 0.3); /* Colore più intenso */
+        }
+
+
+/*
         #modal-overlay {
             display: none;
             position: fixed;
@@ -293,7 +333,85 @@
             font-size: 1.2em;
             color: #555;
             margin-top: 10px;
+        }*/
+        /* Sfondo e overlay */
+        .modal-overlay {
+            display: none; /* Nasconde la modale di default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Fondo scuro semitrasparente */
+            z-index: 1000; /* Posiziona l'overlay sopra il contenuto */
+            justify-content: center;
+            align-items: center;
         }
+
+        /* Mostra la modale quando ha la classe 'active' */
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        /* Contenuto della modale */
+        .modal-content {
+            background: linear-gradient(135deg, #f5f5f5, #dcdcdc); /* Sfondo in gradiente con tonalità grigie */
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 400px;
+            width: 90%;
+            text-align: left;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Immagine dell'opera */
+        .modal-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* Titolo dell'opera */
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        /* Dettagli dell'opera */
+        .modal-content p {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        /* Stile per le etichette e i valori */
+        .modal-content strong {
+            color: #444;
+            font-weight: 600;
+        }
+
+        /* Pulsante di chiusura */
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 30px;
+            color: #333;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.3s;
+        }
+
+        /* Cambia il colore del pulsante di chiusura quando ci si passa sopra */
+        .close-button:hover {
+            color: #999;
+        }
+
 
         #carica-opera-form {
             border: 1px solid #323232;
@@ -515,6 +633,242 @@
             margin: 0;
         }
 
+        .searchBox {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            background: #666;
+            overflow: hidden;
+            transition: width 0.4s;
+            margin-bottom: 0; /* Rimosso il margine inferiore per allineamento */
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .searchButton {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #666;
+            color: #fff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.4s, background 0.4s, color 0.4s;
+            flex-shrink: 0;
+        }
+
+        .searchInput {
+            width: 0;
+            border: none;
+            outline: none;
+            background: none;
+            color: #fff;
+            font-size: 16px;
+            transition: width 0.4s, padding 0.4s;
+        }
+
+        .searchBox:hover {
+            width: 240px;
+        }
+
+        .searchBox:hover .searchButton {
+            transform: translateX(200px);
+        }
+
+        .searchBox:hover .searchInput {
+            width: calc(100% - 40px);
+            padding: 0 8px;
+            transform: translateX(-40px);
+        }
+
+        .searchBox:focus-within {
+            width: 240px;
+        }
+
+        .searchBox:focus-within .searchButton {
+            transform: translateX(200px);
+        }
+
+        .searchBox:focus-within .searchInput {
+            width: calc(100% - 40px);
+            padding: 0 8px;
+            transform: translateX(-40px);
+        }
+
+        .searchBox:hover .searchButton,
+        .searchBox:focus-within .searchButton {
+            background: #fff;
+            color: #666;
+        }
+
+        .filterButton {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #666;
+            color: #fff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.4s, background 0.4s, color 0.4s;
+            flex-shrink: 0;
+        }
+
+        .filterButton:hover {
+            background: #fff;
+            color: #666;
+        }
+
+        /* Contenitore per la barra di ricerca e il pulsante filtro */
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Spaziatura uniforme tra gli elementi */
+            justify-content: flex-start;
+        }
+
+        #filter-pane {
+            position: fixed;
+            top: 20%;
+            right: 5%;
+            width: 300px;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            display: none;
+            z-index: 1000;
+        }
+
+        #filter-pane.hidden {
+            display: none;
+        }
+
+        #filter-pane h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        #filter-pane ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #filter-pane ul li {
+            margin-bottom: 10px;
+        }
+
+        #filter-pane ul li label {
+            font-size: 14px;
+            color: #555;
+            cursor: pointer;
+        }
+
+        #filter-pane button {
+            background-color: #666;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #filter-pane button:hover {
+            background-color: #444;
+        }
+
+
+        /* Stile per il pulsante di ordinamento */
+        .orderButton {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #666;
+            color: #fff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.4s, background 0.4s, color 0.4s;
+            flex-shrink: 0;
+        }
+
+        .orderButton:hover {
+            background: #fff;
+            color: #666;
+        }
+
+        /* Pannello di ordinamento */
+        #order-pane {
+            position: fixed;
+            top: 30%;
+            right: 5%;
+            width: 300px;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            display: none;
+            z-index: 1000;
+        }
+
+        #order-pane.hidden {
+            display: none;
+        }
+
+        #order-pane h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        #order-pane ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #order-pane ul li {
+            margin-bottom: 10px;
+        }
+
+        #order-pane ul li label {
+            font-size: 14px;
+            color: #555;
+            cursor: pointer;
+        }
+
+        #order-pane button {
+            background-color: #666;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #order-pane button:hover {
+            background-color: #444;
+        }
+
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background-color: #ccc;
+            margin: 10px 0;
+        }
+
 
     </style>
 
@@ -659,11 +1013,25 @@
             </div>
             <div class="form-group">
                 <label for="tecnica">Tecnica:</label>
-                <input type="text" id="tecnica" placeholder="Inserisci la tecnica." required>
+                <select id="tecnica" required>
+                    <option value="" disabled selected>Seleziona la tecnica utilizzata</option>
+                    <option value="Olio-su-tela">Olio su tela</option>
+                    <option value="Acrilico">Acrilico</option>
+                    <option value="Acquerello">Acquerello</option>
+                    <option value="Pastello">Pastello</option>
+                    <option value="Scultura">Scultura</option>
+                    <option value="Mista">Tecnica mista</option>
+                    <option value="Personale">Tecnica Personale</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="descrizione">Descrizione:</label>
                 <textarea id="descrizione" placeholder="Inserisci la descrizione." required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="dimensione">Dimensione (L x H x P):</label>
+                <input type="text" id="dimensione" placeholder="Esempio: 50 x 70 x 30" pattern="^\d+\s*x\s*\d+\s*x\s*\d+$" required>
+                <small>Inserisci le dimensioni in millimetri (larghezza x altezza x profondità).</small>
             </div>
             <div class="form-buttons">
                 <button id="salvaOperaBtn">Salva Opera</button>
@@ -686,99 +1054,62 @@
         <h1>Notifiche</h1>
         <div class="info">Non hai nuove notifiche.</div>
     </div>
-
     <!-- Sezione Galleria -->
     <div id="gallery-section" class="hidden">
+
         <h1>Galleria</h1>
 
-        <!-- Categoria 1 -->
+        <div class="search-container">
+            <div class="searchBox">
+                <button class="searchButton">
+                    <ion-icon name="search-outline"></ion-icon>
+                </button>
+                <input type="text" class="searchInput" placeholder="Cerca opera...">
+            </div>
+            <button class="filterButton" onclick="toggleFilterPane()">
+                <ion-icon name="filter-outline"></ion-icon>
+            </button>
+            <button class="orderButton" onclick="toggleOrderPane()">
+                <ion-icon name="reorder-four-outline"></ion-icon>
+            </button>
+        </div>
+
+        <!-- Pannello dei filtri -->
+        <div id="filter-pane" class="hidden">
+            <h3>Filtri</h3>
+            <ul>
+                <li><label><input type="checkbox" value="Olio-su-tela"> Olio su tela</label></li>
+                <li><label><input type="checkbox" value="Acrilico"> Acrilico</label></li>
+                <li><label><input type="checkbox" value="Acquerello"> Acquerello</label></li>
+                <li><label><input type="checkbox" value="Pastello"> Pastello</label></li>
+                <li><label><input type="checkbox" value="Scultura"> Scultura</label></li>
+                <li><label><input type="checkbox" value="Mista"> Tecnica mista</label></li>
+            </ul>
+            <button onclick="applyFilters()">Applica</button>
+        </div>
+
+        <!-- Pannello di ordinamento -->
+        <div id="order-pane" class="hidden">
+            <h3>Ordinamento</h3>
+            <ul>
+                <li><label><input type="radio" name="order" value="name"> Nome (A-Z)</label></li>
+                <li><label><input type="radio" name="order" value="year"> Anno</label></li>
+                <li><label><input type="radio" name="order" value="author"> Autore</label></li>
+            </ul>
+            <button onclick="applyOrder()">Applica</button>
+        </div>
+
+
+        <div class="divider"></div>
+
         <div class="gallery-category">
-            <h2>Categoria 1</h2>
             <div class="gallery-row-container">
                 <div class="gallery-row" id="row-cat1">
-
-                    <div class="gallery-item" data-description="La celebre opera di Leonardo da Vinci, la Mona Lisa, conosciuta per il suo enigmatico sorriso.">
-                     <!--   <img src="images/monalisa.jpg" alt="Mona Lisa">-->
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera 2">
-                        <!--  <img src="https://via.placeholder.com/200x150?text=Opera+2" alt="Opera 2">-->
-
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera 3">
-                        <!--  <img src="https://via.placeholder.com/200x150?text=Opera+3" alt="Opera 3">-->
-
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera 4">
-                        <!--  <img src="https://via.placeholder.com/200x150?text=Opera+4" alt="Opera 4">-->
-
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera 5">
-                        <!--  <img src="https://via.placeholder.com/200x150?text=Opera+5" alt="Opera 5">-->
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- Categoria 2 -->
-        <div class="gallery-category">
-            <h2>Categoria 2</h2>
-            <div class="gallery-row-container">
-                <div class="gallery-row" id="row-cat2">
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera A">
-                        <!--  <img src="https://via.placeholder.com/200x150?text=Opera+A" alt="Opera A">-->
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera B">
-                        <!--  <img src="https://via.placeholder.com/200x150?text=Opera+B" alt="Opera B">-->
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera C">
-                        <!--  <img src="https://via.placeholder.com/200x150?text=Opera+C" alt="Opera C">-->
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera D">
-                        <!--   <img src="https://via.placeholder.com/200x150?text=Opera+D" alt="Opera D">-->
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera E">
-                        <!--    <img src="https://via.placeholder.com/200x150?text=Opera+E" alt="Opera E">-->
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- Categoria 3 -->
-        <div class="gallery-category">
-            <h2>Categoria 3</h2>
-            <div class="gallery-row-container">
-                <div class="gallery-row" id="row-cat3">
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera X">
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera Y">
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera Z">
-                    </div>
-
-                    <div class="gallery-item" data-description="Descrizione dettagliata dell'Opera W">
-                    </div>
-
+                    <!-- Le opere -->
                 </div>
             </div>
         </div>
     </div>
-
-
 
     <!-- Sezione Impostazioni -->
     <div id="settings-section" class="hidden" style="position: relative;">
@@ -843,12 +1174,17 @@
     </div>
 </main>
 
-<div id="modal-overlay">
-    <div id="modal-content">
-        <span id="modal-close">&times;</span>
-        <img id="modal-image" src="" alt="Opera">
-        <h2 id="modal-title">Titolo Opera</h2>
-        <p id="modal-description">Descrizione Opera</p>
+<div id="modal-overlay" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-button" onclick="modalOverlay.classList.remove('active')">×</span>
+        <img id="modal-image" src="" alt="Immagine Opera" class="modal-image">
+        <h2 id="modal-title"></h2>
+        <p><strong>Autore:</strong> <span id="modal-author"></span></p>
+        <p><strong>Tecnica:</strong> <span id="modal-technique"></span></p>
+        <p><strong>Anno:</strong> <span id="modal-year"></span></p>
+        <p><strong>Dimensione:</strong> <span id="modal-dimensions"></span></p>
+        <p><strong>Descrizione:</strong> <span id="modal-description"></span></p>
+        <p><strong>Utente:</strong> <span id="modal-users"></span></p>
     </div>
 </div>
 <script>
@@ -974,8 +1310,10 @@
             var anno = document.getElementById("anno").value;
             var tecnica = document.getElementById("tecnica").value;
             var descrizione = document.getElementById("descrizione").value;
+            var dimensione = document.getElementById("dimensione").value;
             var fileInput = document.getElementById("fileInput");
             var file = fileInput.files[0];
+
 
             if (!titolo || !autore || !anno || !tecnica || !descrizione || !file) {
                 alert("Compila tutti i campi e/o carica il File");
@@ -988,7 +1326,7 @@
                 var imageData = e.target.result;
                 if (window.javafxController) {
                     console.log("Chiamata al metodo salvaOpera in JavaFX");
-                    window.javafxController.salvaOpera(titolo, autore, anno, tecnica, descrizione, imageData);
+                    window.javafxController.salvaOpera(titolo, autore, anno, tecnica, descrizione, imageData,dimensione);
                 } else {
                     console.error("javafxController non trovato!");
                     alert("Errore nel salvataggio dell'opera.");
@@ -1019,34 +1357,81 @@
             }
         }
 
-        const modalOverlay = document.getElementById('modal-overlay');
-        const modalClose = document.getElementById('modal-close');
-        const modalImage = document.getElementById('modal-image');
-        const modalTitle = document.getElementById('modal-title');
-        const modalDescription = document.getElementById('modal-description');
+            const modalOverlay = document.getElementById('modal-overlay');
+            const modalClose = document.getElementById('modal-close');
+            const modalImage = document.getElementById('modal-image');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDescription = document.getElementById('modal-description');
+            const modalAuthor = document.getElementById('modal-author');
+            const modalTechnique = document.getElementById('modal-technique');
+            const modalYear = document.getElementById('modal-year');
+            const modalDimensions = document.getElementById('modal-dimensions');
+            const modalUsers = document.getElementById('modal-users');
 
         let isDeleteMode = false; // Variabile per tenere traccia della modalità di eliminazione
 
             // Modifica la funzione openModal per non aprire il modale in modalità eliminazione
-            ndow.openModal = function(imageSrc, title, description) {
-                console.log("openModal chiamato con:", { imageSrc, title, description });
+            window.openModal = function(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario) {
+
                 if (isDeleteMode) {
                     console.log("Modalità eliminazione attiva, modale non aperto.");
                     return;
                 }
-                modalImage.src = imageSrc || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
-                modalTitle.textContent = title || 'Titolo Opera';
-                modalDescription.textContent = description || 'Descrizione Opera';
+                // Imposta l'immagine
+                modalImage.src = imgSrc || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
+
+                // Imposta il contenuto della modale
+                modalTitle.textContent = titolo || 'Titolo Opera';
+                modalAuthor.textContent = autore || 'Autore sconosciuto';
+                modalTechnique.textContent = tecnica|| 'Tecnica non specificata';
+                modalYear.textContent = anno || 'Anno non disponibile';
+                modalDimensions.textContent = dimensione || 'Dimensioni non disponibili';
+                modalDescription.textContent = descrizione || 'Descrizione non disponibile';
+                modalUsers.textContent = proprietario || 'Proprietario anonimo';
+
+                // Mostra la modale
                 modalOverlay.classList.add('active');
             };
 
-        window.closeModal = function() {
-            console.log("Chiusura modale");
-            modalOverlay.classList.remove('active');
-            modalImage.src = '';
-            modalTitle.textContent = '';
-            modalDescription.textContent = '';
-        }
+            document.addEventListener('DOMContentLoaded', function() {
+                const modalOverlay = document.getElementById('modal-overlay');
+                const modalImage = document.getElementById('modal-image');
+                const modalTitle = document.getElementById('modal-title');
+                const modalDescription = document.getElementById('modal-description');
+                const modalAuthor = document.getElementById('modal-author');
+                const modalTechnique = document.getElementById('modal-technique');
+                const modalYear = document.getElementById('modal-year');
+                const modalDimensions = document.getElementById('modal-dimensions');
+                const modalUsers = document.getElementById('modal-users');
+
+                window.openModal = function (imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario) {
+                    console.log(`Apertura modale per: ${titolo}`);
+                    modalImage.src = imgSrc || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
+                    modalTitle.textContent = titolo || 'Titolo Opera';
+                    modalAuthor.textContent = autore || 'Autore sconosciuto';
+                    modalTechnique.textContent = tecnica || 'Tecnica non specificata';
+                    modalYear.textContent = anno || 'Anno non disponibile';
+                    modalDimensions.textContent = dimensione || 'Dimensioni non disponibili';
+                    modalDescription.textContent = descrizione || 'Descrizione non disponibile';
+                    modalUsers.textContent = proprietario || 'Proprietario anonimo';
+
+                    modalOverlay.classList.add('active');
+                };
+
+            });
+
+
+            window.closeModal = function() {
+                console.log("Chiusura modale");
+                modalOverlay.classList.remove('active');
+                modalTitle.textContent = '';
+                modalAuthor.textContent = '';
+                modalTechnique.textContent = '';
+                modalYear.textContent = '';
+                modalDimensions.textContent ='';
+                modalDescription.textContent = '';
+                modalUsers.textContent = '';
+            }
 
         if (modalClose) {
             modalClose.addEventListener('click', closeModal);
@@ -1059,23 +1444,15 @@
                 }
             });
         }
-            window.attachGalleryItemListeners = function() {
+          /*  window.attachGalleryItemListeners = function() {
                 const galleryItems = document.querySelectorAll('.gallery-item');
-
-                if (!galleryItems || galleryItems.length === 0) {
-                    console.warn("Nessun elemento .gallery-item trovato.");
-                    return;
-                }
-
                 galleryItems.forEach(function(item) {
                     item.addEventListener('click', function handleClick() {
                         if (isDeleteMode) {
                             console.log("Modalità eliminazione attiva, modale non aperto.");
                             return; // Non aprire il modale in modalità eliminazione
                         }
-
                         console.log("Gallery-item cliccato:", item);
-
                         // Recupera i dati dell'opera
                         let imgSrc = '';
                         const img = item.querySelector('img');
@@ -1085,15 +1462,44 @@
                             imgSrc = 'https://via.placeholder.com/600x400?text=Opera+Immagine';
                         }
 
-                        const title = img?.alt || 'Titolo non disponibile';
-                        const description = item.getAttribute('data-description') || 'Descrizione dell\'opera';
+                        const imgSrc = item.querySelector('img')?.src || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
+                        const titolo = item.querySelector('img')?.alt || 'Titolo non disponibile';
+                        const descrizione = item.getAttribute('data-description') || 'Descrizione non disponibile';
+                        const tecnica = item.getAttribute('data-technique') || 'Tecnica non specificata';
+                        const autore = item.getAttribute('data-author') || 'Autore sconosciuto';
+                        const anno = item.getAttribute('data-year') || 'Anno non disponibile';
+                        const dimensione = item.getAttribute('data-dimension') || 'Dimensioni non disponibili';
+                        const proprietario = item.getAttribute('data-user') || 'Proprietario anonimo';
 
-                        // Apri il modale
-                        openModal(imgSrc, title, description);
+                        openModal(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario);
                     });
                 });
             console.log("Event listeners attaccati alle gallery-item");
         }
+
+           */
+
+
+
+
+            window.attachGalleryItemListeners = function() {
+                const galleryItems = document.querySelectorAll('.gallery-item');
+                galleryItems.forEach(function(item) {
+                    item.addEventListener('click', function() {
+                        const imgSrc = item.querySelector('img')?.src || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
+                        const titolo = item.querySelector('img')?.alt || 'Titolo non disponibile';
+                        const descrizione = item.getAttribute('data-description') || 'Descrizione non disponibile';
+                        const tecnica = item.getAttribute('data-technique') || 'Tecnica non specificata';
+                        const autore = item.getAttribute('data-author') || 'Autore sconosciuto';
+                        const anno = item.getAttribute('data-year') || 'Anno non disponibile';
+                        const dimensione = item.getAttribute('data-dimension') || 'Dimensioni non disponibili';
+                        const proprietario = item.getAttribute('data-user') || 'Proprietario anonimo';
+
+                        openModal(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario);
+                    });
+                });
+            };
+
 
         // Imposto la sezione di default
         showSection('home-section');
@@ -1104,16 +1510,22 @@
     });
 
   //let isDeleteMode = false; // Variabile per tenere traccia della modalità di eliminazione
-
+  let ignoreNextClick = false; // Flag per ignorare il primo clic dopo l'alert
   function eliminaOpera() {
+      ignoreNextClick = true; // Ignora il prossimo clic
       isDeleteMode = true;
       alert("Seleziona l'opera che vuoi eliminare");
       console.log("Modalità eliminazione attivata: " + isDeleteMode);
 
+
       document.querySelectorAll('.gallery-item').forEach(item => {
           item.classList.add('selectable'); // Evidenzia le opere
           item.addEventListener('click', handleOperaSelection); // Aggiungi evento click
+
+
       });
+      // Aggiungi il listener globale per i clic
+      document.body.addEventListener("click", handleOutsideClick);
   }
 
   // Gestisce la selezione dell'opera da eliminare
@@ -1129,6 +1541,24 @@
       }
       eliminaOperaDalDatabase(operaId, opera);
 
+
+  }
+
+  // Gestisce i clic al di fuori delle opere
+  function handleOutsideClick(event) {
+      if (!isDeleteMode) return;
+
+      // Salta il primo clic dopo l'alert
+      if (ignoreNextClick) {
+          ignoreNextClick = false;
+          return;
+      }
+
+      // Controlla se il clic è avvenuto su un elemento con la classe `gallery-item`
+      if (!event.target.closest(".gallery-item")) {
+
+          terminaSelezione();
+      }
   }
 
   // Disattiva la modalità di eliminazione
@@ -1138,6 +1568,8 @@
           item.classList.remove('selectable');
           item.removeEventListener('click', handleOperaSelection);
       });
+      // Rimuovi il listener globale
+      document.body.removeEventListener("click", handleOutsideClick);
   }
   // Chiama il controller Java per eliminare l'opera
   function eliminaOperaDalDatabase(operaId, operaElement) {
@@ -1146,8 +1578,12 @@
 
           if (window.javaController) {
 
+              closeModal()
+
+
               const result = window.javaController.eliminaOpera(operaId)
               if (result) {
+
                   // Rimuovi l'opera dal DOM
                    operaElement.remove();
                   alert("Errore: impossibile eliminare l'opera.");
@@ -1161,6 +1597,112 @@
           terminaSelezione();
       }
   }
+
+  function toggleFilterPane() {
+      const filterPane = document.getElementById('filter-pane');
+      if (filterPane) {
+          filterPane.classList.toggle('hidden');
+          if (filterPane.classList.contains('hidden')) {
+              filterPane.style.display = 'none';
+          } else {
+              filterPane.style.display = 'block';
+          }
+      } else {
+          console.error("Il pannello dei filtri non è stato trovato.");
+      }
+  }
+
+  function applyFilters() {
+      const selectedTechniques = Array.from(
+          document.querySelectorAll('#filter-pane input[type="checkbox"]:checked')
+      ).map(checkbox => checkbox.value);
+      const galleryItems = document.querySelectorAll('.gallery-item');
+      galleryItems.forEach(item => {
+          const technique = item.getAttribute('data-technique');
+          if (selectedTechniques.length === 0 || selectedTechniques.includes(technique)) {
+              item.style.display = 'block';
+          } else {
+              item.style.display = 'none';
+          }
+      });
+      toggleFilterPane();
+  }
+
+
+  // Mostra/nasconde il pannello di ordinamento
+  function toggleOrderPane() {
+      const orderPane = document.getElementById('order-pane');
+      if (orderPane) {
+          orderPane.classList.toggle('hidden');
+          if (orderPane.classList.contains('hidden')) {
+              orderPane.style.display = 'none';
+          } else {
+              orderPane.style.display = 'block';
+          }
+      } else {
+          console.error("Il pannello di ordinamento non è stato trovato.");
+      }
+  }
+
+  // Applica l'ordinamento
+  function applyOrder() {
+      const selectedOrder = document.querySelector('input[name="order"]:checked');
+      if (selectedOrder) {
+          const orderCriteria = selectedOrder.value;
+          console.log(`Applico l'ordinamento per: ${orderCriteria}`);
+          sortGallery(orderCriteria);
+          toggleOrderPane();
+      } else {
+          alert("Seleziona un criterio di ordinamento.");
+      }
+  }
+
+  // Funzione per ordinare la galleria
+  function sortGallery(criteria) {
+      const galleryRow = document.getElementById('row-cat1');
+      const items = Array.from(galleryRow.children);
+      items.sort((a, b) => {
+          const getValue = (item, attr) => item.getAttribute(`data-${attr}`) || '';
+          let aValue, bValue;
+          if (criteria === 'name') {
+              aValue = a.querySelector('img')?.alt.toLowerCase() || '';
+              bValue = b.querySelector('img')?.alt.toLowerCase() || '';
+          } else if (criteria === 'year') {
+              aValue = parseInt(getValue(a, 'year')) || 0;
+              bValue = parseInt(getValue(b, 'year')) || 0;
+          } else if (criteria === 'author') {
+              aValue = getValue(a, 'author').toLowerCase();
+              bValue = getValue(b, 'author').toLowerCase();
+          } else {
+              return;
+          }
+          if (aValue < bValue) return -1;
+          if (aValue > bValue) return 1;
+          return 0;
+      });
+      galleryRow.innerHTML = '';
+      items.forEach(item => galleryRow.appendChild(item));
+  }
+  function onSearchInput() {
+      const searchValue = document.getElementById('searchBar').value;
+      filterGalleryByName(searchValue);
+  }
+
+  function filterGalleryByName(searchValue) {
+      const galleryRow = document.getElementById('row-cat1');
+      const items = Array.from(galleryRow.children);
+      const searchLower = searchValue.toLowerCase();
+
+      items.forEach(item => {
+          const itemName = item.querySelector('img')?.alt.toLowerCase() || '';
+          if (itemName.includes(searchLower)) {
+              item.style.display = '';
+          } else {
+              item.style.display = 'none';
+          }
+      });
+  }
+
 
 
   function modificaOpera() {

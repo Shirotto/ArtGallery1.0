@@ -117,10 +117,7 @@ public class ProfiloController {
         System.out.println("mostraOpereUtente chiamato");
         List<Opera> opere = GestioneOpere.getOpereByUser(currentUser);
         System.out.println("Numero di opere caricate dall'utente: " + (opere != null ? opere.size() : 0));
-
         StringBuilder scriptBuilder = new StringBuilder();
-
-        // Aggiungi solo una volta la dichiarazione di opereCaricateRow
         scriptBuilder.append("var opereCaricateRow = document.getElementById('opere-caricate-row');")
                 .append("if (opereCaricateRow) {")
                 .append("  opereCaricateRow.innerHTML = '';") // Reset content if it exists
@@ -132,26 +129,46 @@ public class ProfiloController {
             String base64Image = "data:image/png;base64," + Base64.getEncoder().encodeToString(opera.getImmagine());
             String descrizione = opera.getDescrizione().replace("'", "\\'");
             String nome = opera.getNome().replace("'", "\\'");
-            int id = opera.getId(); // Ottieni l'ID dell'opera
+            String autore = opera.getAutore().replace("'", "\\'");
+            String tecnica = opera.getTecnica().replace("'", "\\'");
+            String dimensione = opera.getDimensione() != null ? opera.getDimensione().replace("'", "\\'") : "N/A";
+            int id = opera.getId();
+            int anno = opera.getAnno();
+
 
             scriptBuilder.append("if (opereCaricateRow) {")
                     .append("opereCaricateRow.innerHTML += `")
                     .append("<div class='gallery-item' data-id='") // Aggiungi l'ID come attributo data-id
                     .append(id)
-                    .append("' data-description='")
+                    .append("' data-description='") // Aggiungi uno spazio tra l'ID e il resto degli attributi
                     .append(descrizione)
-                    .append("'><img src='")
+                    .append("' data-author='")
+                    .append(autore)
+                    .append("' data-technique='")
+                    .append(tecnica)
+                    .append("' data-year='")
+                    .append(anno)
+                    .append("' data-dimension='")
+                    .append(dimensione)
+                    .append("' data-user='")
+                    .append(currentUser.getUsername().replace("'", "\\'"))
+                    .append("'>")
+                    .append("<img src='")
                     .append(base64Image)
                     .append("' alt='")
                     .append(nome)
-                    .append("'></div>`;")
+                    .append("'>")
+                    .append("</div>`;")
                     .append("}");
+
         }
-
-        // Genera lo script finale
+        scriptBuilder.append("attachGalleryItemListeners();");
         String script = scriptBuilder.toString();
-
-        webView.getEngine().executeScript(script);
+        try {
+            webView.getEngine().executeScript(script);
+        } catch (Exception e) {
+            System.err.println("Errore durante l'iniezione dello script nella WebView: " + e.getMessage());
+        }
 
 
     }
@@ -196,22 +213,20 @@ public class ProfiloController {
 
         boolean result = GestioneOpere.eliminaOperaData(operaId);
         if (result) {
-
-            // Mostra le opere aggiornate per l'utente
-            mostraOpereUtente(currentUser, webView);
-
-            webView.getEngine().executeScript("setTimeout(() => showSection('profile-section'), 100);");
-
-
-
-
-
-
+           menuPrincipaleController.profiloDopoEliminzione();
 
         } else {
             alert.showAlertInfo("Errore", "Impossibile eliminare l'opera.");
         }
     }
+
+    private MenuPrincipaleController menuPrincipaleController;
+
+    public void setMenuPrincipaleController(MenuPrincipaleController controller) {
+        this.menuPrincipaleController = controller;
+
+    }
+
 
 
 
