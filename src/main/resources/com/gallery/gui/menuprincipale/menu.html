@@ -212,78 +212,7 @@
             z-index: 2;
         }
 
-    /*   #modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            transition: opacity 0.3s ease;
-            opacity: 0;
-        }
 
-        #modal-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        #modal-content {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 600px;
-            width: 90%;
-            text-align: center;
-            position: relative;
-            animation: fadeInModal 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        @keyframes fadeInModal {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        #modal-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #666;
-            transition: color 0.3s ease;
-        }
-
-        #modal-close:hover {
-            color: #000;
-        }
-
-        #modal-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            max-height: 400px;
-        }
-
-        #modal-title {
-            font-size: 1.8em;
-            margin-bottom: 10px;
-            color: #323232;
-        }
-
-        #modal-description {
-            font-size: 1.2em;
-            color: #555;
-            margin-top: 10px;
-        }*/
         /* Sfondo e overlay */
         .modal-overlay {
             display: none; /* Nasconde la modale di default */
@@ -819,6 +748,115 @@
             margin: 10px 0;
         }
 
+        /* QUA INIZIA IL CODICE DI PROVA PER LA HOME*/
+        #home-section body {
+            background: #222;
+            font-family: "Fira Sans", sans-serif;
+            padding-right: 2rem;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        #home-section .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            overflow: hidden;
+            max-width: 1300px;
+            margin: auto;
+        }
+        #home-section .gallery__strip {
+            min-height: 100vh;
+        }
+        #home-section .gallery__strip__wrapper {
+            flex: 0 0 100%;
+            justify-content: flex-end;
+            background: #808080;
+            border-right: 2px solid #808080;
+            position: relative;
+        }
+
+        @media (min-width: 500px) {
+            .gallery__strip__wrapper {
+                flex: 0 0 50%;
+            }
+        }
+        @media (min-width: 950px) {
+            .gallery {
+                height: 100vh;
+            }
+            .gallery__strip.one {
+                animation: 60s move-it ease alternate infinite 5s;
+                transform: translateY(2%);
+            }
+            .gallery__strip.three {
+                animation: 70s move-it ease alternate infinite 6s;
+                transform: translateY(2%);
+            }
+            .gallery__strip.two {
+                animation: 58s move-it-2 ease alternate infinite 5s;
+                transform: translateY(-50%);
+            }
+            .gallery__strip.four {
+                animation: 65s move-it-2 ease alternate infinite 5.5s;
+                transform: translateY(-50%);
+            }
+            .gallery__strip:hover {
+                animation-play-state: paused;
+            }
+            .gallery__strip__wrapper {
+                flex: 0 0 25%;
+            }
+        }
+        #home-section .photo {
+            position: relative;
+            text-align: right;
+            padding-bottom: 3rem;
+        }
+        #home-section .photo__image img {
+            width: 80%;
+            transform: translateX(30%);
+            transition: 1s cubic-bezier(0.19, 1, 0.22, 1) 0.2s;
+        }
+        #home-section .photo__name {
+            text-transform: uppercase;
+            font-size: 40px;
+            letter-spacing: 2px;
+            color: transparent;
+            -webkit-text-stroke-width: 1px;
+            -webkit-text-stroke-color: white;
+            margin-top: -25px;
+            transition: 0.4s ease-in-out 0.4s;
+            position: relative;
+            width: 100%;
+        }
+        #home-section .photo:hover .photo__image img {
+            transform: translateX(0%);
+        }
+        #home-section .photo:hover .photo__name {
+            color: #fff;
+        }
+
+        @keyframes move-it {
+            0%, 90%, 100% {
+                transform: translateY(2%);
+            }
+            45% {
+                transform: translateY(-50%);
+            }
+        }
+        @keyframes move-it-2 {
+            0%, 90%, 100% {
+                transform: translateY(-50%);
+            }
+            45% {
+                transform: translateY(5%);
+            }
+        }
+         /* QUA FINISCE IL CODICE DI PROVA PER LA HOME*/
+
     </style>
 
     <!-- Ionicons per le icone nel menu -->
@@ -903,9 +941,64 @@
 <main id="main">
 
     <!-- Sezione Home -->
-    <div id="home-section">
-        <h1>Benvenuto!</h1>
-        <p>Questa è la pagina principale.</p>
+    <!--<div id="home-section">
+        /*<h1>Benvenuto!</h1>
+        <p>Questa è la pagina principale.</p> -->
+    <div class="gallery" id="home-section">
+        <div class="gallery__strip__wrapper">
+            <div class="gallery__strip one">
+                <div class="photo">
+
+                    <div class="photo__image"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/800px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg"/></div>
+                    <div class="photo__name">Monnalisa</div>
+                </div>
+                <div class="photo">
+                    <div class="photo__image"><img src="https://www.cappellasistinaroma.it/images/la-creazione-di-adamo-cappella-sistina.jpg"/></div>
+                    <div class="photo__name">La creazione di Adamo</div>
+                </div>
+
+            </div>
+        </div>
+        <div class="gallery__strip__wrapper">
+            <div class="gallery__strip two">
+                <div class="photo">
+                    <div class="photo__image"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/300px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg"/></div>
+                    <div class="photo__name">La Notte Stellata</div>
+                </div>
+                <div class="photo">
+                    <div class="photo__image"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/1665_Girl_with_a_Pearl_Earring.jpg/390px-1665_Girl_with_a_Pearl_Earring.jpg"/></div>
+                    <div class="photo__name">La ragazza col turbante</div>
+                </div>
+
+            </div>
+        </div>
+        <div class="gallery__strip__wrapper">
+            <div class="gallery__strip three">
+                <div class="photo">
+                    <div class="photo__image"><img src="https://upload.wikimedia.org/wikipedia/commons/9/9d/David_di_Michelangelo.jpg"/></div>
+                    <div class="photo__name">David</div>
+                </div>
+                <div class="photo">
+                    <div class="photo__image"><img src="https://www.artesvelata.it/wp-content/uploads/2019/02/Gian-Lorenzo-Bernini-Apollo-e-Dafne-Arte-Svelata.jpg"/></div>
+                    <div class="photo__name">Apollo e Dafne</div>
+                </div>
+
+            </div>
+        </div>
+        <div class="gallery__strip__wrapper">
+            <div class="gallery__strip four">
+                <div class="photo">
+                    <div class="photo__image"><img src="https://hips.hearstapps.com/hmg-prod/images/maurizio-cattelan-america-2016-photo-jacopo-zotti-1585243067.jpg?resize=980:*"/></div>
+                    <div class="photo__name">America</div>
+                </div>
+                <div class="photo">
+                    <div class="photo__image"><img src="https://i0.wp.com/blog.artsper.com/wp-content/uploads/2019/07/koons.jpg?w=644&ssl=1"/></div>
+                    <div class="photo__name">Balloon dogs</div>
+                </div>
+
+            </div>
+        </div>
+    </div> <!--     QUA FINISCE HOME -->
     </div>
 
     <!-- Sezione Profilo -->
