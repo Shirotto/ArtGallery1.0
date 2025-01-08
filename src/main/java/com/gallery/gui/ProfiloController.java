@@ -23,6 +23,10 @@ public class ProfiloController {
     private Label usernameLabel;
 
     @FXML
+    private WebView webView;
+
+
+    @FXML
     private Label emailLabel;
 
     @FXML
@@ -32,18 +36,28 @@ public class ProfiloController {
 
     private final AlertInfo alert = new AlertInfo();
 
+
     // Metodo per impostare i dati dell'utente
     public void setUserData(User user, WebView webView) {
         this.currentUser = user;
         webView.getEngine().getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
+                System.out.println("wsedrftgyhujikol");
                 updateHTML(user, webView);
+
+
+                // Espone il controller Java a JavaScript
+                JSObject window = (JSObject) webView.getEngine().executeScript("window");
+                window.setMember("javaController", this);  // Espone il controller Java
+
+
+
             }
         });
     }
 
     // Metodo per aggiornare i dati HTML
-    public void updateHTML(User user,WebView webView) {
+    public void updateHTML(User user, WebView webView) {
         WebEngine webEngine = webView.getEngine();
         try {
             webEngine.executeScript("document.getElementById('username').innerText = '" + user.getUsername() + "';");
@@ -99,36 +113,48 @@ public class ProfiloController {
 
 
     public void mostraOpereUtente(User currentUser, WebView webView) {
+
+        System.out.println("mostraOpereUtente chiamato");
         List<Opera> opere = GestioneOpere.getOpereByUser(currentUser);
         System.out.println("Numero di opere caricate dall'utente: " + (opere != null ? opere.size() : 0));
-        StringBuilder scriptBuilder = new StringBuilder();
-        scriptBuilder.append("const opereCaricateRow = document.getElementById('opere-caricate-row');")
-                .append("if (opereCaricateRow) { opereCaricateRow.innerHTML = ''; }")
-                .append("else { console.error('Elemento opere-caricate-row non trovato.'); }");
 
+        StringBuilder scriptBuilder = new StringBuilder();
+
+        // Aggiungi solo una volta la dichiarazione di opereCaricateRow
+        scriptBuilder.append("var opereCaricateRow = document.getElementById('opere-caricate-row');")
+                .append("if (opereCaricateRow) {")
+                .append("  opereCaricateRow.innerHTML = '';") // Reset content if it exists
+                .append("} else {")
+                .append("  console.error('Elemento opere-caricate-row non trovato nel DOM.');")
+                .append("}");
+// Aggiungi le opere caricate dinamicamente
         for (Opera opera : opere) {
-            String base64Image = "data:image/png;base64,"
-                    + Base64.getEncoder().encodeToString(opera.getImmagine());
+            String base64Image = "data:image/png;base64," + Base64.getEncoder().encodeToString(opera.getImmagine());
             String descrizione = opera.getDescrizione().replace("'", "\\'");
             String nome = opera.getNome().replace("'", "\\'");
-            scriptBuilder.append("opereCaricateRow.innerHTML += `")
-                    .append("<div class='gallery-item' data-description='")
+            int id = opera.getId(); // Ottieni l'ID dell'opera
+
+            scriptBuilder.append("if (opereCaricateRow) {")
+                    .append("opereCaricateRow.innerHTML += `")
+                    .append("<div class='gallery-item' data-id='") // Aggiungi l'ID come attributo data-id
+                    .append(id)
+                    .append("' data-description='")
                     .append(descrizione)
                     .append("'><img src='")
                     .append(base64Image)
                     .append("' alt='")
                     .append(nome)
-                    .append("'></div>`;");
+                    .append("'></div>`;")
+                    .append("}");
         }
-        scriptBuilder.append("attachGalleryItemListeners();");
-        String script = scriptBuilder.toString();
-        try {
-            webView.getEngine().executeScript(script);
-        } catch (Exception e) {
-            System.err.println("Errore durante l'iniezione dello script nella WebView: " + e.getMessage());
-        }
-    }
 
+        // Genera lo script finale
+        String script = scriptBuilder.toString();
+
+        webView.getEngine().executeScript(script);
+
+
+    }
 
     private void saveUserDataToDatabase(User user) {
         Transaction transaction = null;
@@ -159,4 +185,34 @@ public class ProfiloController {
             System.err.println("Errore durante il logout.");
         }
     }
+
+    public void eliminaOpera(int operaId) {
+
+        if (operaId == 0) {
+            alert.showAlertInfo("Errore", "Id opera nullo");
+            return;
+        }
+
+
+        boolean result = GestioneOpere.eliminaOperaData(operaId);
+        if (result) {
+
+            // Mostra le opere aggiornate per l'utente
+            mostraOpereUtente(currentUser, webView);
+
+            webView.getEngine().executeScript("setTimeout(() => showSection('profile-section'), 100);");
+
+
+
+
+
+
+
+        } else {
+            alert.showAlertInfo("Errore", "Impossibile eliminare l'opera.");
+        }
+    }
+
+
+
 }

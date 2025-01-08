@@ -34,6 +34,7 @@ public class MenuPrincipaleController {
         //mi fa visualizzare gli alert definiti nel html
         webEngine.setOnAlert(event -> {
             String message = event.getData();
+
             System.out.println("Alert JavaScript: " + message);
             // Oltre alla console, puoi visualizzare l'alert con una finestra JavaFX
             showAlert(message);
@@ -134,10 +135,6 @@ public class MenuPrincipaleController {
 
 
 
-    public void getOpereCaricate() {
-        profilo.mostraOpereUtente(currentUser,webView);
-    }
-
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -146,5 +143,29 @@ public class MenuPrincipaleController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+   /* public void eliminaOperaERegenera(int operaId) {
+        System.out.println("qwertttttttttt" + operaId);
+        if (operaId == 0) {
+            showAlert("Errore: ID opera non valido.");
+            return;
+        }
+
+        // Elimina l'opera dal database
+        boolean eliminato = GestioneOpere.eliminaOperaData(operaId);
+        if (eliminato) {
+            // Aggiorna la galleria o il profilo
+            aggiornaGalleria();
+            if (currentUser != null) {
+                profilo.mostraOpereUtente(currentUser, webView);
+            }
+            showAlert("Opera eliminata con successo.");
+        } else {
+            showAlert("Errore: impossibile eliminare l'opera.");
+        }
+    }
+
+    */
+
+
 
 }

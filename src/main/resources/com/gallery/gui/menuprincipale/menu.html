@@ -211,6 +211,16 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
             z-index: 2;
         }
+        .gallery-item.selectable {
+            cursor: pointer;
+            outline: 3px dashed #ff0000;
+            transition: outline 0.2s ease-in-out;
+        }
+
+        .gallery-item.selectable:hover {
+            outline: 3px solid #ff0000;
+        }
+
 
         #modal-overlay {
             display: none;
@@ -842,7 +852,7 @@
     </div>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+  /*  document.addEventListener('DOMContentLoaded', function() {
 
         // Funzione per mostra/nascondere sezioni
         window.showSection = function(sectionId) {
@@ -861,6 +871,40 @@
                 attachGalleryItemListeners();
             }
         }
+        */
+        document.addEventListener('DOMContentLoaded', function() {
+
+          // Funzione per mostra/nascondere sezioni
+         window.showSection = function(sectionId) {
+          console.log(`Chiamata a showSection con l'ID: ${sectionId}`);
+
+          // Seleziona tutte le sezioni e nascondile
+          const sections = document.querySelectorAll('main > div');
+          sections.forEach(section => section.classList.add('hidden'));
+
+          const section = document.getElementById(sectionId);
+          if (section) {
+              section.classList.remove('hidden');
+          } else {
+              console.error(`Sezione con ID '${sectionId}' non trovata.`);
+          }
+
+          // Gestione dei menu attivi
+          const menuItems = document.querySelectorAll('.navbar-item');
+          menuItems.forEach(item => item.classList.remove('active'));
+
+          const clickedItem = document.querySelector(`.navbar-item a[onclick="showSection('${sectionId}')"]`);
+          if (clickedItem) {
+              clickedItem.parentElement.classList.add('active');
+          }
+
+          // Se la sezione è la galleria, attacca gli ascoltatori degli eventi
+          if (sectionId === 'gallery-section') {
+              attachGalleryItemListeners();
+          }
+      }
+
+
 
         // Funzione per uscire dall'app
         window.exitApp = function() {
@@ -981,13 +1025,20 @@
         const modalTitle = document.getElementById('modal-title');
         const modalDescription = document.getElementById('modal-description');
 
-        window.openModal = function(imageSrc, title, description) {
-            console.log(`Apertura modale per: ${title}`);
-            modalImage.src = imageSrc || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
-            modalTitle.textContent = title || 'Titolo Opera';
-            modalDescription.textContent = description || 'Descrizione Opera';
-            modalOverlay.classList.add('active');
-        }
+        let isDeleteMode = false; // Variabile per tenere traccia della modalità di eliminazione
+
+            // Modifica la funzione openModal per non aprire il modale in modalità eliminazione
+            ndow.openModal = function(imageSrc, title, description) {
+                console.log("openModal chiamato con:", { imageSrc, title, description });
+                if (isDeleteMode) {
+                    console.log("Modalità eliminazione attiva, modale non aperto.");
+                    return;
+                }
+                modalImage.src = imageSrc || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
+                modalTitle.textContent = title || 'Titolo Opera';
+                modalDescription.textContent = description || 'Descrizione Opera';
+                modalOverlay.classList.add('active');
+            };
 
         window.closeModal = function() {
             console.log("Chiusura modale");
@@ -1008,23 +1059,39 @@
                 }
             });
         }
-        window.attachGalleryItemListeners = function() {
-            const galleryItems = document.querySelectorAll('.gallery-item');
-            galleryItems.forEach(function(item) {
-                item.addEventListener('click', function() {
-                    console.log("Gallery-item cliccato:", item);
-                    let imgSrc = '';
-                    const img = item.querySelector('img');
-                    if (img) {
-                        imgSrc = img.src;
-                    } else {
-                        imgSrc = 'https://via.placeholder.com/600x400?text=Opera+Immagine';
-                    }
-                    const title = img ? img.alt : item.textContent.trim();
-                    const description = item.getAttribute('data-description') || 'Descrizione dell\'opera';
-                    openModal(imgSrc, title, description);
+            window.attachGalleryItemListeners = function() {
+                const galleryItems = document.querySelectorAll('.gallery-item');
+
+                if (!galleryItems || galleryItems.length === 0) {
+                    console.warn("Nessun elemento .gallery-item trovato.");
+                    return;
+                }
+
+                galleryItems.forEach(function(item) {
+                    item.addEventListener('click', function handleClick() {
+                        if (isDeleteMode) {
+                            console.log("Modalità eliminazione attiva, modale non aperto.");
+                            return; // Non aprire il modale in modalità eliminazione
+                        }
+
+                        console.log("Gallery-item cliccato:", item);
+
+                        // Recupera i dati dell'opera
+                        let imgSrc = '';
+                        const img = item.querySelector('img');
+                        if (img) {
+                            imgSrc = img.src;
+                        } else {
+                            imgSrc = 'https://via.placeholder.com/600x400?text=Opera+Immagine';
+                        }
+
+                        const title = img?.alt || 'Titolo non disponibile';
+                        const description = item.getAttribute('data-description') || 'Descrizione dell\'opera';
+
+                        // Apri il modale
+                        openModal(imgSrc, title, description);
+                    });
                 });
-            });
             console.log("Event listeners attaccati alle gallery-item");
         }
 
@@ -1036,12 +1103,67 @@
         });
     });
 
-    function eliminaOpera() {
-        // Qui la logica per eliminare l'opera.
-        alert("Funzione 'Elimina Opera' da implementare!");
-    }
+  //let isDeleteMode = false; // Variabile per tenere traccia della modalità di eliminazione
 
-    function modificaOpera() {
+  function eliminaOpera() {
+      isDeleteMode = true;
+      alert("Seleziona l'opera che vuoi eliminare");
+      console.log("Modalità eliminazione attivata: " + isDeleteMode);
+
+      document.querySelectorAll('.gallery-item').forEach(item => {
+          item.classList.add('selectable'); // Evidenzia le opere
+          item.addEventListener('click', handleOperaSelection); // Aggiungi evento click
+      });
+  }
+
+  // Gestisce la selezione dell'opera da eliminare
+  function handleOperaSelection(event) {
+      if (!isDeleteMode) return;
+      const opera = event.currentTarget;
+      const operaId = opera.dataset.id;
+
+      if (!operaId) {
+          alert("Errore: impossibile trovare l'ID dell'opera selezionata.");
+          terminaSelezione();
+          return;
+      }
+      eliminaOperaDalDatabase(operaId, opera);
+
+  }
+
+  // Disattiva la modalità di eliminazione
+  function terminaSelezione() {
+      isDeleteMode = false; // Disattiva la modalità
+      document.querySelectorAll('.gallery-item').forEach(item => {
+          item.classList.remove('selectable');
+          item.removeEventListener('click', handleOperaSelection);
+      });
+  }
+  // Chiama il controller Java per eliminare l'opera
+  function eliminaOperaDalDatabase(operaId, operaElement) {
+
+      try {
+
+          if (window.javaController) {
+
+              const result = window.javaController.eliminaOpera(operaId)
+              if (result) {
+                  // Rimuovi l'opera dal DOM
+                   operaElement.remove();
+                  alert("Errore: impossibile eliminare l'opera.");
+          } else
+              console.error("javaController non è definito.");
+          }
+      } catch (error) {
+          console.error("Errore durante l'eliminazione:", error);
+          //alert("Errore nell'eliminazione dell'opera.");
+      } finally {
+          terminaSelezione();
+      }
+  }
+
+
+  function modificaOpera() {
         // Qui la logica per modificare i dettagli dell'opera.
         alert("Funzione 'Modifica Opera' da implementare!");
     }
