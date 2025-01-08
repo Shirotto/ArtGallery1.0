@@ -25,27 +25,40 @@ public class MenuPrincipaleController {
 
     private User currentUser;
 
+
     @FXML
     public void initialize() {
         WebEngine webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
+
+        profilo.setMenuPrincipaleController(this);
+
+
+        //mi fa visualizzare gli alert definiti nel html
         webEngine.setOnAlert(event -> {
             String message = event.getData();
+
             System.out.println("Alert JavaScript: " + message);
+            // Oltre alla console, puoi visualizzare l'alert con una finestra JavaFX
             showAlert(message);
         });
+
         String htmlFilePath = getClass().getResource("/com/gallery/gui/menuprincipale/menu.html").toExternalForm();
         if (htmlFilePath == null) {
             System.err.println("File HTML non trovato.");
-            return;}
+            return;
+        }
         webEngine.load(htmlFilePath);
         webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
                 JSObject window = (JSObject) webEngine.executeScript("window");
                 window.setMember("javafxController", this);
-                aggiornaGalleria();}
+                aggiornaGalleria();// fa in modo che le opere restino salvate alla riapertura
+            }
             if (currentUser != null) {
-                profilo.updateHTML(currentUser, webView);}
+                profilo.updateHTML(currentUser, webView);
+
+            }
         });
     }
 
@@ -70,24 +83,27 @@ public class MenuPrincipaleController {
 
     public void setUser(User user) {
         this.currentUser = user;
+
         if (currentUser == null) {
             System.err.println("Errore: Utente corrente è null!");
             return;
         }
+
         System.out.println("Utente impostato: " + currentUser.getUsername());
+
         if (profilo != null) {
             profilo.setUserData(currentUser, webView);
-            profilo.mostraOpereUtente(currentUser, webView);
+            profilo.mostraOpereUtente(currentUser, webView); // Aggiunge le opere caricate dall'utente
         }
     }
 
 
+
     public void aggiornaGalleria() {
         List<Opera> opere = GestioneOpere.getAllOpere();
-        StringBuilder scriptBuilder = new StringBuilder();
-        scriptBuilder.append("const galleryRow = document.getElementById('row-cat1');")
-                .append("if (galleryRow) { galleryRow.innerHTML = ''; }")
-                .append("else { console.error('Elemento row-cat1 non trovato.'); }");
+        StringBuilder scriptBuilder = new StringBuilder("const galleryRow = document.getElementById('row-cat1');");
+
+        scriptBuilder.append("galleryRow.innerHTML = '';");
         for (Opera opera : opere) {
             String base64Image = "data:image/png;base64," + Base64.getEncoder().encodeToString(opera.getImmagine());
             String descrizione = opera.getDescrizione().replace("'", "\\'");
@@ -118,20 +134,39 @@ public class MenuPrincipaleController {
 
 
     public void salvaOpera(String titolo, String autore, int anno, String tecnica, String descrizione, String imageDataBase64,String dimensione) {
+        // Converte i dati base64 dell'immagine in byte[]
         byte[] immagine = java.util.Base64.getDecoder().decode(imageDataBase64.split(",")[1]);
+        // Salva l'opera nel database
         GestioneOpere.salvaOperaDb(titolo, autore, anno, tecnica, currentUser, descrizione, immagine,dimensione);
         webView.getEngine().reload();
+        // Subito dopo il salvataggio, aggiorna la galleria senza ricaricare la pagina
         aggiornaGalleria();
     }
 
     public void showProfileSection() {
-        webView.getEngine().executeScript("showSection('profile-section')");
+        // 1) “mostra” la sezione nel WebView (chiamando la tua showSection('profile-section') lato JS)
+         webView.getEngine().executeScript("showSection('profile-section')");
+
+        // 2) e poi reinietti le opere in ‘opere-caricate-row’
         profilo.mostraOpereUtente(currentUser, webView);
+
+
     }
 
-    public void getOpereCaricate() {
-        profilo.mostraOpereUtente(currentUser,webView);
+    public void profiloDopoEliminzione(){
+        System.out.println("Profilo dopoEliminzione chiamatoooooooooooooooooo");
+
+        profilo.mostraOpereUtente(currentUser, webView);
+
+        aggiornaGalleria();
+
+        webView.getEngine().reload();
+
+
     }
+
+
+
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -140,5 +175,7 @@ public class MenuPrincipaleController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+
 
 }

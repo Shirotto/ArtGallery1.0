@@ -4,9 +4,11 @@ import com.entity.Opera;
 import com.entity.User;
 import com.gallery.gui.AlertInfo;
 import com.gallery.gui.MenuPrincipaleController;
+import com.util.HibernateUtil;
 import javafx.scene.web.WebView;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
@@ -14,6 +16,8 @@ import java.util.List;
 
 
 public class GestioneOpere {
+
+
 
 
     static AlertInfo alertInfo = new AlertInfo();
@@ -55,7 +59,6 @@ public class GestioneOpere {
             if (session != null) session.close();
         }
     }
-
 
     //metodo per recuperare le opere di uno specifico user
     public static List<Opera> getOpereByUser(User user) {
@@ -117,5 +120,36 @@ public class GestioneOpere {
         return opere;
     }
 
+
+    public static boolean eliminaOperaData(int operaId) {
+
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            // Cerca l'opera nel database
+            Opera opera = session.get(Opera.class, operaId);
+
+            if (opera == null) {
+                System.out.println("Opera con ID " + operaId + " non trovata.");
+                return false;
+            }
+
+            // Procedi con l'eliminazione dell'opera
+            session.delete(opera);
+
+            transaction.commit();
+
+            alertInfo.showAlertInfo("Successo!", "Opera " + opera.getNome() + " Eliminata correttamente!");
+
+            return true;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();  // Log dettagliato dell'eccezione
+            return false;
+        }
+    }
 
 }

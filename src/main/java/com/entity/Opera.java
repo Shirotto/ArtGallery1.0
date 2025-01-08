@@ -8,7 +8,7 @@ public class Opera {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // ID auto-incrementato
-    private Long id;
+    private int id;
 
     @Column(name = "nome", nullable = false, length = 100)
     private String nome;
@@ -53,7 +53,7 @@ public class Opera {
     }
 
     // Getter e Setter
-    public Long getId() {
+    public int getId() {
         return id;
     }
     public User getUser() {
@@ -61,7 +61,7 @@ public class Opera {
     }
     public void setUser(User user){ this.user = user;}
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -143,3 +143,4 @@ public class Opera {
                 '}';
     }
 }
+

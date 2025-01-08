@@ -17,5 +17,6 @@
 
         <!-- Mapping class -->
         <mapping class="com.entity.User"/>
+        <mapping class="com.entity.Opera"/>
     </session-factory>
 </hibernate-configuration>
