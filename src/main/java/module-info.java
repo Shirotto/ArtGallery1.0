@@ -14,6 +14,7 @@ module com.gallery.gui {
     requires mysql.connector.j;
     requires javafx.swing;
     requires java.scripting;
+    requires jbcrypt;
     //requires java.mail;
 
     opens com.gallery.gui to javafx.fxml;

@@ -3,6 +3,7 @@ package com.GestioneDB;
 import com.entity.User;
 import com.gallery.gui.AlertInfo;
 import com.gallery.gui.ValidazioneInput;
+import com.util.PasswordUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -32,34 +33,42 @@ public class GestioneUtente {
             alertInfo.showAlertErrore("utente già registrato","Esiste già un utente con questa email");
             return false;
         }
-        if (validazioneInput.validaInput(username,email,password)) {
+
+        if (validazioneInput.validaInput(username, email, password)) {
+            // Cripta la password prima di salvarla nel database
+            String hashedPassword = PasswordUtil.hashPassword(password);
+
+            // Crea la sessione Hibernate
             Session session = sessionFactory.openSession();  // creazione sessione (Permette di interagire con il db)
             Transaction transaction = session.beginTransaction();
-            User nuovoUtente = new User(username, email, password);
+
+            // Crea il nuovo utente con la password criptata
+            User nuovoUtente = new User(username, email, hashedPassword);
             session.persist(nuovoUtente);
 
             transaction.commit();
             session.close();
 
-            alertInfo.showAlertInfo( "utente registrato con successo","BENVENUTO "+ username);
+            alertInfo.showAlertInfo("utente registrato con successo", "BENVENUTO " + username);
             return true;
         }
-        validazioneInput.validaInputConAlert(username,email,password);
+        validazioneInput.validaInputConAlert(username, email, password);
 
         return false;
-
-
     }
-
 
     //Metodo che scorre nel db e verifica se ci sono email e pass ("FaseLogin")
     public boolean verificaCredenziali(String email, String password) {
-        if(!verificaSeUnUtenteEsisteByEmail(email)) return false;
+        // Verifica se l'utente esiste con l'email
+        if (!verificaSeUnUtenteEsisteByEmail(email)) return false;
+
+        // Ottieni l'utente dal database
         User utente = getUserByEmail(email);
-        return utente.getPassword().equals(password);
 
-
+        // Usa BCrypt per confrontare la password inserita con quella salvata (hash)
+        return PasswordUtil.checkPassword(password, utente.getPassword());
     }
+
     // Metodo per ottenere l'utente tramite email (Per il profilo utente)
     public User getUserByEmail(String email) {
         if (verificaSeUnUtenteEsisteByEmail(email)) {
