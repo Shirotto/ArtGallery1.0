@@ -1,5 +1,6 @@
 package com.entity;
 
+import com.util.PasswordConverter;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,7 +17,8 @@ public class User {
     @Column(name = "username", nullable = false, unique = true, length = 50)
     private String username;
 
-    @Column(name = "password", nullable= false, length = 255)
+    @Convert(converter = PasswordConverter.class)
+    @Column(name = "password", nullable = false, length = 255)
     private String password;
 
     // Costruttore di default (richiesto da Hibernate)
@@ -24,7 +26,7 @@ public class User {
     }
 
     // Costruttore con parametri
-    public User(String username, String email,  String password) {
+    public User(String username, String email, String password) {
         this.email = email;
         this.username = username;
         this.password = password;
@@ -72,4 +74,5 @@ public class User {
                 '}';
     }
 }
+
 
