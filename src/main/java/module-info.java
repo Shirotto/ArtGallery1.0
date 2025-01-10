@@ -13,9 +13,11 @@ module com.gallery.gui {
     requires jdk.jsobject;
     requires mysql.connector.j;
     requires javafx.swing;
+    requires jbcrypt;
     //requires java.mail;
 
     opens com.gallery.gui to javafx.fxml;
     opens com.entity to org.hibernate.orm.core;
     exports com.gallery.gui;
+    exports com.util;
 }

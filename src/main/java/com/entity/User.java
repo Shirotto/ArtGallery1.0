@@ -1,6 +1,5 @@
 package com.entity;
 
-import com.util.PasswordConverter;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,7 +16,6 @@ public class User {
     @Column(name = "username", nullable = false, unique = true, length = 50)
     private String username;
 
-    @Convert(converter = PasswordConverter.class)
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 
