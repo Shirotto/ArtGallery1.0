@@ -4,6 +4,7 @@ import com.GestioneDB.GestioneOpere;
 import com.entity.Opera;
 import com.entity.User;
 import com.util.HibernateUtil;
+import com.util.PasswordUtil;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -71,46 +72,59 @@ public class ProfiloController {
 
     public void updateProfileData(String usernameValue, String emailValue, String passwordValue, WebView webView) {
         System.out.println("updateProfileData chiamato con: " + usernameValue + ", " + emailValue + ", " + passwordValue);
+
+        // Controllo che i campi non siano vuoti
         if (usernameValue == null || usernameValue.trim().isEmpty() ||
                 emailValue == null || emailValue.trim().isEmpty() ||
                 passwordValue == null || passwordValue.trim().isEmpty()) {
             alert.showAlertInfo("Errore", "Tutti i campi devono essere compilati.");
             return;
         }
+
+        // Verifica della validità dell'email
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
         if (!emailValue.matches(emailRegex)) {
             alert.showAlertInfo("Errore", "Inserire un indirizzo email valido.");
             return;
         }
+
+        // Verifica che il nuovo nome utente sia diverso dal precedente
         if (usernameValue.equals(currentUser.getUsername())) {
             alert.showAlertInfo("Errore", "Il nuovo nome utente deve essere diverso dal precedente.");
             return;
         }
-        if (passwordValue.equals(currentUser.getPassword())) {
+
+        // Verifica che la nuova password sia diversa dalla precedente
+        if (PasswordUtil.checkPassword(passwordValue, currentUser.getPassword())) {
             alert.showAlertInfo("Errore", "La nuova password deve essere diversa dalla precedente.");
             return;
         }
+
+        // Verifica della validità della password (deve avere almeno 8 caratteri, una lettera maiuscola, un numero e un carattere speciale)
         String passwordRegex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?\":{}|<>]).{8,}$";
         if (!passwordValue.matches(passwordRegex)) {
             alert.showAlertInfo("Errore", "La password deve contenere almeno 8 caratteri, " +
                     "una lettera maiuscola, un numero e un carattere speciale.");
             return;
         }
+
+        // Cripta la nuova password prima di salvarla
+        String hashedPassword = PasswordUtil.hashPassword(passwordValue);
+
+        // Aggiorna i dati dell'utente
         currentUser.setUsername(usernameValue);
         currentUser.setEmail(emailValue);
-        currentUser.setPassword(passwordValue);
+        currentUser.setPassword(hashedPassword);  // Imposta la password criptata
+
+        // Salva i dati aggiornati nel database
         saveUserDataToDatabase(currentUser);
+
+        // Aggiorna la vista HTML
         WebEngine webEngine = webView.getEngine();
-        try {
-            webEngine.executeScript("document.getElementById('username').innerText = '" + usernameValue + "';");
-            webEngine.executeScript("document.getElementById('email').innerText = '" + emailValue + "';");
-            webEngine.executeScript("document.getElementById('password').innerText = '" + passwordValue + "';");
-        } catch (Exception e) {
-            System.err.println("Errore durante l'aggiornamento dei dati nella WebView: " + e.getMessage());
-        }
+        updateHTML(currentUser, webView);
+
         alert.showAlertInfo("Successo", "Credenziali aggiornate correttamente");
     }
-
 
     public void mostraOpereUtente(User currentUser, WebView webView) {
 
