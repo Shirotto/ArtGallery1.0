@@ -29,6 +29,9 @@ public class Opera {
     @Column(name = "descrizione", length = 500)
     private String descrizione;
 
+    @Column(name = "dimensione", length = 500)
+    private String dimensione;
+
     @Lob
     @Column(name = "immagine", columnDefinition = "LONGBLOB") // Tipo LONGBLOB, file fino a 4 MB
     private byte[] immagine;
@@ -38,7 +41,7 @@ public class Opera {
     }
 
     // Costruttore con parametri
-    public Opera(String nome, String autore, int anno, String tecnica, User user, String descrizione, byte[] immagine) {
+    public Opera(String nome, String autore, int anno, String tecnica, User user, String descrizione, byte[] immagine,String dimensione) {
         this.nome = nome;
         this.autore = autore;
         this.anno = anno;
@@ -46,12 +49,17 @@ public class Opera {
         this.user = user;
         this.descrizione = descrizione;
         this.immagine = immagine;
+        this.dimensione = dimensione;
     }
 
     // Getter e Setter
     public Long getId() {
         return id;
     }
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user){ this.user = user;}
 
     public void setId(Long id) {
         this.id = id;
@@ -89,6 +97,14 @@ public class Opera {
         this.tecnica = tecnica;
     }
 
+    public String getDimensione() {
+        return dimensione;
+    }
+
+    public void setDimensione(String dimensione) {
+        this.dimensione = dimensione;
+    }
+
   /*  public User getUser() {
         return user;
     }
@@ -123,6 +139,7 @@ public class Opera {
                 ", tecnica='" + tecnica + '\'' +
                 ", user=" + user +
                 ", descrizione='" + descrizione + '\'' +
+                ", dimensione='" + dimensione + '\'' +
                 '}';
     }
 }
