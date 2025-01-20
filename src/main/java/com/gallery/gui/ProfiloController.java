@@ -1,132 +1,79 @@
 package com.gallery.gui;
 
 import com.GestioneDB.GestioneOpere;
+import com.GestioneDB.GestioneUtente;
 import com.entity.Opera;
 import com.entity.User;
-import com.util.HibernateUtil;
 import com.util.PasswordUtil;
-import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import netscape.javascript.JSObject;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+
 
 import java.util.Base64;
 import java.util.List;
 
 public class ProfiloController {
 
-    @FXML
-    private Label usernameLabel;
-
-    @FXML
-    private WebView webView;
-
-
-    @FXML
-    private Label emailLabel;
-
-    @FXML
-    private Label roleLabel;
-
-    private User currentUser;
-
-    private final AlertInfo alert = new AlertInfo();
-
-
-    // Metodo per impostare i dati dell'utente
-    public void setUserData(User user, WebView webView) {
-        this.currentUser = user;
-        webView.getEngine().getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
-            if (newState == Worker.State.SUCCEEDED) {
-                System.out.println("wsedrftgyhujikol");
-                updateHTML(user, webView);
-
-
-                // Espone il controller Java a JavaScript
-                JSObject window = (JSObject) webView.getEngine().executeScript("window");
-                window.setMember("javaController", this);  // Espone il controller Java
-
-
-
-            }
-        });
-    }
 
     // Metodo per aggiornare i dati HTML
-    public void updateHTML(User user, WebView webView) {
+    public static void updateHTML(User user, WebView webView) {
         WebEngine webEngine = webView.getEngine();
+
         try {
             webEngine.executeScript("document.getElementById('username').innerText = '" + user.getUsername() + "';");
             webEngine.executeScript("document.getElementById('email').innerText = '" + user.getEmail() + "';");
-            webEngine.executeScript("document.getElementById('password').innerText = '" + user.getPassword() + "';");
-            webEngine.executeScript("document.getElementById('role').innerText = 'Utente';");
+            //webEngine.executeScript("document.getElementById('password').innerText = '" + user.getPassword() + "';");
         } catch (Exception e) {
             System.err.println("Errore durante l'aggiornamento dei dati nella WebView: " + e.getMessage());
         }
     }
 
-    public void updateProfileData(String usernameValue, String emailValue, String passwordValue, WebView webView) {
+    public static void updateProfileData(User currentUser,  String usernameValue, String emailValue, String passwordValue, WebView webView) {
+        // controlliamo prima che non abbia inserito le vecchie credenziali e che le nuove siano accettabili
         System.out.println("updateProfileData chiamato con: " + usernameValue + ", " + emailValue + ", " + passwordValue);
-
-        // Controllo che i campi non siano vuoti
-        if (usernameValue == null || usernameValue.trim().isEmpty() ||
-                emailValue == null || emailValue.trim().isEmpty() ||
-                passwordValue == null || passwordValue.trim().isEmpty()) {
-            alert.showAlertInfo("Errore", "Tutti i campi devono essere compilati.");
-            return;
-        }
-
-        // Verifica della validità dell'email
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-        if (!emailValue.matches(emailRegex)) {
-            alert.showAlertInfo("Errore", "Inserire un indirizzo email valido.");
-            return;
-        }
-
-        // Verifica che il nuovo nome utente sia diverso dal precedente
+        ValidazioneInput.validaInput(usernameValue,emailValue,passwordValue);
         if (usernameValue.equals(currentUser.getUsername())) {
-            alert.showAlertInfo("Errore", "Il nuovo nome utente deve essere diverso dal precedente.");
+            AlertInfo.showAlertInfo("Errore", "Il nuovo nome utente deve essere diverso dal precedente.");
             return;
         }
-
-        // Verifica che la nuova password sia diversa dalla precedente
+        if (emailValue.equals(currentUser.getEmail())) {
+            AlertInfo.showAlertInfo("Errore", "La nuova email deve essere diversa dalla precedente.");
+            return;
+        }
         if (PasswordUtil.checkPassword(passwordValue, currentUser.getPassword())) {
-            alert.showAlertInfo("Errore", "La nuova password deve essere diversa dalla precedente.");
+            AlertInfo.showAlertInfo("Errore", "La nuova password deve essere diversa dalla precedente.");
             return;
         }
-
-        // Verifica della validità della password (deve avere almeno 8 caratteri, una lettera maiuscola, un numero e un carattere speciale)
-        String passwordRegex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?\":{}|<>]).{8,}$";
-        if (!passwordValue.matches(passwordRegex)) {
-            alert.showAlertInfo("Errore", "La password deve contenere almeno 8 caratteri, " +
-                    "una lettera maiuscola, un numero e un carattere speciale.");
-            return;
-        }
+        if (usernameValue.isEmpty()) {usernameValue=currentUser.getUsername();}
+        if (emailValue.isEmpty()) emailValue=currentUser.getEmail();
+        if (passwordValue.isEmpty()) {
+            System.out.println("La vecchia pass è" + currentUser.getPassword());
+            passwordValue=currentUser.getPassword(); // getpass prende il valore hashato, se non si vuole modificare la pass non serve fare altro
+        }else {passwordValue = PasswordUtil.hashPassword(passwordValue);} // se si vuole cambiare pass cisogna hashare la nuova pass
+        if (!ValidazioneInput.validaInputConAlert(usernameValue,emailValue,passwordValue)) return;
 
         // Cripta la nuova password prima di salvarla
-        String hashedPassword = PasswordUtil.hashPassword(passwordValue);
-
+        //String hashedPassword = PasswordUtil.hashPassword(passwordValue);
         // Aggiorna i dati dell'utente
         currentUser.setUsername(usernameValue);
         currentUser.setEmail(emailValue);
-        currentUser.setPassword(hashedPassword);  // Imposta la password criptata
+        currentUser.setPassword(passwordValue);  // Imposta la password criptata
 
         // Salva i dati aggiornati nel database
-        saveUserDataToDatabase(currentUser);
+        GestioneUtente.saveUserDataToDatabase(currentUser);
 
         // Aggiorna la vista HTML
         WebEngine webEngine = webView.getEngine();
         updateHTML(currentUser, webView);
 
-        alert.showAlertInfo("Successo", "Credenziali aggiornate correttamente");
-    }
+        AlertInfo.showAlertInfo("Successo", "Credenziali aggiornate correttamente");
 
-    public void mostraOpereUtente(User currentUser, WebView webView) {
+        }
+
+
+    public static void mostraOpereUtente(User currentUser, WebView webView) {
 
         System.out.println("mostraOpereUtente chiamato");
         List<Opera> opere = GestioneOpere.getOpereByUser(currentUser);
@@ -180,6 +127,7 @@ public class ProfiloController {
         String script = scriptBuilder.toString();
         try {
             webView.getEngine().executeScript(script);
+
         } catch (Exception e) {
             System.err.println("Errore durante l'iniezione dello script nella WebView: " + e.getMessage());
         }
@@ -187,25 +135,13 @@ public class ProfiloController {
 
     }
 
-    private void saveUserDataToDatabase(User user) {
-        Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            session.merge(user);
-            transaction.commit();
-            System.out.println("Dati utente aggiornati nel database: " + user);
-        } catch (Exception e) {
-            if (transaction != null)
-                transaction.rollback();
-        }
-    }
 
     @FXML
-    public void logout(WebView webView) {
+    public static void logout(WebView webView) {
         try {
             Stage stage = (Stage) webView.getScene().getWindow();
             stage.close();
-            alert.showAlertInfo("Logout", "Logout avvenuto con successo");
+            AlertInfo.showAlertInfo("Logout", "Logout avvenuto con successo");
             Stage loginStage = new Stage();
             LoginApplication.showLogin(loginStage);
             loginStage.setWidth(570);
@@ -217,29 +153,17 @@ public class ProfiloController {
         }
     }
 
-    public void eliminaOpera(int operaId) {
-
-        if (operaId == 0) {
-            alert.showAlertInfo("Errore", "Id opera nullo");
-            return;
-        }
 
 
-        boolean result = GestioneOpere.eliminaOperaData(operaId);
-        if (result) {
-           menuPrincipaleController.profiloDopoEliminzione();
-
-        } else {
-            alert.showAlertInfo("Errore", "Impossibile eliminare l'opera.");
-        }
-    }
-
-    private MenuPrincipaleController menuPrincipaleController;
-
-    public void setMenuPrincipaleController(MenuPrincipaleController controller) {
-        this.menuPrincipaleController = controller;
+    public static void assegnaOpera(String titolo, String autore, int anno, String tecnica, User currentUser, String descrizione, String imageDataBase64, String dimensione) {
+        // Converte i dati base64 dell'immagine in byte[]
+        byte[] immagine = java.util.Base64.getDecoder().decode(imageDataBase64.split(",")[1]);
+        // Salva l'opera nel database
+        GestioneOpere.salvaOperaNelDb(titolo, autore, anno, tecnica, currentUser, descrizione, immagine,dimensione);
+        // Subito dopo il salvataggio, aggiorna la galleria senza ricaricare la pagina
 
     }
+
 
 
 

@@ -3,13 +3,13 @@ package com.GestioneDB;
 import com.entity.Opera;
 import com.entity.User;
 import com.gallery.gui.AlertInfo;
-import com.gallery.gui.MenuPrincipaleController;
+import com.gallery.gui.WindowsController;
 import com.util.HibernateUtil;
-import javafx.scene.web.WebView;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +17,6 @@ import java.util.List;
 
 public class GestioneOpere {
 
-
-
-
-    static AlertInfo alertInfo = new AlertInfo();
 
     private static SessionFactory sessionFactory;
 
@@ -33,7 +29,7 @@ public class GestioneOpere {
     }
 
     // Metodo per salvare l'opera nel database
-    public static void salvaOperaDb(String nome, String autore, int anno, String tecnica, User user, String descrizione, byte[] immagine,String dimensione) {
+    public static void salvaOperaNelDb(String nome, String autore, int anno, String tecnica, User user, String descrizione, byte[] immagine, String dimensione) {
         System.out.println("salvaOperaDb invocato!");
         Session session = null;
 
@@ -50,7 +46,7 @@ public class GestioneOpere {
             // Commit della transazione
             session.getTransaction().commit();
 
-            alertInfo.showAlertInfo("Complimenti!", "La tua opera è stata aggiunta alla galleria!");
+            AlertInfo.showAlertInfo("Complimenti!", "La tua opera è stata aggiunta alla galleria!");
 
         } catch (Exception e) {
             if (session != null) session.getTransaction().rollback();
@@ -59,6 +55,7 @@ public class GestioneOpere {
             if (session != null) session.close();
         }
     }
+
 
     //metodo per recuperare le opere di uno specifico user
     public static List<Opera> getOpereByUser(User user) {
@@ -91,6 +88,29 @@ public class GestioneOpere {
         return opere;
     }
 
+    public static String getNomeProprietario(Opera opera){
+        Session session = null;
+        String proprietario = null;
+        long idProprietario = opera.getUser().getId();
+
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            String hql = "SELECT u.username FROM User u WHERE u.id = :idProprietario";
+            Query<String> query = session.createQuery(hql, String.class); // Specifica il tipo di ritorno
+            query.setParameter("idProprietario", idProprietario);
+            proprietario = query.getSingleResult();
+            session.getTransaction().commit();
+
+        }catch (Exception e) {
+            if (session != null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            if (session != null) session.close();
+
+        }
+        return proprietario;
+    }
 
     //metodo che mi prende le opere dal db
     public static List<Opera> getAllOpere() {
@@ -140,7 +160,7 @@ public class GestioneOpere {
 
             transaction.commit();
 
-            alertInfo.showAlertInfo("Successo!", "Opera " + opera.getNome() + " Eliminata correttamente!");
+            AlertInfo.showAlertInfo("Successo!", "Opera " + opera.getNome() + " Eliminata correttamente!");
 
             return true;
         } catch (Exception e) {

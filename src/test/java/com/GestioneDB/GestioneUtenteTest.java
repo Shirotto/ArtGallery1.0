@@ -106,25 +106,25 @@ class GestioneUtenteTest {
     public void verificaCredenziali_DeveDareTrueSeLecredenzialiSonoEntrambeCorrette(){
         String emailEsistente = "utenteTest@libero.it";
         String passwordCorretta = "passwordTest0@";
-        assertTrue(gestioneUtente.verificaCredenziali(emailEsistente,passwordCorretta));
+        assertTrue(gestioneUtente.verificaCredenzialiDaccesso(emailEsistente,passwordCorretta));
     }
     @Test
     public void verificaCredenziali_DeveDareFalseSeLaPasswordRisultaErrata(){
         String emailEsistente = "utenteTest@libero.it";
         String passwordErrata = "passwordTestErrata0@";
-        assertFalse(gestioneUtente.verificaCredenziali(emailEsistente,passwordErrata));
+        assertFalse(gestioneUtente.verificaCredenzialiDaccesso(emailEsistente,passwordErrata));
     }
     @Test
     public void verificaCredenziali_DeveDareFalseSeLEmailRisultaErrata(){
         String emailSbagliata = "utenteTestSbagliata@libero.it";
         String passwordCorretta = "passwordTest0@";
-        assertFalse(gestioneUtente.verificaCredenziali(emailSbagliata,passwordCorretta));
+        assertFalse(gestioneUtente.verificaCredenzialiDaccesso(emailSbagliata,passwordCorretta));
     }
     @Test
     public void verificaCredenziali_DeveDareFalseSeEntrambeLeCredenzialiRisultanoErrate(){
         String emailErrata= "utenteTest@libero.itErrata";
         String passwordErrata = "passwordTestErrata0@";
-        assertFalse(gestioneUtente.verificaCredenziali(emailErrata,passwordErrata));
+        assertFalse(gestioneUtente.verificaCredenzialiDaccesso(emailErrata,passwordErrata));
     }
     public void RegistraUtente_DeveDareFalseSeProviARegistraUnUtenteGiaRegistratoConQuelNomeUtente(){
         String usernameEsistente = "utenteTest";

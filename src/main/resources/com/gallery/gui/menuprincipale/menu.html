@@ -910,7 +910,7 @@
             </a>
         </li>
         <li class="navbar-item">
-            <a class="navbar-item-inner" onclick="window.javafxController.showProfileSection()">
+            <a class="navbar-item-inner" onclick="window.ControllerPrincipale.showProfileSection()">
                 <div class="navbar-item-inner-icon-wrapper">
                     <ion-icon name="people-outline"></ion-icon>
                 </div>
@@ -972,20 +972,16 @@
         <h1 style="font-size: 2em; font-weight: bold; color: #323232; margin-bottom: 1em;">Informazioni Profilo</h1>
         <div class="info" style="margin-bottom: 1em;">
             <strong style="font-size: 1.2em; color: #666;">Username:</strong>
-            <span id="username" style="font-size: 1.1em; color: #323232; margin-left: 10px;">Inserisci Username</span>
+            <span id="username" style="font-size: 1.1em; color: #323232; margin-left: 10px;"></span>
         </div>
         <div class="info" style="margin-bottom: 1em;">
             <strong style="font-size: 1.2em; color: #666;">Email:</strong>
-            <span id="email" style="font-size: 1.1em; color: #323232; margin-left: 10px;">Inserisci Email</span>
+            <span id="email" style="font-size: 1.1em; color: #323232; margin-left: 10px;"></span>
         </div>
-        <!--<div class="info" style="margin-bottom: 1em;">
-            <strong style="font-size: 1.2em; color: #666;">Password:</strong>
-            <span id="password" style="font-size: 1.1em; color: #323232; margin-left: 10px;">Inserisci Password</span>
-        </div>-->
-        <div class="info" style="margin-bottom: 1em;">
+        <!-- <div class="info" style="margin-bottom: 1em;">
             <strong style="font-size: 1.2em; color: #666;">Ruolo:</strong>
             <span id="role" style="font-size: 1.1em; color: #323232; margin-left: 10px;">Inserisci Ruolo</span>
-        </div>
+        </div> -->
 
         <div class="c4">
             <button class="btn" onclick="toggleCaricaOperaForm()">Carica Opera</button>
@@ -1225,15 +1221,15 @@
 
         // Funzione per uscire dall'app
         window.exitApp = function() {
-            if (window.javafxController) {
-                window.javafxController.exitApp();
+            if (window.ControllerPrincipale) {
+                window.ControllerPrincipale.exitApp();
             }
         }
 
         // Funzione per logout
         window.logout = function() {
-            if (window.javafxController) {
-                window.javafxController.logout();
+            if (window.ControllerPrincipale) {
+                window.ControllerPrincipale.logout();
             }
         }
 
@@ -1245,10 +1241,10 @@
             document.getElementById('new-username').value = '';
             document.getElementById('new-email').value = '';
             document.getElementById('new-password').value = '';
-            if (window.javafxController) {
-                window.javafxController.updateProfilo(newUsername, newEmail, newPassword);
+            if (window.ControllerPrincipale) {
+                window.ControllerPrincipale.updateProfilo(newUsername, newEmail, newPassword);
             } else {
-                console.error("Controller JavaFX non trovato.");
+                console.error("ControllerPrincipale non trovato.");
             }
             document.getElementById('settings-form').classList.add('hidden');
         }
@@ -1305,11 +1301,11 @@
             var reader = new FileReader();
             reader.onload = function(e) {
                 var imageData = e.target.result;
-                if (window.javafxController) {
+                if (window.ControllerPrincipale) {
                     console.log("Chiamata al metodo salvaOpera in JavaFX");
-                    window.javafxController.salvaOpera(titolo, autore, anno, tecnica, descrizione, imageData,dimensione);
+                    window.ControllerPrincipale.salvaOpera(titolo, autore, anno, tecnica, descrizione, imageData,dimensione);
                 } else {
-                    console.error("javafxController non trovato!");
+                    console.error("ControllerPrincipale non trovato!");
                     alert("Errore nel salvataggio dell'opera.");
                 }
                 document.getElementById('titolo').value = '';
@@ -1333,8 +1329,8 @@
         }
 
         window.goToAuctions = function() {
-            if (window.javafxController) {
-                window.javafxController.goToAuctions();
+            if (window.ControllerPrincipale) {
+                window.ControllerPrincipale.goToAuctions();
             }
         }
 
@@ -1385,7 +1381,7 @@
                 const modalDimensions = document.getElementById('modal-dimensions');
                 const modalUsers = document.getElementById('modal-users');
 
-                window.openModal = function (imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario) {
+                /*window.openModal = function (imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario) {
                     console.log(`Apertura modale per: ${titolo}`);
                     modalImage.src = imgSrc || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
                     modalTitle.textContent = titolo || 'Titolo Opera';
@@ -1397,7 +1393,7 @@
                     modalUsers.textContent = proprietario || 'Proprietario anonimo';
 
                     modalOverlay.classList.add('active');
-                };
+                };*/
 
             });
 
@@ -1426,7 +1422,7 @@
             });
         }
 
-            window.attachGalleryItemListeners = function() {
+            /*window.attachGalleryItemListeners = function() {
                 const galleryItems = document.querySelectorAll('.gallery-item');
                 galleryItems.forEach(function(item) {
                     item.addEventListener('click', function() {
@@ -1442,7 +1438,7 @@
                         openModal(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario);
                     });
                 });
-            };
+            };*/
 
 
         // Imposto la sezione di default
@@ -1453,11 +1449,31 @@
         });
     });
 
+        window.attachGalleryItemListeners = function() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    const imgSrc = item.querySelector('img')?.src || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
+                    const titolo = item.querySelector('img')?.alt || 'Titolo non disponibile';
+                    const descrizione = item.getAttribute('data-description') || 'Descrizione non disponibile';
+                    const tecnica = item.getAttribute('data-technique') || 'Tecnica non specificata';
+                    const autore = item.getAttribute('data-author') || 'Autore sconosciuto';
+                    const anno = item.getAttribute('data-year') || 'Anno non disponibile';
+                    const dimensione = item.getAttribute('data-dimension') || 'Dimensioni non disponibili';
+                    const proprietario = item.getAttribute('data-user') || 'Proprietario anonimo';
+
+                    openModal(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario);
+                });
+            });
+        };
+
   //let isDeleteMode = false; // Variabile per tenere traccia della modalità di eliminazione
   let ignoreNextClick = false; // Flag per ignorare il primo clic dopo l'alert
   function eliminaOpera() {
       ignoreNextClick = true; // Ignora il prossimo clic
-      isDeleteMode = true;
+      //var isDeleteMode = true;
+      console.log(window.ControllerPrincipale);
+      isDeleteMode = true; // Variabile per tenere traccia della modalità di eliminazione
       alert("Seleziona l'opera che vuoi eliminare");
       console.log("Modalità eliminazione attivata: " + isDeleteMode);
 
@@ -1465,9 +1481,12 @@
       document.querySelectorAll('.gallery-item').forEach(item => {
           item.classList.add('selectable'); // Evidenzia le opere
           item.addEventListener('click', handleOperaSelection); // Aggiungi evento click
-
-
       });
+
+      if (galleryItems.length === 0) {
+          console.error("Nessun elemento con la classe .gallery-item trovato!");
+          return; // Interrompi l'esecuzione
+      }
       // Aggiungi il listener globale per i clic
       document.body.addEventListener("click", handleOutsideClick);
   }
@@ -1475,6 +1494,9 @@
   // Gestisce la selezione dell'opera da eliminare
   function handleOperaSelection(event) {
       if (!isDeleteMode) return;
+      event.stopPropagation();
+      event.preventDefault();
+
       const opera = event.currentTarget;
       const operaId = opera.dataset.id;
 
@@ -1486,12 +1508,12 @@
       eliminaOperaDalDatabase(operaId, opera);
 
 
+
   }
 
   // Gestisce i clic al di fuori delle opere
   function handleOutsideClick(event) {
       if (!isDeleteMode) return;
-
       // Salta il primo clic dopo l'alert
       if (ignoreNextClick) {
           ignoreNextClick = false;
@@ -1519,20 +1541,17 @@
   function eliminaOperaDalDatabase(operaId, operaElement) {
 
       try {
-
-          if (window.javaController) {
-
+          console.log(window.ControllerPrincipale);
+          if (window.ControllerPrincipale) {
               closeModal()
-
-
-              const result = window.javaController.eliminaOpera(operaId)
+              const result = window.ControllerPrincipale.eliminaOpera(operaId)
               if (result) {
 
                   // Rimuovi l'opera dal DOM
                    operaElement.remove();
-                  alert("Errore: impossibile eliminare l'opera.");
+                  //alert("Errore: impossibile eliminare l'opera.");
           } else
-              console.error("javaController non è definito.");
+              console.error("ControllerPrincipale non è definito.");
           }
       } catch (error) {
           console.error("Errore durante l'eliminazione:", error);
@@ -1633,7 +1652,7 @@
   }
 
   function filterGalleryByName(searchValue) {
-      const galleryRow = document.getElementById('row-cat1');
+      galleryRow = document.getElementById('row-cat1');
       const items = Array.from(galleryRow.children);
       const searchLower = searchValue.toLowerCase();
 

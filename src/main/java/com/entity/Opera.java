@@ -1,6 +1,7 @@
 package com.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.Session;
 
 @Entity
 @Table(name = "opere") // Specifica il nome della tabella nel database
@@ -105,14 +106,6 @@ public class Opera {
         this.dimensione = dimensione;
     }
 
-  /*  public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }*/
-
     public String getDescrizione() {
         return descrizione;
     }
@@ -128,6 +121,7 @@ public class Opera {
     public void setImmagine(byte[] immagine) {
         this.immagine = immagine;
     }
+
 
     @Override
     public String toString() {
