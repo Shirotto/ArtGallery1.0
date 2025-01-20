@@ -1057,10 +1057,10 @@
 
         <div class="search-container">
             <div class="searchBox">
-                <button class="searchButton">
+                <button class="searchButton" onclick="onSearchInput()">
                     <ion-icon name="search-outline"></ion-icon>
                 </button>
-                <input type="text" class="searchInput" placeholder="Cerca opera...">
+                <input type="text" class="searchInput" id="searchBar" placeholder="Cerca opera...">
             </div>
             <button class="filterButton" onclick="toggleFilterPane()">
                 <ion-icon name="filter-outline"></ion-icon>
@@ -1381,19 +1381,7 @@
                 const modalDimensions = document.getElementById('modal-dimensions');
                 const modalUsers = document.getElementById('modal-users');
 
-                /*window.openModal = function (imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario) {
-                    console.log(`Apertura modale per: ${titolo}`);
-                    modalImage.src = imgSrc || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
-                    modalTitle.textContent = titolo || 'Titolo Opera';
-                    modalAuthor.textContent = autore || 'Autore sconosciuto';
-                    modalTechnique.textContent = tecnica || 'Tecnica non specificata';
-                    modalYear.textContent = anno || 'Anno non disponibile';
-                    modalDimensions.textContent = dimensione || 'Dimensioni non disponibili';
-                    modalDescription.textContent = descrizione || 'Descrizione non disponibile';
-                    modalUsers.textContent = proprietario || 'Proprietario anonimo';
 
-                    modalOverlay.classList.add('active');
-                };*/
 
             });
 
@@ -1422,23 +1410,6 @@
             });
         }
 
-            /*window.attachGalleryItemListeners = function() {
-                const galleryItems = document.querySelectorAll('.gallery-item');
-                galleryItems.forEach(function(item) {
-                    item.addEventListener('click', function() {
-                        const imgSrc = item.querySelector('img')?.src || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
-                        const titolo = item.querySelector('img')?.alt || 'Titolo non disponibile';
-                        const descrizione = item.getAttribute('data-description') || 'Descrizione non disponibile';
-                        const tecnica = item.getAttribute('data-technique') || 'Tecnica non specificata';
-                        const autore = item.getAttribute('data-author') || 'Autore sconosciuto';
-                        const anno = item.getAttribute('data-year') || 'Anno non disponibile';
-                        const dimensione = item.getAttribute('data-dimension') || 'Dimensioni non disponibili';
-                        const proprietario = item.getAttribute('data-user') || 'Proprietario anonimo';
-
-                        openModal(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario);
-                    });
-                });
-            };*/
 
 
         // Imposto la sezione di default
@@ -1471,7 +1442,6 @@
   let ignoreNextClick = false; // Flag per ignorare il primo clic dopo l'alert
   function eliminaOpera() {
       ignoreNextClick = true; // Ignora il prossimo clic
-      //var isDeleteMode = true;
       console.log(window.ControllerPrincipale);
       isDeleteMode = true; // Variabile per tenere traccia della modalità di eliminazione
       alert("Seleziona l'opera che vuoi eliminare");

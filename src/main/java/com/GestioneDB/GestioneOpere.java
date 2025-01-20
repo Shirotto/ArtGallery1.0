@@ -3,7 +3,6 @@ package com.GestioneDB;
 import com.entity.Opera;
 import com.entity.User;
 import com.gallery.gui.AlertInfo;
-import com.gallery.gui.WindowsController;
 import com.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

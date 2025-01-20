@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 import java.util.Base64;
 import java.util.List;
 
-public class ProfiloController {
+public class Profilo {
 
 
     // Metodo per aggiornare i dati HTML

@@ -2,6 +2,8 @@ package com.gallery.gui;
 
 import com.GestioneDB.GestioneUtente;
 import com.entity.User;
+import com.gallery.gui.AlertInfo;
+import com.gallery.gui.Windows;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
@@ -18,9 +20,6 @@ public class LoginController {
     private StackPane stackPane;
 
     GestioneUtente gestioneUtente = new GestioneUtente("hibernate.cfg.xml");
-
-    //private User currentUser;
-
 
     @FXML
     public void initialize() {
@@ -44,8 +43,8 @@ public class LoginController {
     public void handleLoginButtonClick(String email, String password) {
         if (gestioneUtente.verificaCredenzialiDaccesso(email, password)) {
             User currentUser = gestioneUtente.getUserByEmail(email);
-            WindowsController.chiudiFinestraCorrente(stackPane);
-            WindowsController.apriMenuPrincipale(currentUser);
+            Windows.chiudiFinestraCorrente(stackPane);
+            Windows.apriMenuPrincipale(currentUser);
         } else {
             AlertInfo.showAlertErrore("Errore", "Email o password non valide.");
 
@@ -55,8 +54,8 @@ public class LoginController {
     // Gestione evento registrazione
     public void handleSignUpButtonClick(String name, String email, String password) {
         if (gestioneUtente.registraUtente(name, email, password)) {
-            WindowsController.chiudiFinestraCorrente(stackPane);
-            WindowsController.apriFinestraLogin();
+            Windows.chiudiFinestraCorrente(stackPane);
+            Windows.apriFinestraLogin();
         }
     }
 

@@ -1,19 +1,18 @@
 package com.gallery.gui;
 
-import com.GestioneDB.GestioneOpere;
 import com.entity.Opera;
 import com.entity.User;
+import com.gallery.gui.AlertInfo;
+import com.gallery.gui.Profilo;
+import com.gallery.gui.Windows;
 import com.util.HibernateUtil;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
-import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import javax.sound.midi.SysexMessage;
 
 public class MenuPrincipaleController {
 
@@ -52,8 +51,8 @@ public class MenuPrincipaleController {
             if (newState == Worker.State.SUCCEEDED) {
                 JSObject window = (JSObject) webEngine.executeScript("window");
                 window.setMember("ControllerPrincipale", this);
-                WindowsController.aggiornaSezioneGalleria(webView);// fa in modo che le opere restino salvate alla riapertura
-                ProfiloController.updateHTML(currentUser,webView);
+                Windows.aggiornaSezioneGalleria(webView);// fa in modo che le opere restino salvate alla riapertura
+                Profilo.updateHTML(currentUser,webView);
             }
         });
     }
@@ -65,7 +64,7 @@ public class MenuPrincipaleController {
 
     @FXML
     public void logout() {
-        ProfiloController.logout(webView);
+        Profilo.logout(webView);
 
     }
 
@@ -75,7 +74,7 @@ public class MenuPrincipaleController {
         webView.getEngine().getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
                 System.out.println("errore in setUserData");
-                ProfiloController.updateHTML(user, webView);
+                Profilo.updateHTML(user, webView);
 
 
                 // Espone il controller Java a JavaScript
@@ -90,7 +89,7 @@ public class MenuPrincipaleController {
 
     @FXML
     public void updateProfilo(String nuovoUsername, String nuovaEmail, String nuovaPassword) {
-        ProfiloController.updateProfileData(currentUser,nuovoUsername, nuovaEmail, nuovaPassword, webView);
+        Profilo.updateProfileData(currentUser,nuovoUsername, nuovaEmail, nuovaPassword, webView);
     }
 
     public void setUser(User user) {
@@ -110,17 +109,17 @@ public class MenuPrincipaleController {
 
     public void salvaOpera(String titolo, String autore, int anno, String tecnica, String descrizione, String imageDataBase64, String dimensione) {
         byte[] immagine = java.util.Base64.getDecoder().decode(imageDataBase64.split(",")[1]);
-        ProfiloController.assegnaOpera( titolo,  autore,  anno,  tecnica,currentUser, descrizione,  imageDataBase64,  dimensione);
+        Profilo.assegnaOpera( titolo,  autore,  anno,  tecnica,currentUser, descrizione,  imageDataBase64,  dimensione);
         webView.getEngine().reload();
         // Subito dopo il salvataggio, aggiorna la galleria senza ricaricare la pagina
-        WindowsController.aggiornaSezioneGalleria(webView);
+        Windows.aggiornaSezioneGalleria(webView);
     }
     public void showProfileSection() {
         // 1) “mostra” la sezione nel WebView (chiamando la tua showSection('profile-section') lato JS)
          webView.getEngine().executeScript("showSection('profile-section')");
 
         // 2) e poi reinietti le opere in ‘opere-caricate-row’
-        ProfiloController.mostraOpereUtente(currentUser,webView);
+        Profilo.mostraOpereUtente(currentUser,webView);
 
     }
 
@@ -144,7 +143,7 @@ public class MenuPrincipaleController {
             transaction.commit();
 
             AlertInfo.showAlertInfo("Successo!", "Opera " + opera.getNome() + " Eliminata correttamente!");
-            WindowsController.aggiornaSezioneGalleria(webView);
+            Windows.aggiornaSezioneGalleria(webView);
             return true;
         } catch (Exception e) {
             if (transaction != null) {

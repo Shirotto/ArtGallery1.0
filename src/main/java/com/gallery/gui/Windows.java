@@ -12,11 +12,11 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 
-public class WindowsController {
+public class Windows {
 public static void apriFinestraLogin(){
 
     try {
-        FXMLLoader loader = new FXMLLoader(WindowsController.class.getResource("login/login-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(Windows.class.getResource("login/login-view.fxml"));
         Stage stage = new Stage(); // Crea una nuova finestra
         stage.setTitle("");
         stage.setScene(new Scene(loader.load())); // Carica la scena
@@ -29,7 +29,7 @@ public static void apriFinestraLogin(){
 }
     public static void apriMenuPrincipale(User currentUser) {
         try {
-            FXMLLoader loader = new FXMLLoader(WindowsController.class.getResource("/com/gallery/gui/menuprincipale/menu-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(Windows.class.getResource("/com/gallery/gui/menuprincipale/menu-view.fxml"));
             Scene scene = new Scene(loader.load(), 830, 650);
             Stage menuStage = new Stage();
             menuStage.setScene(scene);
@@ -79,10 +79,10 @@ public static void apriFinestraLogin(){
     }
     public static void mostraSezioneProfilo(WebView webView,User currentUser) {
         webView.getEngine().executeScript("showSection('profile-section')");
-        ProfiloController.mostraOpereUtente(currentUser, webView);
+        Profilo.mostraOpereUtente(currentUser, webView);
     }
     public static void aggiornaSezioneProfilo(WebView webView,User currentUser){
-    ProfiloController.mostraOpereUtente(currentUser,webView);
+    Profilo.mostraOpereUtente(currentUser,webView);
     webView.getEngine().reload();
     }
 
