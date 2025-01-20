@@ -211,129 +211,7 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
             z-index: 2;
         }
-        /*.gallery-item.selectable {
-            cursor: pointer;
-            outline: 3px dashed #ff0000;
-            transition: outline 0.2s ease-in-out;
-        }
 
-        .gallery-item.selectable:hover {
-            outline: 3px solid #ff0000;
-        }
-
-
-
-         */
-
-        /* Elementi selezionabili */
-        .gallery-item.selectable {
-            cursor: pointer;
-            outline: none; /* Rimuoviamo il vecchio outline */
-            position: relative; /* Necessario per l'overlay */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); /* Effetto bagliore */
-            transform: scale(1); /* Stato normale */
-        }
-
-        /* Animazione al passaggio del mouse */
-        .gallery-item.selectable:hover {
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8); /* Bagliore più intenso */
-            transform: scale(1.05); /* Leggero ingrandimento */
-        }
-
-        /* Overlay traslucido per evidenziare */
-        .gallery-item.selectable::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 0, 0, 0.2); /* Sfondo rosso traslucido */
-            border-radius: 8px; /* Smussa gli angoli */
-            pointer-events: none; /* Non blocca i clic */
-            transition: background 0.3s ease;
-        }
-
-        /* Cambia colore al passaggio del mouse */
-        .gallery-item.selectable:hover::before {
-            background: rgba(255, 0, 0, 0.3); /* Colore più intenso */
-        }
-
-
-/*
-        #modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            transition: opacity 0.3s ease;
-            opacity: 0;
-        }
-
-        #modal-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        #modal-content {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 600px;
-            width: 90%;
-            text-align: center;
-            position: relative;
-            animation: fadeInModal 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        @keyframes fadeInModal {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        #modal-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #666;
-            transition: color 0.3s ease;
-        }
-
-        #modal-close:hover {
-            color: #000;
-        }
-
-        #modal-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            max-height: 400px;
-        }
-
-        #modal-title {
-            font-size: 1.8em;
-            margin-bottom: 10px;
-            color: #323232;
-        }
-
-        #modal-description {
-            font-size: 1.2em;
-            color: #555;
-            margin-top: 10px;
-        }*/
         /* Sfondo e overlay */
         .modal-overlay {
             display: none; /* Nasconde la modale di default */
@@ -736,8 +614,8 @@
 
         #filter-pane {
             position: fixed;
-            top: 20%;
-            right: 5%;
+            top: 30%;
+            right: 50%;
             width: 300px;
             background: #fff;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -869,6 +747,74 @@
             margin: 10px 0;
         }
 
+        #edit-modal.hidden {
+            display: none;
+        }
+
+        #edit-modal {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #edit-modal .modal-content {
+            background: #fff;
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            text-align: left;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #edit-modal .form-group {
+            margin-bottom: 15px;
+        }
+
+        #edit-modal label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        #edit-modal input,
+        #edit-modal textarea {
+            width: 100%;
+            padding: 8px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #edit-modal .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        #edit-modal .form-buttons button {
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #666;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        #edit-modal .form-buttons button:hover {
+            background-color: #444;
+        }
+
+
 
     </style>
 
@@ -899,14 +845,6 @@
                     <ion-icon name="home-outline"></ion-icon>
                 </div>
                 <span class="link-text">Home</span>
-            </a>
-        </li>
-        <li class="navbar-item">
-            <a class="navbar-item-inner" onclick="showSection('search-section')">
-                <div class="navbar-item-inner-icon-wrapper">
-                    <ion-icon name="search-outline"></ion-icon>
-                </div>
-                <span class="link-text">Cerca</span>
             </a>
         </li>
         <li class="navbar-item">
@@ -978,10 +916,6 @@
             <strong style="font-size: 1.2em; color: #666;">Email:</strong>
             <span id="email" style="font-size: 1.1em; color: #323232; margin-left: 10px;"></span>
         </div>
-        <!-- <div class="info" style="margin-bottom: 1em;">
-            <strong style="font-size: 1.2em; color: #666;">Ruolo:</strong>
-            <span id="role" style="font-size: 1.1em; color: #323232; margin-left: 10px;">Inserisci Ruolo</span>
-        </div> -->
 
         <div class="c4">
             <button class="btn" onclick="toggleCaricaOperaForm()">Carica Opera</button>
@@ -1183,6 +1117,54 @@
         <p><strong>Utente:</strong> <span id="modal-users"></span></p>
     </div>
 </div>
+
+<div id="edit-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeEditModal()">×</span>
+        <h2>Modifica Opera</h2>
+        <form id="edit-form">
+            <div class="form-group">
+                <label for="edit-title">Titolo:</label>
+                <input type="text" id="edit-title" placeholder="Inserisci il nuovo titolo" required />
+            </div>
+            <div class="form-group">
+                <label for="edit-author">Autore:</label>
+                <input type="text" id="edit-author" placeholder="Inserisci il nuovo autore" required />
+            </div>
+            <div class="form-group">
+                <label for="edit-year">Anno:</label>
+                <input type="number" id="edit-year" placeholder="Inserisci il nuovo anno" required />
+            </div>
+            <div class="form-group">
+                <label for="edit-technique">Tecnica:</label>
+                <select id="edit-technique" required>
+                    <option value="" disabled>Seleziona la tecnica utilizzata</option>
+                    <option value="Olio-su-tela">Olio su tela</option>
+                    <option value="Acrilico">Acrilico</option>
+                    <option value="Acquerello">Acquerello</option>
+                    <option value="Pastello">Pastello</option>
+                    <option value="Scultura">Scultura</option>
+                    <option value="Mista">Tecnica mista</option>
+                    <option value="Personale">Tecnica personale</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="edit-description">Descrizione:</label>
+                <textarea id="edit-description" placeholder="Inserisci la nuova descrizione" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="edit-dimensions">Dimensioni (LxHxP):</label>
+                <input type="text" id="edit-dimensions" placeholder="Inserisci le nuove dimensioni" required />
+            </div>
+            <div class="form-buttons">
+                <button type="button" onclick="submitEditForm()">Salva</button>
+                <button type="button" onclick="closeEditModal()">Annulla</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -1635,13 +1617,119 @@
           }
       });
   }
-  function modificaOpera() {
-        // Qui la logica per modificare i dettagli dell'opera.
-        alert("Funzione 'Modifica Opera' da implementare!");
-    }
+        function modificaOpera() {
+            alert("Seleziona l'opera che vuoi modificare.");
+            let isModifyMode = true; // Modalità modifica attiva
+
+            const galleryItems = document.querySelectorAll('.gallery-item');
+
+            if (galleryItems.length === 0) {
+                alert("Nessuna opera disponibile per la modifica.");
+                return;
+            }
+
+            galleryItems.forEach(item => {
+                item.classList.add('selectable');
+                item.addEventListener('click', handleModifySelection, { once: true });
+            });
+
+            function handleModifySelection(event) {
+                if (!isModifyMode) return;
+
+                const selectedOpera = event.currentTarget;
+                const operaId = selectedOpera.getAttribute('data-id');
+
+                if (!operaId) {
+                    alert("Errore: impossibile trovare l'ID dell'opera selezionata.");
+                    return;
+                }
+                console.log("Opera selezionata per modifica, ID:", operaId);
+                // Riempi i campi del modale con i dati esistenti
+                document.getElementById('edit-title').value = selectedOpera.getAttribute('img')?.alt|| '';
+                document.getElementById('edit-author').value = selectedOpera.getAttribute('data-author') || '';
+                document.getElementById('edit-year').value = selectedOpera.getAttribute('data-year') || '';
+                document.getElementById('edit-description').value = selectedOpera.getAttribute('data-description') || '';
+                document.getElementById('edit-dimensions').value = selectedOpera.getAttribute('data-dimension') || '';
+                // Seleziona la tecnica corretta
+                const tecnica = selectedOpera.getAttribute('data-technique');
+                const tecnicaSelect = document.getElementById('edit-technique');
+                if (tecnicaSelect) {
+                    Array.from(tecnicaSelect.options).forEach(option => {
+                        option.selected = option.value === tecnica;
+                    });
+                }
+                // Mostra il modale
+                openEditModal();
+
+                // Salva l'operaId nel form per la successiva chiamata
+                document.getElementById('edit-form').setAttribute('data-id', operaId);
+
+                // Disattiva la modalità modifica
+                terminateModifyMode();
+            }
+
+
+            function terminateModifyMode() {
+                isModifyMode = false;
+                galleryItems.forEach(item => {
+                    item.classList.remove('selectable');
+                    item.removeEventListener('click', handleModifySelection);
+                });
+            }
+        }
+
+        function openEditModal() {
+            document.getElementById('edit-modal').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+        }
+
+        function submitEditForm() {
+            const operaId = document.getElementById('edit-form').getAttribute('data-id');
+            const titolo = document.getElementById('edit-title').value;
+            const autore = document.getElementById('edit-author').value;
+            const anno = parseInt(document.getElementById('edit-year').value);
+            const tecnica = document.getElementById('edit-technique').value; // Valore selezionato
+            const descrizione = document.getElementById('edit-description').value;
+            const dimensione = document.getElementById('edit-dimensions').value;
+
+            if (!titolo || !autore || isNaN(anno) || !tecnica || !descrizione || !dimensione) {
+                alert("Tutti i campi sono obbligatori. Riprova.");
+                return;
+            }
+
+            console.log("Invio modifica opera:", { operaId, titolo, autore, anno, tecnica, descrizione, dimensione });
+
+            if (window.ControllerPrincipale) {
+                try {
+                    const result = window.ControllerPrincipale.modificaOpera(
+                        parseInt(operaId),
+                        titolo,
+                        autore,
+                        anno,
+                        tecnica,
+                        descrizione,
+                        dimensione
+                    );
+
+                    if (result) {
+                        alert("Opera modificata con successo!");
+                        WindowsController.aggiornaSezioneGalleria(webView);
+                        closeEditModal();
+                    } else {
+                        alert("Errore: impossibile modificare l'opera.");
+                    }
+                } catch (error) {
+                    console.error("Errore durante la modifica dell'opera:", error);
+                    alert("Si è verificato un errore durante la modifica.");
+                }
+            } else {
+                alert("ControllerPrincipale non trovato.");
+            }
+        }
 
 </script>
-
-
 </body>
 </html>

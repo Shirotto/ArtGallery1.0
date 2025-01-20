@@ -2,9 +2,6 @@ package com.gallery.gui;
 
 import com.entity.Opera;
 import com.entity.User;
-import com.gallery.gui.AlertInfo;
-import com.gallery.gui.Profilo;
-import com.gallery.gui.Windows;
 import com.util.HibernateUtil;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
@@ -14,14 +11,11 @@ import netscape.javascript.JSObject;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+
 public class MenuPrincipaleController {
 
     @FXML
    private WebView webView;
-
-
-    /*@FXML
-    private Text welcomeText;*/
 
     private User currentUser;
 
@@ -122,6 +116,45 @@ public class MenuPrincipaleController {
         Profilo.mostraOpereUtente(currentUser,webView);
 
     }
+
+    public boolean modificaOpera(int operaId, String titolo, String autore, int anno, String tecnica, String descrizione, String dimensione) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            // Cerca l'opera nel database
+            Opera opera = session.get(Opera.class, operaId);
+
+            if (opera == null) {
+                System.out.println("Opera con ID " + operaId + " non trovata.");
+                return false;
+            }
+
+            // Modifica i campi dell'opera
+            opera.setNome(titolo);
+            opera.setAutore(autore);
+            opera.setAnno(anno);
+            opera.setTecnica(tecnica);
+            opera.setDescrizione(descrizione);
+            opera.setDimensione(dimensione);
+
+            // Aggiorna l'opera nel database
+            session.update(opera);
+
+            transaction.commit();
+
+            AlertInfo.showAlertInfo("Successo!", "Opera " + opera.getNome() + " modificata correttamente!");
+            Windows.aggiornaSezioneGalleria(webView);
+            return true;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace(); // Log dettagliato dell'eccezione
+            return false;
+        }
+    }
+
 
     public boolean eliminaOpera(int operaId) {
 
