@@ -140,11 +140,8 @@ public class MenuPrincipaleController {
 
             // Aggiorna l'opera nel database
             session.update(opera);
-
             transaction.commit();
-
-            AlertInfo.showAlertInfo("Successo!", "Opera " + opera.getNome() + " modificata correttamente!");
-            Windows.aggiornaSezioneGalleria(webView);
+            Windows.aggiornaSezioneProfilo(webView,currentUser);
             return true;
         } catch (Exception e) {
             if (transaction != null) {
@@ -174,9 +171,8 @@ public class MenuPrincipaleController {
             session.delete(opera);
 
             transaction.commit();
-
-            AlertInfo.showAlertInfo("Successo!", "Opera " + opera.getNome() + " Eliminata correttamente!");
             Windows.aggiornaSezioneGalleria(webView);
+            AlertInfo.showAlertInfo("Successo!", "Opera " + opera.getNome() + " Eliminata correttamente!");
             return true;
         } catch (Exception e) {
             if (transaction != null) {

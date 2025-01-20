@@ -1166,7 +1166,7 @@
 </div>
 
 <script>
-
+    let isDeleteMode = false; // Variabile per tenere traccia della modalità di eliminazione
         document.addEventListener('DOMContentLoaded', function() {
 
           // Funzione per mostra/nascondere sezioni
@@ -1327,7 +1327,7 @@
             const modalDimensions = document.getElementById('modal-dimensions');
             const modalUsers = document.getElementById('modal-users');
 
-        let isDeleteMode = false; // Variabile per tenere traccia della modalità di eliminazione
+       // let isDeleteMode = false; // Variabile per tenere traccia della modalità di eliminazione
 
             // Modifica la funzione openModal per non aprire il modale in modalità eliminazione
             window.openModal = function(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario) {
@@ -1618,6 +1618,7 @@
       });
   }
         function modificaOpera() {
+            isDeleteMode = true;
             alert("Seleziona l'opera che vuoi modificare.");
             let isModifyMode = true; // Modalità modifica attiva
 
@@ -1664,6 +1665,7 @@
                 // Salva l'operaId nel form per la successiva chiamata
                 document.getElementById('edit-form').setAttribute('data-id', operaId);
 
+                isDeleteMode = false;
                 // Disattiva la modalità modifica
                 terminateModifyMode();
             }
@@ -1715,19 +1717,19 @@
                     );
 
                     if (result) {
+                        closeEditModal();
                         alert("Opera modificata con successo!");
                         WindowsController.aggiornaSezioneGalleria(webView);
-                        closeEditModal();
                     } else {
                         alert("Errore: impossibile modificare l'opera.");
                     }
                 } catch (error) {
                     console.error("Errore durante la modifica dell'opera:", error);
-                    alert("Si è verificato un errore durante la modifica.");
                 }
             } else {
                 alert("ControllerPrincipale non trovato.");
             }
+            isDeleteMod = false;
         }
 
 </script>
