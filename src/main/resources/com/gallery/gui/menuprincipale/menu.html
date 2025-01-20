@@ -814,6 +814,28 @@
             background-color: #444;
         }
 
+        /* Sezione home centrata in verticale e orizzontale */
+        #home-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin-left: 160px;
+        }
+
+        /* Logo più grande (esempio 300px) */
+        .home-logo svg {
+            width: 300px;
+            height: auto;
+        }
+
+        /* Titolo ancora più grande e con margine sopra */
+        .artgallery-title {
+            font-size: 3rem; /* ingrandisci a piacimento */
+            margin-top: 1em;
+            margin-right: 10px;
+        }
 
 
     </style>
@@ -899,12 +921,21 @@
 </nav>
 <main id="main">
 
-    <!-- Sezione Home -->
     <div id="home-section">
-        <h1>Benvenuto!</h1>
-        <p>Questa è la pagina principale.</p>
+        <div class="home-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1438.88 1819.54">
+                <polygon
+                        points="925.79 318.48 830.56 0 183.51 1384.12 510.41 1178.46 925.79 318.48"
+                        fill="#fff"
+                />
+                <polygon
+                        points="1438.88 1663.28 1126.35 948.08 111.98 1586.26 0 1819.54 1020.91 1250.57 1123.78 1471.02 783.64 1663.28 1438.88 1663.28"
+                        fill="#323232"
+                />
+            </svg>
+        </div>
+        <h1 class="artgallery-title">ARTGALLERY</h1>
     </div>
-
     <!-- Sezione Profilo -->
     <div id="profile-section" class="hidden" style="text-align: left; padding: 20px;">
         <h1 style="font-size: 2em; font-weight: bold; color: #323232; margin-bottom: 1em;">Informazioni Profilo</h1>
