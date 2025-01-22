@@ -1,8 +1,9 @@
 package com.GestioneDB;
-//import com.Service.Mail;
 import com.entity.User;
 import com.gallery.gui.AlertInfo;
 import com.gallery.gui.ValidazioneInput;
+import com.util.HibernateUtil;
+import com.util.PasswordUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -13,53 +14,66 @@ public class GestioneUtente {
 
 
     public SessionFactory sessionFactory;
-    AlertInfo alertInfo = new AlertInfo();
-    ValidazioneInput validazioneInput = new ValidazioneInput();
+
 
     public GestioneUtente(String hibernate) {
         // Crea la SessionFactory utilizzando hibernate.cfg.xml
         this.sessionFactory = new Configuration().configure(hibernate).addAnnotatedClass(User.class).buildSessionFactory();
     }
+
+    public GestioneUtente(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+
     //Verifica e registra se l'utente esiste gia nel db (Fase Registazione)
     public boolean registraUtente(String username, String email, String password) {
 
         if (verificaSeUnUtenteEsisteByUsername(username)){
-            alertInfo.showAlertErrore("utente già registrato","Esiste già un utente con questo username");
+            AlertInfo.showAlertErrore("utente già registrato","Esiste già un utente con questo username");
             return false;
         }
 
         if (verificaSeUnUtenteEsisteByEmail(email)){
-            alertInfo.showAlertErrore("utente già registrato","Esiste già un utente con questa email");
+            AlertInfo.showAlertErrore("utente già registrato","Esiste già un utente con questa email");
             return false;
         }
-        if (validazioneInput.validaInput(username,email,password)) {
+
+        if (ValidazioneInput.validaInput(username, email, password)) {
+            // Cripta la password prima di salvarla nel database
+            String hashedPassword = PasswordUtil.hashPassword(password);
+
+            // Crea la sessione Hibernate
             Session session = sessionFactory.openSession();  // creazione sessione (Permette di interagire con il db)
             Transaction transaction = session.beginTransaction();
-            User nuovoUtente = new User(username, email, password);
+
+            // Crea il nuovo utente con la password criptata
+            User nuovoUtente = new User(username, email, hashedPassword);
             session.persist(nuovoUtente);
 
             transaction.commit();
             session.close();
 
-            alertInfo.showAlertInfo( "utente registrato con successo","BENVENUTO "+ username);
+            AlertInfo.showAlertInfo("utente registrato con successo", "BENVENUTO " + username);
             return true;
         }
-        validazioneInput.validaInputConAlert(username,email,password);
+        ValidazioneInput.validaInputConAlert(username, email, password);
 
         return false;
-
-
     }
-
 
     //Metodo che scorre nel db e verifica se ci sono email e pass ("FaseLogin")
-    public boolean verificaCredenziali(String email, String password) {
-        if(!verificaSeUnUtenteEsisteByEmail(email)) return false;
+    public boolean verificaCredenzialiDaccesso(String email, String password) {
+        // Verifica se l'utente esiste con l'email
+        if (!verificaSeUnUtenteEsisteByEmail(email)) return false;
+
+        // Ottieni l'utente dal database
         User utente = getUserByEmail(email);
-        return utente.getPassword().equals(password);
 
-
+        // Usa BCrypt per confrontare la password inserita con quella salvata (hash)
+        return PasswordUtil.checkPassword(password, utente.getPassword());
     }
+
     // Metodo per ottenere l'utente tramite email (Per il profilo utente)
     public User getUserByEmail(String email) {
         if (verificaSeUnUtenteEsisteByEmail(email)) {
@@ -81,7 +95,7 @@ public class GestioneUtente {
         return verificaSeUnUtenteEsisteByEmail(emailUtente) || verificaSeUnUtenteEsisteByUsername(username);
     }
     public boolean verificaSeUnUtenteEsisteByEmail(String emailUtente) {
-        Session session = sessionFactory.openSession();
+        Session session = this.sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
         // Verifica se l'utente esiste nel database con l'email fornita
@@ -105,6 +119,18 @@ public class GestioneUtente {
         transaction.commit();
         session.close();
         return utente != null;
+    }
+    public static void saveUserDataToDatabase(User user) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.merge(user);
+            transaction.commit();
+            System.out.println("Dati utente aggiornati nel database: " + user);
+        } catch (Exception e) {
+            if (transaction != null)
+                transaction.rollback();
+        }
     }
 
 

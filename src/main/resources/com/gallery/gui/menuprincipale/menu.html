@@ -1,203 +1,1769 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menu Principale</title>
-  <style>
-    :root {
-      --main-bg: #f0f0f0;
-      --sidebar-bg: #e0e0e0;
-      --highlight-color: #666;
-      --font-color: #323232;
-      --secondary-bg: #fff;
-      --icon-color: #666;
-      --icon-hover-color: #fff;
-    }
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Menu Principale</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
 
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: var(--main-bg);
-      color: var(--font-color);
-      display: flex;
-      height: 100vh;
-    }
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #323232;
+            height: 100vh;
+        }
 
-    /* Sidebar */
-    #navbar {
-      top: 0;
-      padding: 0;
-      width: 5em;
-      height: 100vh;
-      position: fixed;
-      background-color: var(--sidebar-bg);
-      transition: width 0.3s ease;
-      overflow-y: auto;
-      overflow-x: hidden;
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    #navbar:hover {
-      width: 16em;
-    }
+        #navbar {
+            z-index: 1000;
+            top: 0;
+            padding: 0;
+            width: 5em;
+            height: 100vh;
+            position: fixed;
+            background-color: #e0e0e0;
+            transition: width 0.3s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
 
-    .navbar-logo {
-      height: 5em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: var(--highlight-color);
-      border-bottom: 1px solid var(--font-color);
-    }
+        #navbar:hover {
+            width: 16em;
+        }
 
-    .navbar-logo svg {
-      width: 2.5em;
-      height: 2.5em;
-      fill: var(--secondary-bg);
-    }
+        .navbar-logo {
+            height: 5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #666;
+            border-bottom: 1px solid #323232;
+        }
 
-    .navbar-items {
-      margin: 0;
-      padding: 0;
-      list-style-type: none;
-    }
+        .navbar-logo svg {
+            width: 2.5em;
+            height: 2.5em;
+            fill: #fff;
+        }
 
-    .navbar-item {
-      padding: 0.5em 0;
-      cursor: pointer;
-    }
+        .navbar-items {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
 
-    .navbar-item-inner {
-      padding: 1em 0;
-      display: flex;
-      align-items: center;
-      color: var(--font-color);
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
+        .navbar-item {
+            padding: 0.5em 0;
+            cursor: pointer;
+        }
 
-    .navbar-item-inner:hover {
-      background-color: var(--highlight-color);
-      color: var(--icon-hover-color);
-    }
+        .navbar-item-inner {
+            padding: 1em 0;
+            display: flex;
+            align-items: center;
+            color: #323232;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
 
-    .navbar-item-inner-icon-wrapper {
-      width: 3em;
-      display: flex;
-      justify-content: center;
-    }
+        .navbar-item-inner:hover {
+            background-color: #666;
+            color: #fff;
+        }
 
-    .navbar-item-inner-icon-wrapper ion-icon {
-      font-size: 1.5em;
-      color: var(--icon-color);
-      transition: color 0.3s ease;
-    }
+        .navbar-item-inner-icon-wrapper {
+            width: 3em;
+            display: flex;
+            justify-content: center;
+            padding-left: 1.5em;
+        }
 
-    .navbar-item-inner:hover ion-icon {
-      color: var(--icon-hover-color);
-    }
+        .navbar-item-inner-icon-wrapper ion-icon {
+            font-size: 1.5em;
+            color: #666;
+            transition: color 0.3s ease;
+        }
 
-    .link-text {
-      margin-left: 1em;
-      opacity: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      transition: opacity 0.3s ease;
-    }
+        .navbar-item-inner:hover ion-icon {
+            color: #fff;
+        }
 
-    #navbar:hover .link-text {
-      opacity: 1;
-    }
+        .link-text {
+            margin-left: 2em;
+            opacity: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            transition: opacity 0.3s ease;
+        }
 
-    .logout-section {
-      margin-top: auto;
-    }
-  </style>
-  <!-- Ionicons CDN -->
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-  <script>
-    function goToProfile() {
-      if (window.javafxController) {
-        window.javafxController.openProfile();
-      }
-    }
+        #navbar:hover .link-text {
+            opacity: 1;
+        }
 
-    function goToGallery() {
-      alert("Funzione non implementata");
-    }
+        #main {
+            position: relative;
+            z-index: 1;
+            margin-left: 5em;
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            text-align: left;
+            padding: 2em;
+            width: 100%;
+            max-width: calc(100% - 5em);
+        }
 
-    function goToAuctions() {
-      alert("Funzione non implementata");
-    }
+        #navbar:hover + #main {
+            margin-left: 16em;
+            max-width: calc(100% - 16em);
+        }
 
-    function exitApp() {
-      if (window.javafxController) {
-        window.javafxController.exitApp();
-      }
-    }
-  </script>
+        #gallery-section {
+            width: 100%;
+            text-align: left;
+            position: relative;
+            z-index: 1;
+        }
+
+        #gallery-section h1 {
+            margin-bottom: 1em;
+            font-size: 2em;
+            color: #323232;
+        }
+
+        .gallery-category {
+            margin-bottom: 2em;
+        }
+
+        .gallery-category h2 {
+            margin: 0 0 0.5em 0;
+            font-size: 1.4em;
+            color: #666;
+            padding-left: 10px;
+        }
+
+        .gallery-row-container {
+            width: 100%;
+            overflow: visible;
+            white-space: normal;
+            padding-bottom: 10px;
+        }
+
+        .gallery-row {
+            display: grid;
+            grid-template-columns: repeat(3, 200px);
+            grid-gap: 1rem;
+            justify-content: center;
+        }
+
+        @media (max-width: 800px) {
+            .gallery-row {
+                grid-template-columns: repeat(2, 200px);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .gallery-row {
+                grid-template-columns: repeat(1, 200px);
+            }
+        }
+
+        .gallery-item {
+            box-sizing: border-box;
+            background-color: #ccc;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            border-radius: 4px;
+            display: block;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-item:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 2;
+        }
+
+        /* Sfondo e overlay */
+        .modal-overlay {
+            display: none; /* Nasconde la modale di default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Fondo scuro semitrasparente */
+            z-index: 1000; /* Posiziona l'overlay sopra il contenuto */
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Mostra la modale quando ha la classe 'active' */
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        /* Contenuto della modale */
+        .modal-content {
+            background: linear-gradient(135deg, #f5f5f5, #dcdcdc); /* Sfondo in gradiente con tonalità grigie */
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 400px;
+            width: 90%;
+            text-align: left;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Immagine dell'opera */
+        .modal-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* Titolo dell'opera */
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        /* Dettagli dell'opera */
+        .modal-content p {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        /* Stile per le etichette e i valori */
+        .modal-content strong {
+            color: #444;
+            font-weight: 600;
+        }
+
+        /* Pulsante di chiusura */
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 30px;
+            color: #333;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.3s;
+        }
+
+        /* Cambia il colore del pulsante di chiusura quando ci si passa sopra */
+        .close-button:hover {
+            color: #999;
+        }
+
+
+        #carica-opera-form {
+            border: 1px solid #323232;
+            padding: 20px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 400px;
+            text-align: left;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+
+        #carica-opera-form h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            color: #323232;
+        }
+
+        #carica-opera-form .form-group {
+            margin-bottom: 15px;
+        }
+
+        #carica-opera-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #666;
+        }
+
+        #carica-opera-form input[type="file"],
+        #carica-opera-form input[type="text"],
+        #carica-opera-form textarea {
+            width: 100%;
+            padding: 8px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #carica-opera-form textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        #carica-opera-form .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        #carica-opera-form button {
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+            background-color: #808080;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        #carica-opera-form button:hover {
+            background-color: #606060;
+        }
+
+        .c4 .btn {
+            position: relative;
+            background: #e0e0e0;
+            color: #323232;
+            font-size: 1.1em;
+            padding: 10px 18px 8px 18px;
+            margin: 8px 0;
+            transition: background 100ms ease, color 100ms ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .c4 .btn:hover {
+            background: white;
+            color: black;
+            transition: background 150ms linear, color 150ms linear;
+        }
+
+        .c4 .btn:before {
+            position: absolute;
+            content: "";
+            inset: 0;
+            background: rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+            clip-path: polygon(-10% -10%, -10% 110%, 10% 90%, 6% 10%, 94% 10%, 91% 90%, 10% 90%, -10% 110%, 110% 110%, 110% -10%);
+        }
+
+        .c4 .btn:after {
+            position: absolute;
+            content: "";
+            inset: 0;
+            border: 0px solid white;
+        }
+
+        .c4 .btn:hover:after {
+            animation: 300ms ease c4border;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes c4border {
+            0% {
+                inset: -16px;
+                border: 2px solid white;
+                border-radius: 10px;
+                opacity: 0;
+            }
+            60% {
+                inset: -7px;
+                border: 6px solid white;
+                border-radius: 7px;
+                opacity: 0.7;
+            }
+            100% {
+                inset: -8px;
+                border: 4px solid white;
+                border-radius: 8px;
+                opacity: 0.7;
+            }
+        }
+
+        .info {
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .inp {
+            position: relative;
+            margin: auto;
+            width: 100%;
+            max-width: 280px;
+            height: 60px;
+        }
+
+        .inp .border {
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            height: 18px;
+            fill: none;
+        }
+
+        .inp .border path {
+            stroke: #C8CCD4;
+            stroke-width: 2;
+            transition: all 0.2s ease;
+        }
+
+        .inp .check {
+            position: absolute;
+            top: 0px;
+            right: 20px;
+            fill: none;
+            transform: scale(0);
+            transition: all 0.3s cubic-bezier(0.5, 0.9, 0.25, 1.3);
+            transition-delay: 0.15s;
+        }
+
+        .inp .check path {
+            stroke: #0077FF;
+            stroke-width: 2;
+        }
+
+        .inp input {
+            -webkit-appearance: none;
+            width: 100%;
+            border: 0;
+            font-family: inherit;
+            padding: 0;
+            height: 48px;
+            font-size: 16px;
+            font-weight: 500;
+            background: none;
+            border-radius: 0;
+            color: #223254;
+            transition: all 0.15s ease;
+        }
+
+        .inp input:focus {
+            outline: none;
+        }
+
+        .inp input:focus + .border path {
+            stroke: #0077FF;
+        }
+
+        .inp input:valid + .border path {
+            animation: elasticInput 0.8s ease forwards;
+        }
+
+        .inp input:valid + .border + .check {
+            transform: scale(1);
+        }
+
+        .inp input::placeholder {
+            color: #9098A9;
+        }
+
+        @keyframes elasticInput {
+            33% {
+                d: path("M0,12 L226,12 C220,12 220.666667,12 228,12 C239,12 245,1 253,1 C261,1 268,12 278,12 C284.666667,12 285.333333,12 280,12");
+            }
+            66% {
+                d: path("M0,12 L226,12 C220,12 220.666667,12 228,12 C239,12 245,17 253,17 C261,17 268,12 278,12 C284.666667,12 285.333333,12 280,12");
+            }
+        }
+
+        #settings-section .c4 {
+            display: flex;
+            gap: 10px;
+        }
+
+        #settings-section .c4 .btn {
+            margin: 0;
+        }
+
+        .searchBox {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            background: #666;
+            overflow: hidden;
+            transition: width 0.4s;
+            margin-bottom: 0; /* Rimosso il margine inferiore per allineamento */
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .searchButton {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #666;
+            color: #fff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.4s, background 0.4s, color 0.4s;
+            flex-shrink: 0;
+        }
+
+        .searchInput {
+            width: 0;
+            border: none;
+            outline: none;
+            background: none;
+            color: #fff;
+            font-size: 16px;
+            transition: width 0.4s, padding 0.4s;
+        }
+
+        .searchBox:hover {
+            width: 240px;
+        }
+
+        .searchBox:hover .searchButton {
+            transform: translateX(200px);
+        }
+
+        .searchBox:hover .searchInput {
+            width: calc(100% - 40px);
+            padding: 0 8px;
+            transform: translateX(-40px);
+        }
+
+        .searchBox:focus-within {
+            width: 240px;
+        }
+
+        .searchBox:focus-within .searchButton {
+            transform: translateX(200px);
+        }
+
+        .searchBox:focus-within .searchInput {
+            width: calc(100% - 40px);
+            padding: 0 8px;
+            transform: translateX(-40px);
+        }
+
+        .searchBox:hover .searchButton,
+        .searchBox:focus-within .searchButton {
+            background: #fff;
+            color: #666;
+        }
+
+        .filterButton {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #666;
+            color: #fff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.4s, background 0.4s, color 0.4s;
+            flex-shrink: 0;
+        }
+
+        .filterButton:hover {
+            background: #fff;
+            color: #666;
+        }
+
+        /* Contenitore per la barra di ricerca e il pulsante filtro */
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Spaziatura uniforme tra gli elementi */
+            justify-content: flex-start;
+        }
+
+        #filter-pane {
+            position: fixed;
+            top: 30%;
+            right: 50%;
+            width: 300px;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            display: none;
+            z-index: 1000;
+        }
+
+        #filter-pane.hidden {
+            display: none;
+        }
+
+        #filter-pane h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        #filter-pane ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #filter-pane ul li {
+            margin-bottom: 10px;
+        }
+
+        #filter-pane ul li label {
+            font-size: 14px;
+            color: #555;
+            cursor: pointer;
+        }
+
+        #filter-pane button {
+            background-color: #666;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #filter-pane button:hover {
+            background-color: #444;
+        }
+
+
+        /* Stile per il pulsante di ordinamento */
+        .orderButton {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #666;
+            color: #fff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.4s, background 0.4s, color 0.4s;
+            flex-shrink: 0;
+        }
+
+        .orderButton:hover {
+            background: #fff;
+            color: #666;
+        }
+
+        /* Pannello di ordinamento */
+        #order-pane {
+            position: fixed;
+            top: 30%;
+            right: 5%;
+            width: 300px;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            display: none;
+            z-index: 1000;
+        }
+
+        #order-pane.hidden {
+            display: none;
+        }
+
+        #order-pane h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        #order-pane ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #order-pane ul li {
+            margin-bottom: 10px;
+        }
+
+        #order-pane ul li label {
+            font-size: 14px;
+            color: #555;
+            cursor: pointer;
+        }
+
+        #order-pane button {
+            background-color: #666;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #order-pane button:hover {
+            background-color: #444;
+        }
+
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background-color: #ccc;
+            margin: 10px 0;
+        }
+
+        #edit-modal.hidden {
+            display: none;
+        }
+
+        #edit-modal {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #edit-modal .modal-content {
+            background: #fff;
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            text-align: left;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #edit-modal .form-group {
+            margin-bottom: 15px;
+        }
+
+        #edit-modal label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        #edit-modal input,
+        #edit-modal textarea {
+            width: 100%;
+            padding: 8px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #edit-modal .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        #edit-modal .form-buttons button {
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #666;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        #edit-modal .form-buttons button:hover {
+            background-color: #444;
+        }
+
+        /* Sezione home centrata in verticale e orizzontale */
+        #home-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin-left: 160px;
+        }
+
+        /* Logo più grande (esempio 300px) */
+        .home-logo svg {
+            width: 300px;
+            height: auto;
+        }
+
+        /* Titolo ancora più grande e con margine sopra */
+        .artgallery-title {
+            font-size: 3rem; /* ingrandisci a piacimento */
+            margin-top: 1em;
+            margin-right: 10px;
+        }
+
+
+        .hidden {
+            display: none !important;
+        }
+
+
+
+    </style>
+
+    <!-- Ionicons per le icone nel menu -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
+
 <body>
+<!-- Barra laterale di navigazione -->
 <nav id="navbar">
-  <!-- Logo -->
-  <div class="navbar-logo">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1438.88 1819.54">
-      <polygon points="925.79 318.48 830.56 0 183.51 1384.12 510.41 1178.46 925.79 318.48"
-               fill="var(--secondary-bg)"/>
-      <polygon points="1438.88 1663.28 1126.35 948.08 111.98 1586.26 0 1819.54 1020.91 1250.57 1123.78 1471.02 783.64 1663.28 1438.88 1663.28"
-               fill="var(--font-color)"/>
-    </svg>
-  </div>
-  <ul class="navbar-items">
-    <!-- Cerca -->
-    <li class="navbar-item">
-      <a class="navbar-item-inner">
-        <div class="navbar-item-inner-icon-wrapper">
-          <ion-icon name="search-outline"></ion-icon>
-        </div>
-        <span class="link-text">Cerca</span>
-      </a>
-    </li>
-    <!-- Profilo -->
-    <li class="navbar-item">
-      <a class="navbar-item-inner" onclick="goToProfile()">
-        <div class="navbar-item-inner-icon-wrapper">
-          <ion-icon name="people-outline"></ion-icon>
-        </div>
-        <span class="link-text">Profilo</span>
-      </a>
-    </li>
-    <!-- Opere -->
-    <li class="navbar-item">
-      <a class="navbar-item-inner" onclick="goToGallery()">
-        <div class="navbar-item-inner-icon-wrapper">
-          <ion-icon name="folder-open-outline"></ion-icon>
-        </div>
-        <span class="link-text">Galleria</span>
-      </a>
-    </li>
-    <!-- Aste -->
-    <li class="navbar-item">
-      <a class="navbar-item-inner" onclick="goToAuctions()">
-        <div class="navbar-item-inner-icon-wrapper">
-          <ion-icon name="pie-chart-outline"></ion-icon>
-        </div>
-        <span class="link-text">Aste</span>
-      </a>
-    </li>
-    <!-- Esci -->
-    <li class="navbar-item logout-section">
-      <a class="navbar-item-inner" onclick="exitApp()">
-        <div class="navbar-item-inner-icon-wrapper">
-          <ion-icon name="log-out-outline"></ion-icon>
-        </div>
-        <span class="link-text">Esci</span>
-      </a>
-    </li>
-  </ul>
+    <div class="navbar-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1438.88 1819.54">
+            <polygon
+                    points="925.79 318.48 830.56 0 183.51 1384.12 510.41 1178.46 925.79 318.48"
+                    fill="#fff"
+            />
+            <polygon
+                    points="1438.88 1663.28 1126.35 948.08 111.98 1586.26 0 1819.54 1020.91 1250.57 1123.78 1471.02 783.64 1663.28 1438.88 1663.28"
+                    fill="#323232"
+            />
+        </svg>
+    </div>
+    <ul class="navbar-items">
+        <li class="navbar-item">
+            <a class="navbar-item-inner" onclick="showSection('home-section')">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="home-outline"></ion-icon>
+                </div>
+                <span class="link-text">Home</span>
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a class="navbar-item-inner" onclick="window.ControllerPrincipale.showProfileSection()">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="people-outline"></ion-icon>
+                </div>
+                <span class="link-text">Profilo</span>
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a class="navbar-item-inner" onclick="goToGallery()">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="folder-open-outline"></ion-icon>
+                </div>
+                <span class="link-text">Galleria</span>
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a class="navbar-item-inner" onclick="goToAuctions()">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="pie-chart-outline"></ion-icon>
+                </div>
+                <span class="link-text">Aste</span>
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a class="navbar-item-inner" onclick="showSection('notifications-section')">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="notifications-outline"></ion-icon>
+                </div>
+                <span class="link-text">Notifiche</span>
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a class="navbar-item-inner" onclick="showSection('settings-section')">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="settings-outline"></ion-icon>
+                </div>
+                <span class="link-text">Impostazioni</span>
+            </a>
+        </li>
+        <li class="navbar-item logout-section">
+            <a class="navbar-item-inner" onclick="exitApp()">
+                <div class="navbar-item-inner-icon-wrapper">
+                    <ion-icon name="log-out-outline"></ion-icon>
+                </div>
+                <span class="link-text">Esci</span>
+            </a>
+        </li>
+    </ul>
 </nav>
+<main id="main">
+    <div id="home-section">
+        <div class="home-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1438.88 1819.54">
+                <polygon
+                        points="925.79 318.48 830.56 0 183.51 1384.12 510.41 1178.46 925.79 318.48"
+                        fill="#fff"
+                />
+                <polygon
+                        points="1438.88 1663.28 1126.35 948.08 111.98 1586.26 0 1819.54 1020.91 1250.57 1123.78 1471.02 783.64 1663.28 1438.88 1663.28"
+                        fill="#323232"
+                />
+            </svg>
+        </div>
+        <h1 class="artgallery-title">ARTGALLERY</h1>
+    </div>
+    <!-- Sezione Profilo -->
+    <div id="profile-section" class="hidden" style="text-align: left; padding: 20px;">
+        <h1 style="font-size: 2em; font-weight: bold; color: #323232; margin-bottom: 1em;">Informazioni Profilo</h1>
+        <div class="info" style="margin-bottom: 1em;">
+            <strong style="font-size: 1.2em; color: #666;">Username:</strong>
+            <span id="username" style="font-size: 1.1em; color: #323232; margin-left: 10px;"></span>
+        </div>
+        <div class="info" style="margin-bottom: 1em;">
+            <strong style="font-size: 1.2em; color: #666;">Email:</strong>
+            <span id="email" style="font-size: 1.1em; color: #323232; margin-left: 10px;"></span>
+        </div>
+
+        <div class="c4">
+            <button class="btn" onclick="toggleCaricaOperaForm()">Carica Opera</button>
+            <button class="btn" onclick="eliminaOpera()">Elimina Opera</button>
+            <button class="btn" onclick="modificaOpera()">Modifica Opera</button>
+        </div>
+
+        <div id="carica-opera-form" class="hidden settings-form">
+            <h3>Carica una nuova opera</h3>
+            <div class="form-group">
+                <label for="fileInput">Immagine:</label>
+                <input type="file" id="fileInput" accept="image/*" required>
+            </div>
+            <div class="form-group">
+                <label for="titolo">Titolo:</label>
+                <input type="text" id="titolo" placeholder="Inserisci il titolo." required>
+            </div>
+            <div class="form-group">
+                <label for="autore">Autore:</label>
+                <input type="text" id="autore" placeholder="Inserisci l'autore." required>
+            </div>
+            <div class="form-group">
+                <label for="anno">Anno:</label>
+                <input type="number" id="anno" placeholder="Inserisci l'anno." required>
+            </div>
+            <div class="form-group">
+                <label for="tecnica">Tecnica:</label>
+                <select id="tecnica" required>
+                    <option value="" disabled selected>Seleziona la tecnica utilizzata</option>
+                    <option value="Olio-su-tela">Olio su tela</option>
+                    <option value="Acrilico">Acrilico</option>
+                    <option value="Acquerello">Acquerello</option>
+                    <option value="Pastello">Pastello</option>
+                    <option value="Scultura">Scultura</option>
+                    <option value="Mista">Tecnica mista</option>
+                    <option value="Personale">Tecnica Personale</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="descrizione">Descrizione:</label>
+                <textarea id="descrizione" placeholder="Inserisci la descrizione." required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="dimensione">Dimensione (L x H x P):</label>
+                <input type="text" id="dimensione" placeholder="Esempio: 50 x 70 x 30" pattern="^\d+\s*x\s*\d+\s*x\s*\d+$" required>
+                <small>Inserisci le dimensioni in millimetri (larghezza x altezza x profondità).</small>
+            </div>
+            <div class="form-buttons">
+                <button id="salvaOperaBtn">Salva Opera</button>
+                <button id="annullaBtn">Annulla</button>
+            </div>
+        </div>
+
+        <!-- Nuova sezione Opere Caricate -->
+        <h2 style="margin-top: 20px; font-size: 1.8em; color: #323232;">Opere Caricate</h2>
+        <div id="opere-caricate" class="gallery-row-container">
+            <div class="gallery-row" id="opere-caricate-row">
+                <!-- Le opere caricate saranno aggiunte qui dinamicamente -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Sezione Notifiche -->
+    <div id="notifications-section" class="hidden">
+        <h1>Notifiche</h1>
+        <div class="info">Non hai nuove notifiche.</div>
+    </div>
+    <!-- Sezione Galleria -->
+    <div id="gallery-section" class="hidden">
+
+        <h1>Galleria</h1>
+
+        <div class="search-container">
+            <div class="searchBox">
+                <button class="searchButton" onclick="onSearchInput()">
+                    <ion-icon name="search-outline"></ion-icon>
+                </button>
+                <input type="text" class="searchInput" id="searchBar" placeholder="Cerca opera...">
+            </div>
+            <button class="filterButton" onclick="toggleFilterPane()">
+                <ion-icon name="filter-outline"></ion-icon>
+            </button>
+            <button class="orderButton" onclick="toggleOrderPane()">
+                <ion-icon name="reorder-four-outline"></ion-icon>
+            </button>
+        </div>
+
+        <!-- Pannello dei filtri -->
+        <div id="filter-pane" class="hidden">
+            <h3>Filtri</h3>
+            <ul>
+                <li><label><input type="checkbox" value="Olio-su-tela"> Olio su tela</label></li>
+                <li><label><input type="checkbox" value="Acrilico"> Acrilico</label></li>
+                <li><label><input type="checkbox" value="Acquerello"> Acquerello</label></li>
+                <li><label><input type="checkbox" value="Pastello"> Pastello</label></li>
+                <li><label><input type="checkbox" value="Scultura"> Scultura</label></li>
+                <li><label><input type="checkbox" value="Mista"> Tecnica mista</label></li>
+            </ul>
+            <button onclick="applyFilters()">Applica</button>
+        </div>
+
+        <!-- Pannello di ordinamento -->
+        <div id="order-pane" class="hidden">
+            <h3>Ordinamento</h3>
+            <ul>
+                <li><label><input type="radio" name="order" value="name"> Nome (A-Z)</label></li>
+                <li><label><input type="radio" name="order" value="year"> Anno</label></li>
+                <li><label><input type="radio" name="order" value="author"> Autore</label></li>
+            </ul>
+            <button onclick="applyOrder()">Applica</button>
+        </div>
+
+
+        <div class="divider"></div>
+
+        <div class="gallery-category">
+            <div class="gallery-row-container">
+                <div class="gallery-row" id="row-cat1">
+                    <!-- Le opere -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sezione Impostazioni -->
+    <div id="settings-section" class="hidden" style="position: relative;">
+        <h1 style="text-align: left; margin-left: 8px;">Impostazioni</h1>
+        <div class="c4">
+            <button class="btn" onclick="toggleSettingsForm()">Cambia i tuoi dati</button>
+            <button class="btn" onclick="logout()">Logout</button>
+        </div>
+        <form id="settings-form" class="hidden settings-form" style="
+          border: 1px solid #323232;
+          padding: 10px;
+          margin-top: 20px;
+          width: fit-content;
+          text-align: left;
+          position: absolute;
+          top: 120px;
+          left: 0; ">
+            <div class="inp" style="margin-bottom: 20px;">
+                <label for="new-username" class="inp">
+                    <input type="text" id="new-username" placeholder="Nuovo Username" pattern=".{1,}" required/>
+                    <svg width="185px" height="18px" viewBox="0 0 280 18" class="border">
+                        <path d="M0,12 L223.166144,12 C217.241379,12 217.899687,12 225.141066,12
+                           C236.003135,12 241.9279,12 249.827586,12
+                           C257.727273,12 264.639498,12 274.514107,12
+                           C281.097179,12 281.755486,12 276.489028,12"></path>
+                    </svg>
+                    <svg width="14px" height="12px" viewBox="0 0 14 12" class="check">
+                        <path d="M1 7 5.5 11 L13 1"></path>
+                    </svg>
+                </label>
+            </div>
+            <div class="inp" style="margin-bottom: 20px;">
+                <label for="new-email" class="inp">
+                    <input type="text" id="new-email" placeholder="Nuova Email" pattern=".{1,}" required/>
+                    <svg width="185px" height="18px" viewBox="0 0 280 18" class="border">
+                        <path d="M0,12 L223.166144,12 C217.241379,12 217.899687,12 225.141066,12
+                           C236.003135,12 241.9279,12 249.827586,12
+                           C257.727273,12 264.639498,12 274.514107,12
+                           C281.097179,12 281.755486,12 276.489028,12"></path>
+                    </svg>
+                    <svg width="14px" height="12px" viewBox="0 0 14 12" class="check">
+                        <path d="M1 7 5.5 11 L13 1"></path>
+                    </svg>
+                </label>
+            </div>
+            <div class="inp" style="margin-bottom: 10px;">
+                <label for="new-password" class="inp">
+                    <input type="password" id="new-password" placeholder="Nuova Password" pattern=".{6,}" required/>
+                    <svg width="185px" height="18px" viewBox="0 0 280 18" class="border">
+                        <path d="M0,12 L223.166144,12 C217.241379,12 217.899687,12 225.141066,12
+                           C236.003135,12 241.9279,12 249.827586,12
+                           C257.727273,12 264.639498,12 274.514107,12
+                           C281.097179,12 281.755486,12 276.489028,12"></path>
+                    </svg>
+                    <svg width="14px" height="12px" viewBox="0 0 14 12" class="check">
+                        <path d="M1 7 5.5 11 L13 1"></path>
+                    </svg>
+                </label>
+            </div>
+            <button type="button" onclick="updateUserData()">Salva</button>
+        </form>
+    </div>
+</main>
+
+<div id="modal-overlay" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-button" onclick="modalOverlay.classList.remove('active')">×</span>
+        <img id="modal-image" src="" alt="Immagine Opera" class="modal-image">
+        <h2 id="modal-title"></h2>
+        <p><strong>Autore:</strong> <span id="modal-author"></span></p>
+        <p><strong>Tecnica:</strong> <span id="modal-technique"></span></p>
+        <p><strong>Anno:</strong> <span id="modal-year"></span></p>
+        <p><strong>Dimensione:</strong> <span id="modal-dimensions"></span></p>
+        <p><strong>Descrizione:</strong> <span id="modal-description"></span></p>
+        <p><strong>Utente:</strong> <span id="modal-users"></span></p>
+    </div>
+</div>
+
+<div id="edit-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeEditModal()">×</span>
+        <h2>Modifica Opera</h2>
+        <form id="edit-form">
+            <div class="form-group">
+                <label for="edit-title">Titolo:</label>
+                <input type="text" id="edit-title" placeholder="Inserisci il nuovo titolo" required />
+            </div>
+            <div class="form-group">
+                <label for="edit-author">Autore:</label>
+                <input type="text" id="edit-author" placeholder="Inserisci il nuovo autore" required />
+            </div>
+            <div class="form-group">
+                <label for="edit-year">Anno:</label>
+                <input type="number" id="edit-year" placeholder="Inserisci il nuovo anno" required />
+            </div>
+            <div class="form-group">
+                <label for="edit-technique">Tecnica:</label>
+                <select id="edit-technique" required>
+                    <option value="" disabled>Seleziona la tecnica utilizzata</option>
+                    <option value="Olio-su-tela">Olio su tela</option>
+                    <option value="Acrilico">Acrilico</option>
+                    <option value="Acquerello">Acquerello</option>
+                    <option value="Pastello">Pastello</option>
+                    <option value="Scultura">Scultura</option>
+                    <option value="Mista">Tecnica mista</option>
+                    <option value="Personale">Tecnica personale</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="edit-description">Descrizione:</label>
+                <textarea id="edit-description" placeholder="Inserisci la nuova descrizione" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="edit-dimensions">Dimensioni (LxHxP):</label>
+                <input type="text" id="edit-dimensions" placeholder="Inserisci le nuove dimensioni" required />
+            </div>
+            <div class="form-buttons">
+                <button type="button" onclick="submitEditForm()">Salva</button>
+                <button type="button" onclick="closeEditModal()">Annulla</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    let isDeleteMode = false; // Variabile per tenere traccia della modalità di eliminazione
+        document.addEventListener('DOMContentLoaded', function() {
+
+          // Funzione per mostra/nascondere sezioni
+         window.showSection = function(sectionId) {
+          console.log(`Chiamata a showSection con l'ID: ${sectionId}`);
+
+          // Seleziona tutte le sezioni e nascondile
+          const sections = document.querySelectorAll('main > div');
+          sections.forEach(section => section.classList.add('hidden'));
+
+          const section = document.getElementById(sectionId);
+          if (section) {
+              section.classList.remove('hidden');
+          } else {
+              console.error(`Sezione con ID '${sectionId}' non trovata.`);
+          }
+
+          // Gestione dei menu attivi
+          const menuItems = document.querySelectorAll('.navbar-item');
+          menuItems.forEach(item => item.classList.remove('active'));
+
+          const clickedItem = document.querySelector(`.navbar-item a[onclick="showSection('${sectionId}')"]`);
+          if (clickedItem) {
+              clickedItem.parentElement.classList.add('active');
+          }
+
+          // Se la sezione è la galleria, attacca gli ascoltatori degli eventi
+          if (sectionId === 'gallery-section') {
+              attachGalleryItemListeners();
+          }
+      }
+
+
+
+        // Funzione per uscire dall'app
+        window.exitApp = function() {
+            if (window.ControllerPrincipale) {
+                window.ControllerPrincipale.exitApp();
+            }
+        }
+
+        // Funzione per logout
+        window.logout = function() {
+            if (window.ControllerPrincipale) {
+                window.ControllerPrincipale.logout();
+            }
+        }
+
+        // Funzione per salvare dati utente
+        window.updateUserData = function() {
+            const newUsername = document.getElementById('new-username').value;
+            const newEmail = document.getElementById('new-email').value;
+            const newPassword = document.getElementById('new-password').value;
+            document.getElementById('new-username').value = '';
+            document.getElementById('new-email').value = '';
+            document.getElementById('new-password').value = '';
+            if (window.ControllerPrincipale) {
+                window.ControllerPrincipale.updateProfilo(newUsername, newEmail, newPassword);
+            } else {
+                console.error("ControllerPrincipale non trovato.");
+            }
+            document.getElementById('settings-form').classList.add('hidden');
+        }
+
+        window.toggleSettingsForm = function() {
+            const settingsForm = document.getElementById('settings-form');
+            if (settingsForm.classList.contains('hidden')) {
+                settingsForm.classList.remove('hidden');
+            } else {
+                settingsForm.classList.add('hidden');
+            }
+        }
+
+        window.toggleCaricaOperaForm = function() {
+            const caricaOperaForm = document.getElementById('carica-opera-form');
+            if (caricaOperaForm.classList.contains('hidden')) {
+                caricaOperaForm.classList.remove('hidden');
+            } else {
+                caricaOperaForm.classList.add('hidden');
+            }
+        }
+
+        const annullaBtn = document.getElementById('annullaBtn');
+        if (annullaBtn) {
+            annullaBtn.addEventListener('click', function() {
+                document.getElementById('titolo').value = '';
+                document.getElementById('autore').value = '';
+                document.getElementById('anno').value = '';
+                document.getElementById('tecnica').value = '';
+                document.getElementById('descrizione').value = '';
+                document.getElementById('fileInput').value = '';
+                document.getElementById('carica-opera-form').classList.add('hidden');
+            });
+        }
+
+        function salvaOpera() {
+            console.log("Funzione salvaOpera chiamata!");
+            var titolo = document.getElementById("titolo").value;
+            var autore = document.getElementById("autore").value;
+            var anno = document.getElementById("anno").value;
+            var tecnica = document.getElementById("tecnica").value;
+            var descrizione = document.getElementById("descrizione").value;
+            var dimensione = document.getElementById("dimensione").value;
+            var fileInput = document.getElementById("fileInput");
+            var file = fileInput.files[0];
+
+
+            if (!titolo || !autore || !anno || !tecnica || !descrizione || !file) {
+                alert("Compila tutti i campi e/o carica il File");
+                console.log("Campi mancanti");
+                return;
+            }
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var imageData = e.target.result;
+                if (window.ControllerPrincipale) {
+                    console.log("Chiamata al metodo salvaOpera in JavaFX");
+                    window.ControllerPrincipale.salvaOpera(titolo, autore, anno, tecnica, descrizione, imageData,dimensione);
+                } else {
+                    console.error("ControllerPrincipale non trovato!");
+                    alert("Errore nel salvataggio dell'opera.");
+                }
+                document.getElementById('titolo').value = '';
+                document.getElementById('autore').value = '';
+                document.getElementById('anno').value = '';
+                document.getElementById('tecnica').value = '';
+                document.getElementById('descrizione').value = '';
+                document.getElementById('fileInput').value = '';
+                document.getElementById('carica-opera-form').classList.add('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        const salvaOperaBtn = document.getElementById('salvaOperaBtn');
+        if (salvaOperaBtn) {
+            salvaOperaBtn.addEventListener('click', salvaOpera);
+        }
+
+        window.goToGallery = function() {
+            showSection('gallery-section');
+        }
+
+        window.goToAuctions = function() {
+            if (window.ControllerPrincipale) {
+                window.ControllerPrincipale.goToAuctions();
+            }
+        }
+
+            const modalOverlay = document.getElementById('modal-overlay');
+            const modalClose = document.getElementById('modal-close');
+            const modalImage = document.getElementById('modal-image');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDescription = document.getElementById('modal-description');
+            const modalAuthor = document.getElementById('modal-author');
+            const modalTechnique = document.getElementById('modal-technique');
+            const modalYear = document.getElementById('modal-year');
+            const modalDimensions = document.getElementById('modal-dimensions');
+            const modalUsers = document.getElementById('modal-users');
+
+       // let isDeleteMode = false; // Variabile per tenere traccia della modalità di eliminazione
+
+            // Modifica la funzione openModal per non aprire il modale in modalità eliminazione
+            window.openModal = function(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario) {
+
+                if (isDeleteMode) {
+                    console.log("Modalità eliminazione attiva, modale non aperto.");
+                    return;
+                }
+                // Imposta l'immagine
+                modalImage.src = imgSrc || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
+
+                // Imposta il contenuto della modale
+                modalTitle.textContent = titolo || 'Titolo Opera';
+                modalAuthor.textContent = autore || 'Autore sconosciuto';
+                modalTechnique.textContent = tecnica|| 'Tecnica non specificata';
+                modalYear.textContent = anno || 'Anno non disponibile';
+                modalDimensions.textContent = dimensione || 'Dimensioni non disponibili';
+                modalDescription.textContent = descrizione || 'Descrizione non disponibile';
+                modalUsers.textContent = proprietario || 'Proprietario anonimo';
+
+                // Mostra la modale
+                modalOverlay.classList.add('active');
+            };
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const modalOverlay = document.getElementById('modal-overlay');
+                const modalImage = document.getElementById('modal-image');
+                const modalTitle = document.getElementById('modal-title');
+                const modalDescription = document.getElementById('modal-description');
+                const modalAuthor = document.getElementById('modal-author');
+                const modalTechnique = document.getElementById('modal-technique');
+                const modalYear = document.getElementById('modal-year');
+                const modalDimensions = document.getElementById('modal-dimensions');
+                const modalUsers = document.getElementById('modal-users');
+
+
+
+            });
+
+
+            window.closeModal = function() {
+                console.log("Chiusura modale");
+                modalOverlay.classList.remove('active');
+                modalTitle.textContent = '';
+                modalAuthor.textContent = '';
+                modalTechnique.textContent = '';
+                modalYear.textContent = '';
+                modalDimensions.textContent ='';
+                modalDescription.textContent = '';
+                modalUsers.textContent = '';
+            }
+
+        if (modalClose) {
+            modalClose.addEventListener('click', closeModal);
+        }
+
+        if (modalOverlay) {
+            modalOverlay.addEventListener('click', function(event) {
+                if (event.target === modalOverlay) {
+                    closeModal();
+                }
+            });
+        }
+
+
+
+        // Imposto la sezione di default
+        showSection('home-section');
+        const visibleSections = document.querySelectorAll('main > div:not(.hidden)');
+        visibleSections.forEach(section => {
+            console.log(`Sezione visibile: ${section.id}`);
+        });
+    });
+
+        window.attachGalleryItemListeners = function() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    const imgSrc = item.querySelector('img')?.src || 'https://via.placeholder.com/600x400?text=Opera+Immagine';
+                    const titolo = item.querySelector('img')?.alt || 'Titolo non disponibile';
+                    const descrizione = item.getAttribute('data-description') || 'Descrizione non disponibile';
+                    const tecnica = item.getAttribute('data-technique') || 'Tecnica non specificata';
+                    const autore = item.getAttribute('data-author') || 'Autore sconosciuto';
+                    const anno = item.getAttribute('data-year') || 'Anno non disponibile';
+                    const dimensione = item.getAttribute('data-dimension') || 'Dimensioni non disponibili';
+                    const proprietario = item.getAttribute('data-user') || 'Proprietario anonimo';
+
+                    openModal(imgSrc, titolo, tecnica, autore, anno, dimensione, descrizione, proprietario);
+                });
+            });
+        };
+
+  //let isDeleteMode = false; // Variabile per tenere traccia della modalità di eliminazione
+  let ignoreNextClick = false; // Flag per ignorare il primo clic dopo l'alert
+  function eliminaOpera() {
+      ignoreNextClick = true; // Ignora il prossimo clic
+      console.log(window.ControllerPrincipale);
+      isDeleteMode = true; // Variabile per tenere traccia della modalità di eliminazione
+      alert("Seleziona l'opera che vuoi eliminare");
+      console.log("Modalità eliminazione attivata: " + isDeleteMode);
+
+
+      document.querySelectorAll('.gallery-item').forEach(item => {
+          item.classList.add('selectable'); // Evidenzia le opere
+          item.addEventListener('click', handleOperaSelection); // Aggiungi evento click
+      });
+
+      if (galleryItems.length === 0) {
+          console.error("Nessun elemento con la classe .gallery-item trovato!");
+          return; // Interrompi l'esecuzione
+      }
+      // Aggiungi il listener globale per i clic
+      document.body.addEventListener("click", handleOutsideClick);
+  }
+
+  // Gestisce la selezione dell'opera da eliminare
+  function handleOperaSelection(event) {
+      if (!isDeleteMode) return;
+      event.stopPropagation();
+      event.preventDefault();
+
+      const opera = event.currentTarget;
+      const operaId = opera.dataset.id;
+
+      if (!operaId) {
+          alert("Errore: impossibile trovare l'ID dell'opera selezionata.");
+          terminaSelezione();
+          return;
+      }
+      eliminaOperaDalDatabase(operaId, opera);
+
+
+
+  }
+
+  // Gestisce i clic al di fuori delle opere
+  function handleOutsideClick(event) {
+      if (!isDeleteMode) return;
+      // Salta il primo clic dopo l'alert
+      if (ignoreNextClick) {
+          ignoreNextClick = false;
+          return;
+      }
+
+      // Controlla se il clic è avvenuto su un elemento con la classe `gallery-item`
+      if (!event.target.closest(".gallery-item")) {
+
+          terminaSelezione();
+      }
+  }
+
+  // Disattiva la modalità di eliminazione
+  function terminaSelezione() {
+      isDeleteMode = false; // Disattiva la modalità
+      document.querySelectorAll('.gallery-item').forEach(item => {
+          item.classList.remove('selectable');
+          item.removeEventListener('click', handleOperaSelection);
+      });
+      // Rimuovi il listener globale
+      document.body.removeEventListener("click", handleOutsideClick);
+  }
+  // Chiama il controller Java per eliminare l'opera
+  function eliminaOperaDalDatabase(operaId, operaElement) {
+
+      try {
+          console.log(window.ControllerPrincipale);
+          if (window.ControllerPrincipale) {
+              closeModal()
+              const result = window.ControllerPrincipale.eliminaOpera(operaId)
+              if (result) {
+
+                  // Rimuovi l'opera dal DOM
+                   operaElement.remove();
+                  //alert("Errore: impossibile eliminare l'opera.");
+          } else
+              console.error("ControllerPrincipale non è definito.");
+          }
+      } catch (error) {
+          console.error("Errore durante l'eliminazione:", error);
+          //alert("Errore nell'eliminazione dell'opera.");
+      } finally {
+          terminaSelezione();
+      }
+  }
+
+  function toggleFilterPane() {
+      const filterPane = document.getElementById('filter-pane');
+      if (filterPane) {
+          filterPane.classList.toggle('hidden');
+          if (filterPane.classList.contains('hidden')) {
+              filterPane.style.display = 'none';
+          } else {
+              filterPane.style.display = 'block';
+          }
+      } else {
+          console.error("Il pannello dei filtri non è stato trovato.");
+      }
+  }
+
+  function applyFilters() {
+      const selectedTechniques = Array.from(
+          document.querySelectorAll('#filter-pane input[type="checkbox"]:checked')
+      ).map(checkbox => checkbox.value);
+      const galleryItems = document.querySelectorAll('.gallery-item');
+      galleryItems.forEach(item => {
+          const technique = item.getAttribute('data-technique');
+          if (selectedTechniques.length === 0 || selectedTechniques.includes(technique)) {
+              item.style.display = 'block';
+          } else {
+              item.style.display = 'none';
+          }
+      });
+      toggleFilterPane();
+  }
+
+
+  // Mostra/nasconde il pannello di ordinamento
+  function toggleOrderPane() {
+      const orderPane = document.getElementById('order-pane');
+      if (orderPane) {
+          orderPane.classList.toggle('hidden');
+          if (orderPane.classList.contains('hidden')) {
+              orderPane.style.display = 'none';
+          } else {
+              orderPane.style.display = 'block';
+          }
+      } else {
+          console.error("Il pannello di ordinamento non è stato trovato.");
+      }
+  }
+
+  // Applica l'ordinamento
+  function applyOrder() {
+      const selectedOrder = document.querySelector('input[name="order"]:checked');
+      if (selectedOrder) {
+          const orderCriteria = selectedOrder.value;
+          console.log(`Applico l'ordinamento per: ${orderCriteria}`);
+          sortGallery(orderCriteria);
+          toggleOrderPane();
+      } else {
+          alert("Seleziona un criterio di ordinamento.");
+      }
+  }
+
+  // Funzione per ordinare la galleria
+  function sortGallery(criteria) {
+      const galleryRow = document.getElementById('row-cat1');
+      const items = Array.from(galleryRow.children);
+      items.sort((a, b) => {
+          const getValue = (item, attr) => item.getAttribute(`data-${attr}`) || '';
+          let aValue, bValue;
+          if (criteria === 'name') {
+              aValue = a.querySelector('img')?.alt.toLowerCase() || '';
+              bValue = b.querySelector('img')?.alt.toLowerCase() || '';
+          } else if (criteria === 'year') {
+              aValue = parseInt(getValue(a, 'year')) || 0;
+              bValue = parseInt(getValue(b, 'year')) || 0;
+          } else if (criteria === 'author') {
+              aValue = getValue(a, 'author').toLowerCase();
+              bValue = getValue(b, 'author').toLowerCase();
+          } else {
+              return;
+          }
+          if (aValue < bValue) return -1;
+          if (aValue > bValue) return 1;
+          return 0;
+      });
+      galleryRow.innerHTML = '';
+      items.forEach(item => galleryRow.appendChild(item));
+  }
+  function onSearchInput() {
+      const searchValue = document.getElementById('searchBar').value;
+      filterGalleryByName(searchValue);
+  }
+
+  function filterGalleryByName(searchValue) {
+      galleryRow = document.getElementById('row-cat1');
+      const items = Array.from(galleryRow.children);
+      const searchLower = searchValue.toLowerCase();
+
+      items.forEach(item => {
+          const itemName = item.querySelector('img')?.alt.toLowerCase() || '';
+          if (itemName.includes(searchLower)) {
+              item.style.display = '';
+          } else {
+              item.style.display = 'none';
+          }
+      });
+  }
+        function modificaOpera() {
+            isDeleteMode = true;
+            alert("Seleziona l'opera che vuoi modificare.");
+            let isModifyMode = true; // Modalità modifica attiva
+
+            const galleryItems = document.querySelectorAll('.gallery-item');
+
+            if (galleryItems.length === 0) {
+                alert("Nessuna opera disponibile per la modifica.");
+                return;
+            }
+
+            galleryItems.forEach(item => {
+                item.classList.add('selectable');
+                item.addEventListener('click', handleModifySelection, { once: true });
+            });
+
+            function handleModifySelection(event) {
+                if (!isModifyMode) return;
+
+                const selectedOpera = event.currentTarget;
+                const operaId = selectedOpera.getAttribute('data-id');
+
+                if (!operaId) {
+                    alert("Errore: impossibile trovare l'ID dell'opera selezionata.");
+                    return;
+                }
+                console.log("Opera selezionata per modifica, ID:", operaId);
+                // Riempi i campi del modale con i dati esistenti
+                document.getElementById('edit-title').value = selectedOpera.getAttribute('img')?.alt|| '';
+                document.getElementById('edit-author').value = selectedOpera.getAttribute('data-author') || '';
+                document.getElementById('edit-year').value = selectedOpera.getAttribute('data-year') || '';
+                document.getElementById('edit-description').value = selectedOpera.getAttribute('data-description') || '';
+                document.getElementById('edit-dimensions').value = selectedOpera.getAttribute('data-dimension') || '';
+                // Seleziona la tecnica corretta
+                const tecnica = selectedOpera.getAttribute('data-technique');
+                const tecnicaSelect = document.getElementById('edit-technique');
+                if (tecnicaSelect) {
+                    Array.from(tecnicaSelect.options).forEach(option => {
+                        option.selected = option.value === tecnica;
+                    });
+                }
+                // Mostra il modale
+                openEditModal();
+
+                // Salva l'operaId nel form per la successiva chiamata
+                document.getElementById('edit-form').setAttribute('data-id', operaId);
+
+                isDeleteMode = false;
+                // Disattiva la modalità modifica
+                terminateModifyMode();
+            }
+
+
+            function terminateModifyMode() {
+                isModifyMode = false;
+                galleryItems.forEach(item => {
+                    item.classList.remove('selectable');
+                    item.removeEventListener('click', handleModifySelection);
+                });
+            }
+        }
+
+        function openEditModal() {
+            document.getElementById('edit-modal').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+        }
+
+        function submitEditForm() {
+            const operaId = document.getElementById('edit-form').getAttribute('data-id');
+            const titolo = document.getElementById('edit-title').value;
+            const autore = document.getElementById('edit-author').value;
+            const anno = parseInt(document.getElementById('edit-year').value);
+            const tecnica = document.getElementById('edit-technique').value; // Valore selezionato
+            const descrizione = document.getElementById('edit-description').value;
+            const dimensione = document.getElementById('edit-dimensions').value;
+
+            if (!titolo || !autore || isNaN(anno) || !tecnica || !descrizione || !dimensione) {
+                alert("Tutti i campi sono obbligatori. Riprova.");
+                return;
+            }
+
+            console.log("Invio modifica opera:", { operaId, titolo, autore, anno, tecnica, descrizione, dimensione });
+
+            if (window.ControllerPrincipale) {
+                try {
+                    const result = window.ControllerPrincipale.modificaOpera(
+                        parseInt(operaId),
+                        titolo,
+                        autore,
+                        anno,
+                        tecnica,
+                        descrizione,
+                        dimensione
+                    );
+
+                    if (result) {
+                        closeEditModal();
+                        alert("Opera modificata con successo!");
+                        WindowsController.aggiornaSezioneGalleria(webView);
+                    } else {
+                        alert("Errore: impossibile modificare l'opera.");
+                    }
+                } catch (error) {
+                    console.error("Errore durante la modifica dell'opera:", error);
+                }
+            } else {
+                alert("ControllerPrincipale non trovato.");
+            }
+            isDeleteMod = false;
+        }
+
+</script>
 </body>
 </html>

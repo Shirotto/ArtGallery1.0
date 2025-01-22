@@ -1,4 +1,4 @@
-package com.util;
+/*package com.util;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -18,8 +18,6 @@ public class ConvertitoreImmagini {
         Path path = Paths.get(percorsoOutput);
         Files.write(path, immagineBytes);
     }
-
-    // Metodo per convertire un'immagine di JavaFX in un array di byte
-
-    // Metodo per convertire i byte in un oggetto Image di JavaFX
 }
+
+ */
