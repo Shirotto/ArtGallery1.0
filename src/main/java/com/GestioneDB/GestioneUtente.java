@@ -20,6 +20,12 @@ public class GestioneUtente {
         // Crea la SessionFactory utilizzando hibernate.cfg.xml
         this.sessionFactory = new Configuration().configure(hibernate).addAnnotatedClass(User.class).buildSessionFactory();
     }
+
+    public GestioneUtente(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+
     //Verifica e registra se l'utente esiste gia nel db (Fase Registazione)
     public boolean registraUtente(String username, String email, String password) {
 
