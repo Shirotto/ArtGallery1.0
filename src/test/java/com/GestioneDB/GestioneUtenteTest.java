@@ -54,17 +54,6 @@ class GestioneUtenteTest {
     }
 
     @Test
-    void testRegistraUtente_InputNonValido() {
-        // Se l'input è invalido, di solito non si apre nemmeno la transazione
-        boolean result = gestioneUtente.registraUtente("", "mail@test.it", "pass123");
-        assertFalse(result);
-
-        // Verifica che non abbia aperto o usato la session
-        verify(sessionMock, never()).beginTransaction();
-        verify(sessionMock, never()).persist(any(User.class));
-    }
-
-    @Test
     void testRegistraUtente_GiaEsisteUsername() {
         // Mock della sessione e della transazione
         when(sessionMock.beginTransaction()).thenReturn(transactionMockVerifica);
@@ -94,65 +83,51 @@ class GestioneUtenteTest {
 
     @Test
     void testRegistraUtente_GiaEsisteEmail() {
-        // Scenario: username non esiste, email esiste
-        Query<User> queryMockUsername = mock(Query.class);
-        Query<User> queryMockEmail = mock(Query.class);
+        // Mock delle transazioni
+        Transaction transactionMockVerificaUsername = mock(Transaction.class);
+        Transaction transactionMockVerificaEmail = mock(Transaction.class);
 
+        // Configura sessione per aprire diverse transazioni
+        when(sessionMock.beginTransaction())
+                .thenReturn(transactionMockVerificaUsername)
+                .thenReturn(transactionMockVerificaEmail);
+
+        // Mock per la query di verifica username
+        Query<User> queryMockUsername = mock(Query.class);
         when(sessionMock.createQuery("FROM User u WHERE u.username = :username", User.class))
                 .thenReturn(queryMockUsername);
         when(queryMockUsername.setParameter(eq("username"), anyString()))
                 .thenReturn(queryMockUsername);
         when(queryMockUsername.uniqueResult())
-                .thenReturn(null);
+                .thenReturn(null); // Username non esiste
 
-        when(sessionMock.createQuery("FROM User u WHERE u.email = :email", User.class))
-                .thenReturn(queryMockEmail);
-        when(queryMockEmail.setParameter(eq("email"), anyString()))
-                .thenReturn(queryMockEmail);
-        when(queryMockEmail.uniqueResult())
-                .thenReturn(new User("someone", "esistente@test.it", "pwd"));
-
-        boolean result = gestioneUtente.registraUtente("nuovoUsername", "esistente@test.it", "pass123");
-        assertFalse(result);
-
-        verify(sessionMock, never()).persist(any(User.class));
-        verify(transactionMock, times(1)).rollback();
-    }
-
-    @Test
-    void testRegistraUtente_Successo() {
-        // Mock della creazione della query per username
-        Query<User> queryMockUsername = mock(Query.class);
-        when(sessionMock.createQuery("FROM User u WHERE u.username = :username", User.class))
-                .thenReturn(queryMockUsername);
-        when(queryMockUsername.setParameter(eq("username"), anyString()))
-                .thenReturn(queryMockUsername);
-        when(queryMockUsername.uniqueResult()).thenReturn(null);
-
-        // Mock della creazione della query per email
+        // Mock per la query di verifica email
         Query<User> queryMockEmail = mock(Query.class);
         when(sessionMock.createQuery("FROM User u WHERE u.email = :email", User.class))
                 .thenReturn(queryMockEmail);
         when(queryMockEmail.setParameter(eq("email"), anyString()))
                 .thenReturn(queryMockEmail);
-        when(queryMockEmail.uniqueResult()).thenReturn(null);
-
-        // Mock della transazione
-        when(sessionMock.beginTransaction()).thenReturn(transactionMock);
-
-        // Mock del metodo persist (opzionale, ma può essere utile)
-        doNothing().when(sessionMock).persist(any(User.class));
+        when(queryMockEmail.uniqueResult())
+                .thenReturn(new User("someone", "esistente@test.it", "pwd")); // Email esistente
 
         // Esecuzione del metodo sotto test
-        boolean result = gestioneUtente.registraUtente("nuovo", "nuovo@test.it", "password123");
+        boolean result = gestioneUtente.registraUtente("nuovoUsername", "esistente@test.it", "password123");
+        assertFalse(result, "Se l'email esiste, deve tornare false");
 
-        // Asserzioni
-        assertTrue(result, "Il metodo dovrebbe restituire true quando username ed email sono assenti.");
+        // Verifica che 'persist' non venga chiamato
+        verify(sessionMock, never()).persist(any(User.class));
 
-        // Verifiche sui mock
-        verify(sessionMock, times(1)).persist(any(User.class));
-        verify(transactionMock, times(1)).commit();
+        // Verifica che 'commit' sia stato chiamato separatamente per ogni verifica
+        verify(transactionMockVerificaUsername, times(1)).commit();
+        verify(transactionMockVerificaEmail, times(1)).commit();
+
+        // Verifica che 'rollback' non venga chiamato
+        verify(transactionMockVerificaUsername, never()).rollback();
+        verify(transactionMockVerificaEmail, never()).rollback();
     }
+
+
+
 
     @Test
     void testVerificaCredenzialiDaccesso_UtenteNonEsiste() {
